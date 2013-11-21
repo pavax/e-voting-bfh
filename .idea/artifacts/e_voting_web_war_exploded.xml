@@ -1,0 +1,54 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="e-voting-web:war exploded">
+    <output-path>$PROJECT_DIR$/e-voting-web/target/e-voting-web-1.0-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="e-voting-web/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="e-voting-web" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.0.9" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.0.9" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.5" />
+          <element id="library" level="project" name="Maven: com.sun.faces:jsf-api:2.1.26" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aspects:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.7.2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: com.sun.faces:jsf-impl:2.1.26" />
+          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:4.2.6.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.1.0.GA" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
+          <element id="library" level="project" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.1_spec:1.0.1.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:4.2.6.Final" />
+          <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
+          <element id="library" level="project" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.2.Final" />
+          <element id="library" level="project" name="Maven: org.javassist:javassist:3.15.0-GA" />
+          <element id="library" level="project" name="Maven: org.hsqldb:hsqldb:2.2.9" />
+          <element id="library" level="project" name="Maven: org.primefaces:primefaces:4.0" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-jpa:1.4.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:1.6.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.7.2" />
+          <element id="library" level="project" name="Maven: org.primefaces.themes:bootstrap:1.0.10" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.1.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.1.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:3.1.4.RELEASE" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

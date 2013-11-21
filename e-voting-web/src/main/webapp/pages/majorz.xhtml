@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{majorzController.init}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>#{majorzModel.selectedMajorzVoting.title}</h1>
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span7">
+                    <h2>Ihre Wahl</h2>
+
+                    <div class="well">
+                        <ul>
+                            <li>Sie können max #{majorzModel.selectedMajorzVoting.openPositions} Kandidaten wählen</li>
+                            <li>Sie können nur die verüfgbaren Kandidaten wählen d.h Keine eigenen Kandiaten wählen</li>
+                            <li>Sie können einen Kandidaten max zweimal wählen</li>
+                            <li>Sie können noch #{majorzModel.freeCandidatePositions.size()} Positionen wählen</li>
+                        </ul>
+                    </div>
+
+                    <h:form>
+                        <ui:repeat value="#{majorzModel.selectedCandidates}" var="candidatePosition">
+                            <div class="well">
+                                #{candidatePosition.firstName} #{candidatePosition.lastName}
+                                <h:commandButton disabled="#{majorzModel.alreadyVoted}"
+                                                 styleClass="btn btn-mini"
+                                                 value="X"
+                                                 action="#{majorzController.removedSelectedCandidate(candidatePosition)}"/>
+                            </div>
+                        </ui:repeat>
+                        <ui:repeat value="#{majorzModel.freeCandidatePositions}" var="freePosition">
+                            <li>Freie Position</li>
+                        </ui:repeat>
+
+                        <br/>
+
+                        <h:commandButton disabled="#{majorzModel.alreadyVoted}"
+                                         styleClass="btn btn-large btn-primary"
+                                         value="#{msg['vote.confirm']}"
+                                         action="#{majorzController.voteAction}"/>
+                    </h:form>
+                </div>
+                <div class="span5">
+                    <h2>Kandiaten</h2>
+                    <h:form>
+                        <h:outputText value="Alle Positionen wurden von Ihnen bereits gewählt"
+                                      rendered="#{majorzModel.maxPositionsFilled}"/>
+                        <p:dataGrid var="candidate"
+                                    rendered="#{!majorzModel.maxPositionsFilled}"
+                                    value="#{majorzModel.possibleCandidates}"
+                                    columns="3"
+                                    rows="12"
+                                    paginator="false">
+                            <p:panel header="#{candidatePosition.firstName} #{candidatePosition.lastName}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <h:outputText value="#{candidatePosition.partyName}"/>
+                                    <h:commandButton disabled="#{majorzModel.alreadyVoted}"
+                                                     styleClass="btn btn-mini btn-primary"
+                                                     action="#{majorzController.selectCandidate(candidatePosition)}"
+                                                     value="Wählen"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:dataGrid>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

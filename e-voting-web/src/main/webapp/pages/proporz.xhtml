@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:util="http://ti.bfh.ch./util" xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{proporzController.init}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>#{proporzModel.selectedProporzVoting.title}</h1>
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span7">
+                    <h2>Ihre Wahl</h2>
+
+                    <div class="well">
+                        <ul>
+                            <li>Sie können max #{proporzModel.selectedProporzVoting.openPositions} Kandidaten wählen</li>
+                            <li>Sie können nur die verüfgbaren Kandidaten wählen d.h Keine eigenen Kandiaten wählen</li>
+                            <li>Sie können einen Kandidaten max zweimal wählen</li>
+
+                        </ul>
+                    </div>
+
+                    <h:form id="selectedCandidates">
+                        <ui:repeat value="#{proporzModel.candidatePositions}" var="candidatePosition" varStatus="state">
+                            <div class="well">
+                                <h:panelGroup rendered="#{!empty candidatePosition.candidate}">
+                                    #{candidatePosition.candidate.firstName} #{candidatePosition.candidate.lastName} (#{candidatePosition.candidate.partyName})
+                                    <p:commandButton disabled="#{proporzModel.alreadyVoted}"
+                                                     styleClass="btn btn-mini"
+                                                     value="X"
+                                                     update=":possibleCandidates :selectedCandidates"
+                                                     action="#{proporzController.removedSelectedCandidate(state.index)}"/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{empty candidatePosition.candidate}">
+                                    <h:panelGroup rendered="#{candidatePosition.customCandidate}">
+                                        <h:inputText value="#{candidatePosition.firstName}"/>
+                                        <h:inputText value="#{candidatePosition.lastName}"/>
+                                        <h:inputText value="#{candidatePosition.partyName}"/>
+                                        <p:commandButton value="Übernehmen"
+                                                         update=":selectedCandidates :possibleCandidates"
+                                                         action="#{candidatePosition.applyCustomCandidate}">
+                                        </p:commandButton>
+                                        <p:commandButton value="Abbrechen"
+                                                         update="@form">
+                                            <f:setPropertyActionListener value="#{false}"
+                                                                         target="#{candidatePosition.customCandidate}"/>
+                                        </p:commandButton>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup rendered="#{!candidatePosition.customCandidate}">
+                                        Freie Position
+                                        <p:commandButton value="Eigener Kandidat" update="@form">
+                                            <f:setPropertyActionListener value="#{true}"
+                                                                         target="#{candidatePosition.customCandidate}"/>
+                                        </p:commandButton>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </div>
+                        </ui:repeat>
+
+                        <br/>
+
+                        <h:commandButton disabled="#{proporzModel.alreadyVoted}"
+                                         styleClass="btn btn-large btn-primary"
+                                         value="#{msg['vote.confirm']}"
+                                         action="#{proporzController.voteAction}"/>
+
+                    </h:form>
+                </div>
+                <div class="span5">
+                    <h2>Kandiaten</h2>
+                    <h:form id="possibleCandidates">
+                        <h:outputText value="Alle Positionen wurden von Ihnen bereits gewählt"
+                                      rendered="#{proporzModel.maxPositionsFilled}"/>
+                        <p:accordionPanel value="#{util:mapToList(proporzModel.partyCandidatesMap)}" var="entry">
+                            <p:tab title="#{entry.key}">
+
+                                <h:panelGroup>
+                                    <p:commandButton value="Alle Wählen"
+                                                     disabled="#{proporzModel.alreadyVoted or proporzModel.maxPositionsFilled}"
+                                                     action="#{proporzController.selectAllFromParty(entry.key)}"
+                                                     update=":possibleCandidates :selectedCandidates"/>
+                                    <p:dataGrid var="possbileCandidate"
+                                                value="#{entry.value}"
+                                                columns="3"
+                                                paginator="false">
+                                        <p:panel header="#{possbileCandidate.firstName} #{possbileCandidate.lastName}"
+                                                 style="text-align:center">
+                                            <h:panelGrid columns="1" style="width:100%">
+                                                <h:outputText value="#{possbileCandidate.partyName}"/>
+                                                <p:commandButton
+                                                        update=":possibleCandidates :selectedCandidates"
+                                                        disabled="#{proporzModel.alreadyVoted or proporzModel.maxPositionsFilled or proporzModel.candidateDisabled(possbileCandidate)}"
+                                                        action="#{proporzController.selectCandidate(possbileCandidate)}"
+                                                        value="Wählen"/>
+                                            </h:panelGrid>
+                                        </p:panel>
+                                    </p:dataGrid>
+                                </h:panelGroup>
+                            </p:tab>
+
+                        </p:accordionPanel>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

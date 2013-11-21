@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:util="http://ti.bfh.ch./util"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{votingListController.init}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <h1>Aktuelle Majorz Wahlen</h1>
+
+            <ui:repeat value="#{util:mapToList(votingListModel.majorzVotingMap)}" var="entry">
+
+                <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{!entry.value}"
+                                 value="#{entry.key.title}"
+                                 action="majorz.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.selectedMajorzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorzModel.alreadyVoted}"/>
+                </h:commandButton>
+
+
+                <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value}"
+                                 value="#{entry.key.title} (Abgestimmt)"
+                                 action="majorz.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.selectedMajorzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorzModel.alreadyVoted}"/>
+                </h:commandButton>
+
+            </ui:repeat>
+
+
+            <h1>Aktuelle Proporz Wahlen</h1>
+
+            <ui:repeat value="#{util:mapToList(votingListModel.proporzVotingMap)}" var="entry">
+
+                <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{!entry.value}"
+                                 value="#{entry.key.title}"
+                                 action="proporz.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.selectedProporzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{proporzModel.alreadyVoted}"/>
+                </h:commandButton>
+
+
+                <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value}"
+                                 value="#{entry.key.title} (Abgestimmt)"
+                                 action="proporz.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.selectedProporzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{proporzModel.alreadyVoted}"/>
+                </h:commandButton>
+
+            </ui:repeat>
+        </h:form>
+    </ui:define>
+</ui:composition>

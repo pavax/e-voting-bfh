@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:sec="http://www.springframework.org/schema/security" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <import resource="classpath:/ch/bfh/ti/advancedweb/voting-config.xml"/>
+
+    <context:component-scan base-package="ch.bfh.ti.advancedweb.web"/>
+
+    <context:annotation-config/>
+
+    <sec:http auto-config="true">
+        <sec:form-login login-page="/login.xhtml"
+                        login-processing-url="/login_check"
+                        default-target-url="/pages/index.xhtml"
+                        always-use-default-target="true"/>
+        <sec:logout logout-url="/logout"/>
+        <sec:intercept-url pattern="/pages/*" access="ROLE_USER"/>
+    </sec:http>
+
+    <sec:authentication-manager>
+        <sec:authentication-provider user-service-ref="defaultUserDetailsService">
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <bean id="userModel" class="ch.bfh.ti.advancedweb.web.CurrentUserModel" scope="session">
+        <aop:scoped-proxy/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="view">
+                    <bean class="ch.bfh.ti.advancedweb.web.utils.ViewScope"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="true"/>
+                <property name="generateDdl" value="true"/>
+            </bean>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>ch.bfh.ti.advancedweb.voting.domain</value>
+            </list>
+        </property>
+    </bean>
+    <!--
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="org.hsqldb.jdbc.JDBCDriver"/>
+            <property name="url" value="jdbc:hsqldb:hsql://localhost/e-voting"/>
+            <property name="username" value="sa"/>
+            <property name="password" value=""/>
+    </bean>
+    -->
+    <jdbc:embedded-database id="dataSource"/>
+</beans>
