@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -59,19 +57,28 @@ public class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public void vote(String userId, Voting voting, List<Candidate> candidates) {
+    public void majorzVote(String userId, String majorzVotingId, Set<Candidate> candidates) {
         final User user = getUser(userId);
-        final CandidateVotingResult candidateVotingResult = new CandidateVotingResult(voting, candidates, user);
-        votingResultRepository.save(candidateVotingResult);
+        final MajorzVoting majorzVoting = getMajorzVoting(majorzVotingId);
+        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(majorzVoting, new ArrayList<>(candidates), user);
+        votingResultRepository.save(proporzVotingResult);
     }
 
 
     @Override
+    public void proporzVote(String userId, String proporzVotingId, List<Candidate> candidates) {
+        final User user = getUser(userId);
+        final ProporzVoting proporzVoting = getProporzVoting(proporzVotingId);
+        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(proporzVoting, candidates, user);
+        votingResultRepository.save(proporzVotingResult);
+    }
+
+    @Override
     public VotingResult getVotingResultForUser(String userId, Voting voting) {
         final User user = getUser(userId);
-        final VotingResult votingResultByUser = votingResultRepository.findCandidateVotingResultByUser(user.getId(), voting.getVotingId());
-        return votingResultByUser;
+        return votingResultRepository.findCandidateVotingResultByUser(user.getId(), voting.getVotingId());
     }
+
 
     private User getUser(String userId) {
         final User user = userRepository.findOne(userId);
@@ -79,5 +86,22 @@ public class DefaultVotingService implements VotingService {
             throw new IllegalArgumentException("User not found: " + userId);
         }
         return user;
+    }
+
+    private ProporzVoting getProporzVoting(String proporzVotingId) {
+        final ProporzVoting proporzVoting = proporzVotingRepository.findOne(proporzVotingId);
+        if (proporzVoting == null) {
+            throw new IllegalArgumentException("Could not find Proporz Voting: " + proporzVoting);
+        }
+        return proporzVoting;
+    }
+
+
+    private MajorzVoting getMajorzVoting(String majorzVotingId) {
+        final MajorzVoting majorzVoting = majorzVotingRepository.findOne(majorzVotingId);
+        if (majorzVoting == null) {
+            throw new IllegalArgumentException("Could not find Majorz Voting: " + majorzVotingId);
+        }
+        return majorzVoting;
     }
 }

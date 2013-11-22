@@ -13,7 +13,7 @@
     </ui:define>
 
     <ui:define name="content">
-        <h1>#{proporzModel.selectedProporzVoting.title}</h1>
+        <h1>#{proporzModel.voting.title}</h1>
 
         <div class="container-fluid">
             <div class="row-fluid">
@@ -22,7 +22,7 @@
 
                     <div class="well">
                         <ul>
-                            <li>Sie können max #{proporzModel.selectedProporzVoting.openPositions} Kandidaten wählen</li>
+                            <li>Sie können max #{proporzModel.voting.openPositions} Kandidaten wählen</li>
                             <li>Sie können nur die verüfgbaren Kandidaten wählen d.h Keine eigenen Kandiaten wählen</li>
                             <li>Sie können einen Kandidaten max zweimal wählen</li>
 
@@ -41,28 +41,7 @@
                                                      action="#{proporzController.removedSelectedCandidate(state.index)}"/>
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{empty candidatePosition.candidate}">
-                                    <h:panelGroup rendered="#{candidatePosition.customCandidate}">
-                                        <h:inputText value="#{candidatePosition.firstName}"/>
-                                        <h:inputText value="#{candidatePosition.lastName}"/>
-                                        <h:inputText value="#{candidatePosition.partyName}"/>
-                                        <p:commandButton value="Übernehmen"
-                                                         update=":selectedCandidates :possibleCandidates"
-                                                         action="#{candidatePosition.applyCustomCandidate}">
-                                        </p:commandButton>
-                                        <p:commandButton value="Abbrechen"
-                                                         update="@form">
-                                            <f:setPropertyActionListener value="#{false}"
-                                                                         target="#{candidatePosition.customCandidate}"/>
-                                        </p:commandButton>
-                                    </h:panelGroup>
-
-                                    <h:panelGroup rendered="#{!candidatePosition.customCandidate}">
-                                        Freie Position
-                                        <p:commandButton value="Eigener Kandidat" update="@form">
-                                            <f:setPropertyActionListener value="#{true}"
-                                                                         target="#{candidatePosition.customCandidate}"/>
-                                        </p:commandButton>
-                                    </h:panelGroup>
+                                    Freie Position
                                 </h:panelGroup>
                             </div>
                         </ui:repeat>

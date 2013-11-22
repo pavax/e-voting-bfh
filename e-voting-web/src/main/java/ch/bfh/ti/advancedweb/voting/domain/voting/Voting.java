@@ -20,7 +20,7 @@ public abstract class Voting {
         this.votingType = votingType;
     }
 
-    protected Voting(){
+    protected Voting() {
         // FOR JPA
     }
 

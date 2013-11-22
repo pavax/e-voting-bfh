@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import java.util.UUID;
 
 @Entity
-public class VotingResult {
+public abstract class VotingResult {
 
     @Id
     private String votingResultId;

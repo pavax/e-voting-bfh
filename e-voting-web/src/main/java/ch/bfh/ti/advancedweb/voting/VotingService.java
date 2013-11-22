@@ -8,6 +8,7 @@ import ch.bfh.ti.advancedweb.voting.domain.voting.Voting;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface VotingService {
 
@@ -15,7 +16,9 @@ public interface VotingService {
 
     Map<ProporzVoting, Boolean> getCurrentProporzVotings(String userId);
 
-    void vote(String userId, Voting voting, List<Candidate> candidates);
-
     VotingResult getVotingResultForUser(String userId, Voting voting);
+
+    void majorzVote(String userId, String majorzVotingId, Set<Candidate> candidates);
+
+    void proporzVote(String userId, String proporzVotingId, List<Candidate> candidates);
 }

@@ -1,10 +1,11 @@
-package ch.bfh.ti.advancedweb.web.proporz;
+package ch.bfh.ti.advancedweb.web.voting.proporz;
 
 import ch.bfh.ti.advancedweb.voting.VotingService;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResult;
 import ch.bfh.ti.advancedweb.web.CurrentUserModel;
 import ch.bfh.ti.advancedweb.web.utils.MessageUtils;
+import ch.bfh.ti.advancedweb.web.voting.CandidatePosition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +36,7 @@ public class ProporzController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (proporzModel.isAlreadyVoted()) {
-                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingResultForUser(currentUserModel.getUserId(), proporzModel.getSelectedProporzVoting());
+                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingResultForUser(currentUserModel.getUserId(), proporzModel.getVoting());
                 proporzModel.getCandidatePositions().clear();
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
                     selectCandidate(candidate);
@@ -46,47 +47,31 @@ public class ProporzController {
 
     public void selectCandidate(Candidate candidate) {
         final List<CandidatePosition> selectedCandidates = proporzModel.getCandidatePositions();
-        final Map<String, List<Candidate>> partyCandidatesMap = proporzModel.getPartyCandidatesMap();
 
         if (proporzModel.isMaxPositionsFilled()) {
             MessageUtils.addWarnMessage("proporz.maxPositionsFilled");
             return;
         }
 
-        final int i = Collections.frequency(selectedCandidates, candidate);
+        final int i = Collections.frequency(selectedCandidates, new CandidatePosition(candidate));
         if (i == 2) {
             MessageUtils.addWarnMessage("proporz.candidate.alreadyVoted");
             return;
         }
-        for (CandidatePosition selectedCandidate : selectedCandidates) {
-            if (selectedCandidate.getCandidate() == null) {
-                selectedCandidate.setCandidate(candidate);
-                selectedCandidate.setCustomCandidate(false);
-                break;
-            }
-        }
+
+        proporzModel.addCandidateToTheNextFreePosition(candidate);
     }
 
     public void removedSelectedCandidate(int index) {
-        final List<CandidatePosition> proporzModelSelectedCandidates = proporzModel.getCandidatePositions();
-        final CandidatePosition selectedCandidate = proporzModelSelectedCandidates.get(index);
-        selectedCandidate.setCandidate(null);
-        selectedCandidate.setCustomCandidate(false);
+        proporzModel.getCandidatePositions().get(index).setCandidate(null);
     }
 
     public void selectAllFromParty(String partyName) {
-        proporzModel.getCandidatePositions().clear();
+        proporzModel.initCandidatePositions();
         final Map<String, List<Candidate>> partyCandidatesMap = proporzModel.getPartyCandidatesMap();
         final List<Candidate> candidateList = partyCandidatesMap.get(partyName);
-        proporzModel.resetSelectedCandidates();
-        final List<CandidatePosition> selectedCandidates = proporzModel.getCandidatePositions();
         for (Candidate candidate : candidateList) {
-            for (CandidatePosition selectedCandidate : selectedCandidates) {
-                if (selectedCandidate.getCandidate() == null) {
-                    selectedCandidate.setCandidate(candidate);
-                    break;
-                }
-            }
+            proporzModel.addCandidateToTheNextFreePosition(candidate);
         }
     }
 

@@ -23,7 +23,7 @@
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{!entry.value}"
                                  value="#{entry.key.title}"
                                  action="majorz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.selectedMajorzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.voting}"/>
                     <f:setPropertyActionListener value="#{entry.value}" target="#{majorzModel.alreadyVoted}"/>
                 </h:commandButton>
 
@@ -31,7 +31,7 @@
                 <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value}"
                                  value="#{entry.key.title} (Abgestimmt)"
                                  action="majorz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.selectedMajorzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.voting}"/>
                     <f:setPropertyActionListener value="#{entry.value}" target="#{majorzModel.alreadyVoted}"/>
                 </h:commandButton>
 
@@ -45,7 +45,7 @@
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{!entry.value}"
                                  value="#{entry.key.title}"
                                  action="proporz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.selectedProporzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.voting}"/>
                     <f:setPropertyActionListener value="#{entry.value}" target="#{proporzModel.alreadyVoted}"/>
                 </h:commandButton>
 
@@ -53,7 +53,7 @@
                 <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value}"
                                  value="#{entry.key.title} (Abgestimmt)"
                                  action="proporz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.selectedProporzVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.voting}"/>
                     <f:setPropertyActionListener value="#{entry.value}" target="#{proporzModel.alreadyVoted}"/>
                 </h:commandButton>
 

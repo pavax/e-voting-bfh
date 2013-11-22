@@ -7,17 +7,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class MajorzVoting extends Voting {
-
-    private int openPositions;
+public class MajorzVoting extends AbstractCandidateVoting {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "MAYORZ_VOTING", referencedColumnName = "votingId")
     private Set<Candidate> majorzCandidates = new HashSet<>();
 
     public MajorzVoting(String title, int openPositions, Set<Candidate> majorzCandidates) {
-        super(title, VotingType.MAYORZ);
-        this.openPositions = openPositions;
+        super(title, VotingType.MAYORZ, openPositions);
         this.majorzCandidates.addAll(majorzCandidates);
     }
 
@@ -29,7 +26,4 @@ public class MajorzVoting extends Voting {
         return majorzCandidates;
     }
 
-    public int getOpenPositions() {
-        return openPositions;
-    }
 }

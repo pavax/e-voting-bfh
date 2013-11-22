@@ -13,7 +13,7 @@
     </ui:define>
 
     <ui:define name="content">
-        <h1>#{majorzModel.selectedMajorzVoting.title}</h1>
+        <h1>#{majorzModel.voting.title}</h1>
 
         <div class="container-fluid">
             <div class="row-fluid">
@@ -22,25 +22,26 @@
 
                     <div class="well">
                         <ul>
-                            <li>Sie können max #{majorzModel.selectedMajorzVoting.openPositions} Kandidaten wählen</li>
+                            <li>Sie können max #{majorzModel.voting.openPositions} Kandidaten wählen</li>
                             <li>Sie können nur die verüfgbaren Kandidaten wählen d.h Keine eigenen Kandiaten wählen</li>
                             <li>Sie können einen Kandidaten max zweimal wählen</li>
-                            <li>Sie können noch #{majorzModel.freeCandidatePositions.size()} Positionen wählen</li>
                         </ul>
                     </div>
 
-                    <h:form>
-                        <ui:repeat value="#{majorzModel.selectedCandidates}" var="candidatePosition">
+                    <h:form id="selectedCandidates">
+                        <ui:repeat value="#{majorzModel.candidatePositions}" var="candidatePosition" varStatus="state">
                             <div class="well">
-                                #{candidatePosition.firstName} #{candidatePosition.lastName}
-                                <h:commandButton disabled="#{majorzModel.alreadyVoted}"
-                                                 styleClass="btn btn-mini"
-                                                 value="X"
-                                                 action="#{majorzController.removedSelectedCandidate(candidatePosition)}"/>
+                                <h:panelGroup rendered="#{!empty candidatePosition.candidate}">
+                                    #{candidatePosition.candidate.firstName} #{candidatePosition.candidate.lastName}
+                                    <h:commandButton disabled="#{majorzModel.alreadyVoted}"
+                                                     styleClass="btn btn-mini"
+                                                     value="X"
+                                                     action="#{majorzController.removedSelectedCandidate(state.index)}"/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{empty candidatePosition.candidate}">
+                                    Freie Position
+                                </h:panelGroup>
                             </div>
-                        </ui:repeat>
-                        <ui:repeat value="#{majorzModel.freeCandidatePositions}" var="freePosition">
-                            <li>Freie Position</li>
                         </ui:repeat>
 
                         <br/>
@@ -53,22 +54,20 @@
                 </div>
                 <div class="span5">
                     <h2>Kandiaten</h2>
-                    <h:form>
-                        <h:outputText value="Alle Positionen wurden von Ihnen bereits gewählt"
-                                      rendered="#{majorzModel.maxPositionsFilled}"/>
+                    <h:form id="possibleCandidates">
                         <p:dataGrid var="candidate"
-                                    rendered="#{!majorzModel.maxPositionsFilled}"
                                     value="#{majorzModel.possibleCandidates}"
                                     columns="3"
-                                    rows="12"
                                     paginator="false">
-                            <p:panel header="#{candidatePosition.firstName} #{candidatePosition.lastName}" style="text-align:center">
+                            <p:panel header="#{candidate.firstName} #{candidate.lastName}"
+                                     style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <h:outputText value="#{candidatePosition.partyName}"/>
-                                    <h:commandButton disabled="#{majorzModel.alreadyVoted}"
-                                                     styleClass="btn btn-mini btn-primary"
-                                                     action="#{majorzController.selectCandidate(candidatePosition)}"
-                                                     value="Wählen"/>
+                                    <h:outputText value="#{candidate.partyName}"/>
+                                    <h:commandButton
+                                            disabled="#{majorzModel.alreadyVoted or majorzModel.maxPositionsFilled or majorzModel.candidateDisabled(candidate)}"
+                                            styleClass="btn btn-mini btn-primary"
+                                            action="#{majorzController.selectCandidate(candidate)}"
+                                            value="Wählen"/>
                                 </h:panelGrid>
                             </p:panel>
                         </p:dataGrid>
