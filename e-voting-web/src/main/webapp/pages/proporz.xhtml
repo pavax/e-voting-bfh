@@ -30,6 +30,10 @@
                     </div>
 
                     <h:form id="selectedCandidates">
+
+                        <h:outputText value="Alle Positionen wurden von Ihnen bereits gewählt"
+                                      rendered="#{proporzModel.maxPositionsFilled}"/>
+
                         <ui:repeat value="#{proporzModel.candidatePositions}" var="candidatePosition" varStatus="state">
                             <div class="well">
                                 <h:panelGroup rendered="#{!empty candidatePosition.candidate}">
@@ -58,8 +62,6 @@
                 <div class="span5">
                     <h2>Kandiaten</h2>
                     <h:form id="possibleCandidates">
-                        <h:outputText value="Alle Positionen wurden von Ihnen bereits gewählt"
-                                      rendered="#{proporzModel.maxPositionsFilled}"/>
                         <p:accordionPanel value="#{util:mapToList(proporzModel.partyCandidatesMap)}" var="entry">
                             <p:tab title="#{entry.key}">
 

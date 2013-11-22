@@ -8,6 +8,7 @@ import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResult;
 import ch.bfh.ti.advancedweb.voting.domain.result.VotingResult;
 import ch.bfh.ti.advancedweb.voting.domain.result.VotingResultRepository;
 import ch.bfh.ti.advancedweb.voting.domain.voting.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,8 @@ public class DefaultVotingService implements VotingService {
 
     private final UserRepository userRepository;
 
+    private static final Sort SORT = new Sort(Sort.DEFAULT_DIRECTION, "created", "votingId");
+
     @Inject
     public DefaultVotingService(MajorzVotingRepository majorzVotingRepository, ProporzVotingRepository proporzVotingRepository, VotingResultRepository votingResultRepository, UserRepository userRepository) {
         this.majorzVotingRepository = majorzVotingRepository;
@@ -36,8 +39,8 @@ public class DefaultVotingService implements VotingService {
 
     @Override
     public Map<MajorzVoting, Boolean> getCurrentMajorzVotings(String userId) {
-        Map<MajorzVoting, Boolean> resultMap = new HashMap<>();
-        final List<MajorzVoting> majorzVotings = majorzVotingRepository.findAll();
+        Map<MajorzVoting, Boolean> resultMap = new LinkedHashMap<>();
+        final List<MajorzVoting> majorzVotings = majorzVotingRepository.findAll(SORT);
         for (MajorzVoting majorzVoting : majorzVotings) {
             final VotingResult resultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, majorzVoting.getVotingId());
             resultMap.put(majorzVoting, resultByUser != null);
@@ -47,8 +50,8 @@ public class DefaultVotingService implements VotingService {
 
     @Override
     public Map<ProporzVoting, Boolean> getCurrentProporzVotings(String userId) {
-        Map<ProporzVoting, Boolean> resultMap = new HashMap<>();
-        final List<ProporzVoting> proporzVotings = proporzVotingRepository.findAll();
+        Map<ProporzVoting, Boolean> resultMap = new LinkedHashMap<>();
+        final List<ProporzVoting> proporzVotings = proporzVotingRepository.findAll(SORT);
         for (ProporzVoting proporzVoting : proporzVotings) {
             final VotingResult resultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, proporzVoting.getVotingId());
             resultMap.put(proporzVoting, resultByUser != null);
