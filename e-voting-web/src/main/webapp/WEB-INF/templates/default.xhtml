@@ -47,7 +47,7 @@
                                     <h:panelGroup rendered="#{!empty userModel.userId}">
                                         <p class="navbar-text">
                                             #{msg['login.welcome']} #{userModel.username}!
-                                            <h:link action="/logout" value="Logout"/>
+                                            <a href="#{request.contextPath}/logout" >Logout</a>
                                         </p>
                                     </h:panelGroup>
                                     <h:panelGroup>

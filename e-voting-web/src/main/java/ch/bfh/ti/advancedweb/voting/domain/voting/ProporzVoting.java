@@ -3,17 +3,17 @@ package ch.bfh.ti.advancedweb.voting.domain.voting;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class ProporzVoting extends AbstractCandidateVoting {
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PROPORZ_VOTING", referencedColumnName = "votingId")
-    private Set<Candidate> porporzCandidates = new HashSet<>();
+    private List<Candidate> porporzCandidates = new ArrayList<>();
 
-    public ProporzVoting(String title, int openPositions, Set<Candidate> porporzCandidates) {
+    public ProporzVoting(String title, int openPositions, List<Candidate> porporzCandidates) {
         super(title, VotingType.PROPORTZ, openPositions);
         this.porporzCandidates.addAll(porporzCandidates);
     }
@@ -23,7 +23,7 @@ public class ProporzVoting extends AbstractCandidateVoting {
     }
 
 
-    public Set<Candidate> getPorporzCandidates() {
+    public List<Candidate> getPorporzCandidates() {
         return porporzCandidates;
     }
 }

@@ -17,7 +17,9 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -51,7 +53,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
     }
 
     private void setupProporzTestData() {
-        Set<Candidate> candidates = new HashSet<>();
+        List<Candidate> candidates = new ArrayList<>();
         setupCandidate(candidates, "SP", 8);
         setupCandidate(candidates, "SVP", 8);
         setupCandidate(candidates, "CVP", 8);
@@ -59,7 +61,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
         proporzVotingRepository.save(new ProporzVoting("Proporzwahl Titel 1", 8, candidates));
     }
 
-    private void setupCandidate(Set<Candidate> candidates, String partyName, int number) {
+    private void setupCandidate(List<Candidate> candidates, String partyName, int number) {
         for (int i = 0; i < number; i++) {
             candidates.add(new Candidate("Tester-" + i, "Tester" + i, partyName));
         }

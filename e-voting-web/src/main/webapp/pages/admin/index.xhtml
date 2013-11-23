@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{adminVotingListController.init}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <h1>Aktuelle Wahlen</h1>
+
+            <ui:repeat value="#{adminVotingListModel.votingList}" var="voting">
+                <h:commandButton styleClass="btn btn-large btn-block btn-primary"
+                                 value="#{voting.title}"
+                                 action="candidate-results.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{voting}"
+                                                 target="#{candidateResultModel.selectedCandidateVoting}"/>
+                </h:commandButton>
+            </ui:repeat>
+        </h:form>
+    </ui:define>
+</ui:composition>

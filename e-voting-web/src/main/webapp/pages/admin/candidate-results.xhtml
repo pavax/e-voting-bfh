@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{candidateResultController.init}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <h1>Resultate für #{candidateResultModel.selectedCandidateVoting.title}</h1>
+
+            <ui:repeat value="#{candidateResultModel.candidateResults}" var="candidateResult">
+                #{candidateResult.candidate.partyName} #{candidateResult.candidate.firstName}  #{candidateResult.candidate.lastName} :  #{candidateResult.votes}
+                <br/>
+            </ui:repeat>
+        </h:form>
+    </ui:define>
+</ui:composition>

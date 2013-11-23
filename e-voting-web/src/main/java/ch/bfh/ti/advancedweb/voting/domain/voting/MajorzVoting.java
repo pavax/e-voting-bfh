@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 public class MajorzVoting extends AbstractCandidateVoting {
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "MAYORZ_VOTING", referencedColumnName = "votingId")
     private Set<Candidate> majorzCandidates = new HashSet<>();
 

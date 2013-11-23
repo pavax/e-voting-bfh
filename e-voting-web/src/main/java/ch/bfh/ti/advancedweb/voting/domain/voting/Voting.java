@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Voting {
 
     @Id

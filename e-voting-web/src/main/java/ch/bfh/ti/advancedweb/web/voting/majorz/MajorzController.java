@@ -5,15 +5,14 @@ import ch.bfh.ti.advancedweb.voting.VotingService;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResult;
 import ch.bfh.ti.advancedweb.web.CurrentUserModel;
-import ch.bfh.ti.advancedweb.web.voting.CandidatePosition;
 import ch.bfh.ti.advancedweb.web.utils.MessageUtils;
+import ch.bfh.ti.advancedweb.web.voting.CandidatePosition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -45,14 +44,13 @@ public class MajorzController {
     }
 
     public void selectCandidate(Candidate candidate) {
-        final List<CandidatePosition> selectedCandidates = majorzModel.getCandidatePositions();
 
         if (majorzModel.isMaxPositionsFilled()) {
             MessageUtils.addWarnMessage("majorz.maxPositionsFilled");
             return;
         }
 
-        if (selectedCandidates.contains(new CandidatePosition(candidate))) {
+        if (majorzModel.candidateDisabled(candidate)) {
             MessageUtils.addWarnMessage("majorz.candidate.alreadyVoted");
             return;
         }

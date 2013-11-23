@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +37,6 @@ public class ProporzController {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (proporzModel.isAlreadyVoted()) {
                 final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingResultForUser(currentUserModel.getUserId(), proporzModel.getVoting());
-                proporzModel.getCandidatePositions().clear();
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
                     selectCandidate(candidate);
                 }
@@ -46,15 +45,12 @@ public class ProporzController {
     }
 
     public void selectCandidate(Candidate candidate) {
-        final List<CandidatePosition> selectedCandidates = proporzModel.getCandidatePositions();
-
         if (proporzModel.isMaxPositionsFilled()) {
             MessageUtils.addWarnMessage("proporz.maxPositionsFilled");
             return;
         }
 
-        final int i = Collections.frequency(selectedCandidates, new CandidatePosition(candidate));
-        if (i == 2) {
+        if (proporzModel.candidateDisabled(candidate)) {
             MessageUtils.addWarnMessage("proporz.candidate.alreadyVoted");
             return;
         }
@@ -76,8 +72,17 @@ public class ProporzController {
     }
 
 
-    public void voteAction() {
-        //
+    public String voteAction() {
+        List<Candidate> selectedCanidates = new ArrayList<>();
+        for (CandidatePosition candidatePosition : proporzModel.getCandidatePositions()) {
+            if (candidatePosition.getCandidate() != null) {
+
+                selectedCanidates.add(candidatePosition.getCandidate());
+            }
+        }
+        votingService.proporzVote(currentUserModel.getUserId(), proporzModel.getVotingId(), selectedCanidates);
+        proporzModel.clear();
+        return "index.xhtml?faces-redirect=true";
     }
 
 }

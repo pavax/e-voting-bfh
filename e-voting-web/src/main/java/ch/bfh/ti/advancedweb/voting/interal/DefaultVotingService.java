@@ -42,6 +42,7 @@ public class DefaultVotingService implements VotingService {
         Map<MajorzVoting, Boolean> resultMap = new LinkedHashMap<>();
         final List<MajorzVoting> majorzVotings = majorzVotingRepository.findAll(SORT);
         for (MajorzVoting majorzVoting : majorzVotings) {
+            majorzVoting.getMajorzCandidates().size();
             final VotingResult resultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, majorzVoting.getVotingId());
             resultMap.put(majorzVoting, resultByUser != null);
         }
@@ -53,6 +54,7 @@ public class DefaultVotingService implements VotingService {
         Map<ProporzVoting, Boolean> resultMap = new LinkedHashMap<>();
         final List<ProporzVoting> proporzVotings = proporzVotingRepository.findAll(SORT);
         for (ProporzVoting proporzVoting : proporzVotings) {
+            proporzVoting.getPorporzCandidates().size();
             final VotingResult resultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, proporzVoting.getVotingId());
             resultMap.put(proporzVoting, resultByUser != null);
         }
@@ -63,8 +65,16 @@ public class DefaultVotingService implements VotingService {
     public void majorzVote(String userId, String majorzVotingId, Set<Candidate> candidates) {
         final User user = getUser(userId);
         final MajorzVoting majorzVoting = getMajorzVoting(majorzVotingId);
+        checkExistingVotingResult(userId, majorzVotingId);
         final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(majorzVoting, new ArrayList<>(candidates), user);
         votingResultRepository.save(proporzVotingResult);
+    }
+
+    private void checkExistingVotingResult(String userId, String majorzVotingId) {
+        final VotingResult candidateVotingResultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, majorzVotingId);
+        if (candidateVotingResultByUser != null) {
+            throw new IllegalStateException("User has already voted for " + majorzVotingId);
+        }
     }
 
 
@@ -72,6 +82,7 @@ public class DefaultVotingService implements VotingService {
     public void proporzVote(String userId, String proporzVotingId, List<Candidate> candidates) {
         final User user = getUser(userId);
         final ProporzVoting proporzVoting = getProporzVoting(proporzVotingId);
+        checkExistingVotingResult(userId, proporzVotingId);
         final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(proporzVoting, candidates, user);
         votingResultRepository.save(proporzVotingResult);
     }
