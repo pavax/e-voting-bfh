@@ -11,22 +11,35 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Service
 public class DefaultUserDetailsService implements UserDetailsService {
+
+    public static final String ROLE_USER = "ROLE_USER";
+
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     private final UserRepository userRepository;
 
+    private final Set<String> admins;
+
     @Inject
-    public DefaultUserDetailsService(UserRepository userRepository) {
+    public DefaultUserDetailsService(UserRepository userRepository, Set<String> admins) {
         this.userRepository = userRepository;
+        this.admins = admins;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final User userByUsername = userRepository.findUserByUsername(username);
-        final List<GrantedAuthority> role_user = AuthorityUtils.createAuthorityList("ROLE_USER");
+        Set<String> roles = new HashSet<>();
+        roles.add(ROLE_USER);
+        if (admins.contains(username)) {
+            roles.add(ROLE_ADMIN);
+        }
+        final List<GrantedAuthority> role_user = AuthorityUtils.createAuthorityList(roles.toArray(new String[roles.size()]));
         return new UserPrincipal(userByUsername.getId(), username, userByUsername.getPassword(), role_user);
     }
 }

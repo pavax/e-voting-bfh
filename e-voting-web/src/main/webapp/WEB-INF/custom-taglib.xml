@@ -6,6 +6,8 @@
 
     <namespace>http://ti.bfh.ch./util</namespace>
 
+    <composite-library-name>cc</composite-library-name>
+
     <function>
         <function-name>mapToList</function-name>
         <function-class>ch.bfh.ti.advancedweb.web.utils.JstlUtils</function-class>

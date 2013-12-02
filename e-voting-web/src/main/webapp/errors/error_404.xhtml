@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+
+    </ui:define>
+
+    <ui:define name="nav"/>
+
+    <ui:define name="content">
+
+        <h1><h:outputText value="#{msg['page.not_found']}" /></h1>
+
+        <h:panelGroup layout="block" styleClass="alert alert-error">
+            <h:outputText value="#{msg['error.404']}"/>
+        </h:panelGroup>
+
+    </ui:define>
+</ui:composition>

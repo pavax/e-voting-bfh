@@ -13,7 +13,7 @@
 
     <ui:define name="content">
         <h:form>
-            <h1>Aktuelle Wahlen</h1>
+            <h1><h:outputText value="#{msg['current.votings']}" /></h1>
 
             <ui:repeat value="#{adminVotingListModel.votingList}" var="voting">
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary"

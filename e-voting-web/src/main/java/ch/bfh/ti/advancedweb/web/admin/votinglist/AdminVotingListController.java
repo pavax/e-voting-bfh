@@ -1,7 +1,6 @@
 package ch.bfh.ti.advancedweb.web.admin.votinglist;
 
 import ch.bfh.ti.advancedweb.voting.VotingAdminService;
-import ch.bfh.ti.advancedweb.voting.VotingService;
 import ch.bfh.ti.advancedweb.voting.domain.voting.Voting;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,15 +13,12 @@ import java.util.List;
 @Scope("request")
 public class AdminVotingListController {
 
-    private final VotingService votingService;
-
     private final VotingAdminService votingAdminService;
 
     private final AdminVotingListModel adminVotingListModel;
 
     @Inject
-    public AdminVotingListController(VotingService votingService, VotingAdminService votingAdminService, AdminVotingListModel adminVotingListModel) {
-        this.votingService = votingService;
+    public AdminVotingListController(VotingAdminService votingAdminService, AdminVotingListModel adminVotingListModel) {
         this.votingAdminService = votingAdminService;
         this.adminVotingListModel = adminVotingListModel;
     }

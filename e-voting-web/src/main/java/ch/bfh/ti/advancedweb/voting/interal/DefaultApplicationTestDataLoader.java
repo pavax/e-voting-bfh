@@ -47,6 +47,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
     public void loadTestData() {
         userRepository.save(new User("max", "secret"));
         userRepository.save(new User("moritz", "secret"));
+        userRepository.save(new User("admin", "secret"));
         setUpMajorzTestData();
         setUpMajorzTestData2();
         setupProporzTestData();

@@ -19,8 +19,5 @@ public class AdminVotingListModel {
     public void setVotingList(List<Voting> votingList) {
         this.votingList = votingList;
     }
-
-
-
 }
 

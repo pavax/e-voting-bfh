@@ -1,0 +1,26 @@
+<ui:component xmlns=""
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:composite="http://java.sun.com/jsf/composite" xmlns:h="http://java.sun.com/jsf/html">
+
+    <composite:interface>
+        <composite:attribute name="candidate" type="ch.bfh.ti.advancedweb.voting.CandidateResult" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGroup id="pnl" columns="4">
+            <h:panelGroup id="pnlCandidate" rendered="#{!empty cc.attrs.candidate}">
+                <div class="alert alert-info">
+                    <h4>
+                        <h:outputText value="#{cc.attrs.candidate.candidate.firstName} "/>
+                        <h:outputText value="#{cc.attrs.candidate.candidate.lastName} "/>
+                        <h:outputText style="font-style: italic"
+                                      value="( #{cc.attrs.candidate.candidate.partyName} )"/>
+                    </h4>
+                    <h:outputText value="Stimmen: #{cc.attrs.candidate.votes}"/>
+                </div>
+            </h:panelGroup>
+        </h:panelGroup>
+
+    </composite:implementation>
+
+</ui:component>

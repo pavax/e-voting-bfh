@@ -3,6 +3,7 @@ package ch.bfh.ti.advancedweb.web.admin.results;
 
 import ch.bfh.ti.advancedweb.voting.CandidateResult;
 import ch.bfh.ti.advancedweb.voting.VotingAdminService;
+import org.primefaces.event.ItemSelectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,13 @@ public class CandidateResultController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             final Set<CandidateResult> candidateResults = votingAdminService.getCandidateResults(candidateResultModel.getSelectedCandidateVoting().getVotingId());
+            candidateResultModel.clear();
             candidateResultModel.setCandidateResults(new ArrayList<>(candidateResults));
         }
+    }
+
+    public void candidateSelectedEvent(ItemSelectEvent event) {
+        final CandidateResult selectedCandidate = this.candidateResultModel.getCandidateResults().get(event.getItemIndex());
+        this.candidateResultModel.setSelectedCandidate(selectedCandidate);
     }
 }

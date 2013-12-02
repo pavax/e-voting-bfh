@@ -3,6 +3,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:evoting="http://ti.bfh.ch./util"
+                xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/default.xhtml">
 
     <ui:define name="metadata">
@@ -12,13 +14,75 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form>
-            <h1>Resultate für #{candidateResultModel.selectedCandidateVoting.title}</h1>
+        <h:form id="resultForm">
+            <h1>
+                <h:outputFormat value="#{msg['voting.results.title']}">
+                    <f:param value="#{candidateResultModel.selectedCandidateVoting.title}"/>
+                </h:outputFormat>
+            </h1>
 
-            <ui:repeat value="#{candidateResultModel.candidateResults}" var="candidateResult">
-                #{candidateResult.candidate.partyName} #{candidateResult.candidate.firstName}  #{candidateResult.candidate.lastName} :  #{candidateResult.votes}
-                <br/>
-            </ui:repeat>
+            <p:tabView id="tabView">
+
+                <p:tab id="tab1" title="#{msg['results.list.title']}">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Party</th>
+                            <th>Votes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <ui:repeat value="#{candidateResultModel.candidateResults}" var="candidateResult">
+                            <tr>
+                                <td>#{candidateResult.candidate.firstName} </td>
+                                <td> #{candidateResult.candidate.lastName} </td>
+                                <td>#{candidateResult.candidate.partyName}</td>
+                                <td>#{candidateResult.votes}</td>
+                            </tr>
+                        </ui:repeat>
+
+                        </tbody>
+                    </table>
+
+
+                </p:tab>
+                <p:tab id="tab2" title="#{msg['results.chart.title']}">
+
+                    <evoting:candidateResult id="growl" candidate="#{candidateResultModel.selectedCandidate}"/>
+
+                    <p:pieChart id="sample"
+                                rendered="#{candidateResultModel.selectedCandidateVoting.votingType == 'MAYORZ'}"
+                                value="#{candidateResultModel.pieModel}"
+                                legendPosition="w"
+                                showDataLabels="true"
+                                shadow="true"
+                                dataFormat="value"
+                                legendCols="3"
+                                title="#{candidateResultModel.selectedCandidateVoting.title}"
+                                style="width:100%;height:500px;">
+                        <p:ajax event="itemSelect" listener="#{candidateResultController.candidateSelectedEvent}"
+                                update=":resultForm:tabView:growl:pnl"/>
+                    </p:pieChart>
+
+                    <p:barChart id="horizontal"
+                                rendered="#{candidateResultModel.selectedCandidateVoting.votingType == 'PROPORTZ'}"
+                                value="#{candidateResultModel.chartModel}"
+                                zoom="true"
+                                legendPosition="se"
+                                style="height:#{candidateResultModel.candidateResults.size()*10 + 500}px"
+                                title="#{candidateResultModel.selectedCandidateVoting.title}"
+                                orientation="horizontal"
+                                min="0" max="200">
+                        <p:ajax event="itemSelect" listener="#{candidateResultController.candidateSelectedEvent}"
+                                update=":resultForm:tabView:growl:pnl"/>
+                    </p:barChart>
+                </p:tab>
+
+            </p:tabView>
         </h:form>
     </ui:define>
 </ui:composition>

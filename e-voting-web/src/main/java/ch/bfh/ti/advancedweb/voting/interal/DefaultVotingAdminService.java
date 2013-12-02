@@ -6,6 +6,7 @@ import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResultRepository;
 import ch.bfh.ti.advancedweb.voting.domain.result.VotingResultRepository;
 import ch.bfh.ti.advancedweb.voting.domain.voting.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,20 +37,21 @@ public class DefaultVotingAdminService implements VotingAdminService {
 
     @Override
     public List<Voting> getCurrentVotings() {
-        return votingRepository.findAll();
+        return votingRepository.findAll(new Sort("created"));
     }
 
     @Override
     public Set<CandidateResult> getCandidateResults(String votingId) {
         final Voting voting = votingRepository.findOne(votingId);
         List<CandidateResult> result = new ArrayList<>();
-        if (voting.getVotingType().equals(VotingType.MAYORZ)) {
+        final VotingType votingType = voting.getVotingType();
+        if (votingType.equals(VotingType.MAYORZ)) {
             count(votingId, result, new ArrayList<>(((MajorzVoting) voting).getMajorzCandidates()));
-        } else if (voting.getVotingType().equals(VotingType.PROPORTZ)) {
+        } else if (votingType.equals(VotingType.PROPORTZ)) {
             ProporzVoting proporzVoting = (ProporzVoting) voting;
             count(votingId, result, proporzVoting.getPorporzCandidates());
         } else {
-            throw new IllegalStateException("Voting with id " + votingId + " does not have any candidates");
+            throw new IllegalStateException("Voting having voting type '" + votingType + "' is not supported");
         }
 
         Collections.sort(result);

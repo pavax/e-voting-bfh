@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/WEB-INF/templates/default.xhtml">
 
     <ui:define name="styles">
@@ -50,12 +50,23 @@
 
     <ui:define name="content">
 
+        <c:set var="error" value="#{request.parameterMap['login_error']}"></c:set>
+
+
         <h:panelGroup>
             <form name="loginForm" class="form-signin" action="login_check" method='post'>
-                <h2 class="form-signin-heading">Please sign in</h2>
+
+                <h2 class="form-signin-heading"><h:outputText value="#{msg['please.sign.in']}"/></h2>
+
+                <h:panelGroup layout="block" rendered="#{!empty error}" styleClass="alert alert-error">
+                    <h:outputText value="#{msg['invalid.credentials']}"/>
+                </h:panelGroup>
+
                 <input type="text" name="j_username" class="input-block-level" placeholder="#{msg['login.username']}"/>
-                <input type="password" name="j_password" class="input-block-level" placeholder="#{msg['login.password']}"/>
-                <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+                <input type="password" name="j_password" class="input-block-level"
+                       placeholder="#{msg['login.password']}"/>
+                <button class="btn btn-large btn-primary" type="submit"><h:outputText value="#{msg['sign.in']}"/>
+                </button>
             </form>
         </h:panelGroup>
 
