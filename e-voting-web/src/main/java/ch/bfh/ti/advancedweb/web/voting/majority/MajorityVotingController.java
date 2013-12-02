@@ -1,4 +1,4 @@
-package ch.bfh.ti.advancedweb.web.voting.majorz;
+package ch.bfh.ti.advancedweb.web.voting.majority;
 
 
 import ch.bfh.ti.advancedweb.voting.VotingService;
@@ -17,16 +17,16 @@ import java.util.Set;
 
 @Component
 @Scope("request")
-public class MajorzController {
+public class MajorityVotingController {
 
-    private final MajorzModel majorzModel;
+    private final MajorityVotingModel majorzModel;
 
     private final VotingService votingService;
 
     private final CurrentUserModel currentUserModel;
 
     @Inject
-    public MajorzController(MajorzModel majorzModel, VotingService votingService, CurrentUserModel currentUserModel) {
+    public MajorityVotingController(MajorityVotingModel majorzModel, VotingService votingService, CurrentUserModel currentUserModel) {
         this.majorzModel = majorzModel;
         this.votingService = votingService;
         this.currentUserModel = currentUserModel;
@@ -35,7 +35,7 @@ public class MajorzController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (majorzModel.isAlreadyVoted()) {
-                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingResultForUser(currentUserModel.getUserId(), majorzModel.getVoting());
+                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingsFromUser(currentUserModel.getUserId(), majorzModel.getVoting());
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
                     this.selectCandidate(candidate);
                 }
@@ -69,7 +69,7 @@ public class MajorzController {
                 selectedCanidates.add(candidatePosition.getCandidate());
             }
         }
-        votingService.majorzVote(currentUserModel.getUserId(), majorzModel.getVotingId(), selectedCanidates);
+        votingService.saveMajorityVote(currentUserModel.getUserId(), majorzModel.getVotingId(), selectedCanidates);
         majorzModel.clear();
         return "index.xhtml?faces-redirect=true";
     }

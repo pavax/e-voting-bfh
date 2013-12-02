@@ -1,14 +1,18 @@
 package ch.bfh.ti.advancedweb.voting.domain.voting;
 
-public class QuestionVoting extends Voting {
+import javax.persistence.Entity;
+
+@Entity
+public class ReferendumVoting extends Voting {
 
     private String question;
 
-    public QuestionVoting(String title) {
+    public ReferendumVoting(String title, String question) {
         super(title, VotingType.QUESTION);
+        this.question = question;
     }
 
-    protected QuestionVoting(){
+    protected ReferendumVoting(){
         // FOR JPA
     }
 

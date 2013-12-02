@@ -20,7 +20,7 @@
                                  value="#{voting.title}"
                                  action="candidate-results.xhtml?faces-redirect=true">
                     <f:setPropertyActionListener value="#{voting}"
-                                                 target="#{candidateResultModel.selectedCandidateVoting}"/>
+                                                 target="#{candidateVotingResultModel.selectedCandidateVoting}"/>
                 </h:commandButton>
             </ui:repeat>
         </h:form>

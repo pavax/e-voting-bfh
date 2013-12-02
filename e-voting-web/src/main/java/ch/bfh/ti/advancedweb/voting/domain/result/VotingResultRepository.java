@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 public interface VotingResultRepository extends JpaRepository<VotingResult, String> {
 
     @Query("select vr from VotingResult vr where vr.voter.id = :userId and vr.voting.votingId = :votingId")
-    VotingResult findCandidateVotingResultByUser(@Param("userId") String userId, @Param("votingId") String votingId);
+    VotingResult findVotingResultFromUser(@Param("userId") String userId, @Param("votingId") String votingId);
 
 }

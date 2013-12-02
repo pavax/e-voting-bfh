@@ -8,12 +8,12 @@
 
     <ui:define name="metadata">
         <f:metadata>
-            <f:event type="preRenderView" listener="#{proporzController.init}"/>
+            <f:event type="preRenderView" listener="#{proportionalVotingController.init}"/>
         </f:metadata>
     </ui:define>
 
     <ui:define name="content">
-        <h1>#{proporzModel.voting.title}</h1>
+        <h1>#{proportionalVotingModel.voting.title}</h1>
 
         <div class="container-fluid">
             <div class="row-fluid">
@@ -22,7 +22,7 @@
 
                     <div class="well">
                         <ul>
-                            <li>Sie können max #{proporzModel.voting.openPositions} Kandidaten wählen</li>
+                            <li>Sie können max #{proportionalVotingModel.voting.openPositions} Kandidaten wählen</li>
                             <li>Sie können nur die verüfgbaren Kandidaten wählen d.h Keine eigenen Kandiaten wählen</li>
                             <li>Sie können einen Kandidaten max zweimal wählen</li>
 
@@ -32,17 +32,18 @@
                     <h:form id="selectedCandidates">
 
                         <h:outputText value="Alle Positionen wurden von Ihnen bereits gewählt"
-                                      rendered="#{proporzModel.maxPositionsFilled}"/>
+                                      rendered="#{proportionalVotingModel.maxPositionsFilled}"/>
 
-                        <ui:repeat value="#{proporzModel.candidatePositions}" var="candidatePosition" varStatus="state">
+                        <ui:repeat value="#{proportionalVotingModel.candidatePositions}" var="candidatePosition"
+                                   varStatus="state">
                             <div class="well">
                                 <h:panelGroup rendered="#{!empty candidatePosition.candidate}">
                                     #{candidatePosition.candidate.firstName} #{candidatePosition.candidate.lastName} (#{candidatePosition.candidate.partyName})
-                                    <p:commandButton disabled="#{proporzModel.alreadyVoted}"
+                                    <p:commandButton disabled="#{proportionalVotingModel.alreadyVoted}"
                                                      styleClass="btn btn-mini"
                                                      value="X"
                                                      update=":possibleCandidates :selectedCandidates"
-                                                     action="#{proporzController.removedSelectedCandidate(state.index)}"/>
+                                                     action="#{proportionalVotingController.removedSelectedCandidate(state.index)}"/>
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{empty candidatePosition.candidate}">
                                     Freie Position
@@ -52,23 +53,24 @@
 
                         <br/>
 
-                        <h:commandButton disabled="#{proporzModel.alreadyVoted}"
+                        <h:commandButton disabled="#{proportionalVotingModel.alreadyVoted}"
                                          styleClass="btn btn-large btn-primary"
                                          value="#{msg['vote.confirm']}"
-                                         action="#{proporzController.voteAction}"/>
+                                         action="#{proportionalVotingController.voteAction}"/>
 
                     </h:form>
                 </div>
                 <div class="span5">
                     <h2>Kandiaten</h2>
                     <h:form id="possibleCandidates">
-                        <p:accordionPanel value="#{util:mapToList(proporzModel.partyCandidatesMap)}" var="entry">
+                        <p:accordionPanel value="#{util:mapToList(proportionalVotingModel.partyCandidatesMap)}"
+                                          var="entry">
                             <p:tab title="#{entry.key}">
 
                                 <h:panelGroup>
                                     <p:commandButton value="Alle Wählen"
-                                                     disabled="#{proporzModel.alreadyVoted or proporzModel.maxPositionsFilled}"
-                                                     action="#{proporzController.selectAllFromParty(entry.key)}"
+                                                     disabled="#{proportionalVotingModel.alreadyVoted or proportionalVotingModel.maxPositionsFilled}"
+                                                     action="#{proportionalVotingController.selectAllFromParty(entry.key)}"
                                                      update=":possibleCandidates :selectedCandidates"/>
                                     <p:dataGrid var="possbileCandidate"
                                                 value="#{entry.value}"
@@ -80,8 +82,8 @@
                                                 <h:outputText value="#{possbileCandidate.partyName}"/>
                                                 <p:commandButton
                                                         update=":possibleCandidates :selectedCandidates"
-                                                        disabled="#{proporzModel.alreadyVoted or proporzModel.maxPositionsFilled or proporzModel.candidateDisabled(possbileCandidate)}"
-                                                        action="#{proporzController.selectCandidate(possbileCandidate)}"
+                                                        disabled="#{proportionalVotingModel.alreadyVoted or proportionalVotingModel.maxPositionsFilled or proportionalVotingModel.candidateDisabled(possbileCandidate)}"
+                                                        action="#{proportionalVotingController.selectCandidate(possbileCandidate)}"
                                                         value="Wählen"/>
                                             </h:panelGrid>
                                         </p:panel>

@@ -1,7 +1,7 @@
-package ch.bfh.ti.advancedweb.web.voting.majorz;
+package ch.bfh.ti.advancedweb.web.voting.majority;
 
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
-import ch.bfh.ti.advancedweb.voting.domain.voting.MajorzVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.MajorityVoting;
 import ch.bfh.ti.advancedweb.web.voting.AbstractCandidateSelectionModel;
 import ch.bfh.ti.advancedweb.web.voting.CandidatePosition;
 import org.springframework.context.annotation.Scope;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @Scope("session")
-public class MajorzModel extends AbstractCandidateSelectionModel<MajorzVoting> {
+public class MajorityVotingModel extends AbstractCandidateSelectionModel<MajorityVoting> {
 
     private List<Candidate> possibleCandidates = new ArrayList<>();
 
@@ -23,7 +23,7 @@ public class MajorzModel extends AbstractCandidateSelectionModel<MajorzVoting> {
     }
 
     @Override
-    public void initPossibleCandidates(MajorzVoting voting) {
+    public void initPossibleCandidates(MajorityVoting voting) {
         this.possibleCandidates.addAll(voting.getMajorzCandidates());
     }
 

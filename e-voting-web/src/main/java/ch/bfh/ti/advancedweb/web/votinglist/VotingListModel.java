@@ -1,7 +1,8 @@
 package ch.bfh.ti.advancedweb.web.votinglist;
 
-import ch.bfh.ti.advancedweb.voting.domain.voting.MajorzVoting;
-import ch.bfh.ti.advancedweb.voting.domain.voting.ProporzVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.MajorityVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.ProportionalVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.ReferendumVoting;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -11,23 +12,34 @@ import java.util.Map;
 @Scope("view")
 public class VotingListModel {
 
-    private Map<MajorzVoting,Boolean> majorzVotingMap;
-    private Map<ProporzVoting, Boolean> proporzVotingMap;
+    private Map<MajorityVoting, Boolean> majorityVotingMap;
 
-    public Map<MajorzVoting, Boolean> getMajorzVotingMap() {
-        return majorzVotingMap;
+    private Map<ProportionalVoting, Boolean> proportionalVotingMap;
+
+    private Map<ReferendumVoting, Boolean> referendumVotingMap;
+
+    public Map<MajorityVoting, Boolean> getMajorityVotingMap() {
+        return majorityVotingMap;
     }
 
-    public void setMajorzVotingMap(Map<MajorzVoting, Boolean> majorzVotingMap) {
-        this.majorzVotingMap = majorzVotingMap;
+    public void setMajorityVotingMap(Map<MajorityVoting, Boolean> majorityVotingMap) {
+        this.majorityVotingMap = majorityVotingMap;
     }
 
 
-    public void setProporzVotingMap(Map<ProporzVoting, Boolean> proporzVotingMap) {
-        this.proporzVotingMap = proporzVotingMap;
+    public void setProportionalVotingMap(Map<ProportionalVoting, Boolean> proportionalVotingMap) {
+        this.proportionalVotingMap = proportionalVotingMap;
     }
 
-    public Map<ProporzVoting, Boolean> getProporzVotingMap() {
-        return proporzVotingMap;
+    public Map<ProportionalVoting, Boolean> getProportionalVotingMap() {
+        return proportionalVotingMap;
+    }
+
+    public void setReferendumVotingMap(Map<ReferendumVoting, Boolean> questionVotingMap) {
+        this.referendumVotingMap = questionVotingMap;
+    }
+
+    public Map<ReferendumVoting, Boolean> getReferendumVotingMap() {
+        return referendumVotingMap;
     }
 }

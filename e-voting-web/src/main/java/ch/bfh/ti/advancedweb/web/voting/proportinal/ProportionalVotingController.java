@@ -1,4 +1,4 @@
-package ch.bfh.ti.advancedweb.web.voting.proporz;
+package ch.bfh.ti.advancedweb.web.voting.proportinal;
 
 import ch.bfh.ti.advancedweb.voting.VotingService;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
@@ -17,17 +17,17 @@ import java.util.Map;
 
 @Component
 @Scope("request")
-public class ProporzController {
+public class ProportionalVotingController {
 
-    private final ProporzModel proporzModel;
+    private final ProportionalVotingModel proportionalVotingModel;
 
     private final VotingService votingService;
 
     private final CurrentUserModel currentUserModel;
 
     @Inject
-    public ProporzController(ProporzModel proporzModel, VotingService votingService, CurrentUserModel currentUserModel) {
-        this.proporzModel = proporzModel;
+    public ProportionalVotingController(ProportionalVotingModel proportionalVotingModel, VotingService votingService, CurrentUserModel currentUserModel) {
+        this.proportionalVotingModel = proportionalVotingModel;
         this.votingService = votingService;
         this.currentUserModel = currentUserModel;
     }
@@ -35,8 +35,8 @@ public class ProporzController {
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            if (proporzModel.isAlreadyVoted()) {
-                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingResultForUser(currentUserModel.getUserId(), proporzModel.getVoting());
+            if (proportionalVotingModel.isAlreadyVoted()) {
+                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingsFromUser(currentUserModel.getUserId(), proportionalVotingModel.getVoting());
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
                     selectCandidate(candidate);
                 }
@@ -45,43 +45,43 @@ public class ProporzController {
     }
 
     public void selectCandidate(Candidate candidate) {
-        if (proporzModel.isMaxPositionsFilled()) {
+        if (proportionalVotingModel.isMaxPositionsFilled()) {
             MessageUtils.addWarnMessage("proporz.maxPositionsFilled");
             return;
         }
 
-        if (proporzModel.candidateDisabled(candidate)) {
+        if (proportionalVotingModel.candidateDisabled(candidate)) {
             MessageUtils.addWarnMessage("proporz.candidate.alreadyVoted");
             return;
         }
 
-        proporzModel.addCandidateToTheNextFreePosition(candidate);
+        proportionalVotingModel.addCandidateToTheNextFreePosition(candidate);
     }
 
     public void removedSelectedCandidate(int index) {
-        proporzModel.getCandidatePositions().get(index).setCandidate(null);
+        proportionalVotingModel.getCandidatePositions().get(index).setCandidate(null);
     }
 
     public void selectAllFromParty(String partyName) {
-        proporzModel.initCandidatePositions();
-        final Map<String, List<Candidate>> partyCandidatesMap = proporzModel.getPartyCandidatesMap();
+        proportionalVotingModel.initCandidatePositions();
+        final Map<String, List<Candidate>> partyCandidatesMap = proportionalVotingModel.getPartyCandidatesMap();
         final List<Candidate> candidateList = partyCandidatesMap.get(partyName);
         for (Candidate candidate : candidateList) {
-            proporzModel.addCandidateToTheNextFreePosition(candidate);
+            proportionalVotingModel.addCandidateToTheNextFreePosition(candidate);
         }
     }
 
 
     public String voteAction() {
         List<Candidate> selectedCanidates = new ArrayList<>();
-        for (CandidatePosition candidatePosition : proporzModel.getCandidatePositions()) {
+        for (CandidatePosition candidatePosition : proportionalVotingModel.getCandidatePositions()) {
             if (candidatePosition.getCandidate() != null) {
 
                 selectedCanidates.add(candidatePosition.getCandidate());
             }
         }
-        votingService.proporzVote(currentUserModel.getUserId(), proporzModel.getVotingId(), selectedCanidates);
-        proporzModel.clear();
+        votingService.saveProportionalVote(currentUserModel.getUserId(), proportionalVotingModel.getVotingId(), selectedCanidates);
+        proportionalVotingModel.clear();
         return "index.xhtml?faces-redirect=true";
     }
 

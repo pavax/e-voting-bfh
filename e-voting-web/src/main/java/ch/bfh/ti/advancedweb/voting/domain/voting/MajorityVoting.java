@@ -7,18 +7,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class MajorzVoting extends AbstractCandidateVoting {
+public class MajorityVoting extends AbstractCandidateVoting {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "MAYORZ_VOTING", referencedColumnName = "votingId")
     private Set<Candidate> majorzCandidates = new HashSet<>();
 
-    public MajorzVoting(String title, int openPositions, Set<Candidate> majorzCandidates) {
+    public MajorityVoting(String title, int openPositions, Set<Candidate> majorzCandidates) {
         super(title, VotingType.MAYORZ, openPositions);
         this.majorzCandidates.addAll(majorzCandidates);
     }
 
-    protected MajorzVoting() {
+    protected MajorityVoting() {
         // FOR JPA
     }
 

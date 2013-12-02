@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @Scope("session")
-public class CandidateResultModel {
+public class CandidateVotingResultModel {
 
     private Voting selectedCandidateVoting;
 

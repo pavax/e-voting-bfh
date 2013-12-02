@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class ProporzVoting extends AbstractCandidateVoting {
+public class ProportionalVoting extends AbstractCandidateVoting {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PROPORZ_VOTING", referencedColumnName = "votingId")
     private List<Candidate> porporzCandidates = new ArrayList<>();
 
-    public ProporzVoting(String title, int openPositions, List<Candidate> porporzCandidates) {
+    public ProportionalVoting(String title, int openPositions, List<Candidate> porporzCandidates) {
         super(title, VotingType.PROPORTZ, openPositions);
         this.porporzCandidates.addAll(porporzCandidates);
     }
 
-    protected ProporzVoting() {
+    protected ProportionalVoting() {
         // FOR JPA
     }
 

@@ -2,8 +2,9 @@ package ch.bfh.ti.advancedweb.voting;
 
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.result.VotingResult;
-import ch.bfh.ti.advancedweb.voting.domain.voting.MajorzVoting;
-import ch.bfh.ti.advancedweb.voting.domain.voting.ProporzVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.MajorityVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.ProportionalVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.ReferendumVoting;
 import ch.bfh.ti.advancedweb.voting.domain.voting.Voting;
 
 import java.util.List;
@@ -12,13 +13,15 @@ import java.util.Set;
 
 public interface VotingService {
 
-    Map<MajorzVoting, Boolean> getCurrentMajorzVotings(String userId);
+    Map<MajorityVoting, Boolean> getCurrentMajorityVotings(String userId);
 
-    Map<ProporzVoting, Boolean> getCurrentProporzVotings(String userId);
+    Map<ProportionalVoting, Boolean> getCurrentProportionalVotings(String userId);
 
-    VotingResult getVotingResultForUser(String userId, Voting voting);
+    Map<ReferendumVoting, Boolean> getCurrentReferendumVotings(String userId);
 
-    void majorzVote(String userId, String majorzVotingId, Set<Candidate> candidates);
+    VotingResult getVotingsFromUser(String userId, Voting voting);
 
-    void proporzVote(String userId, String proporzVotingId, List<Candidate> candidates);
+    void saveMajorityVote(String userId, String majorityVotingId, Set<Candidate> candidates);
+
+    void saveProportionalVote(String userId, String proportionalVotingId, List<Candidate> candidates);
 }

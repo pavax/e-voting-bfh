@@ -46,10 +46,10 @@ public class DefaultVotingAdminService implements VotingAdminService {
         List<CandidateResult> result = new ArrayList<>();
         final VotingType votingType = voting.getVotingType();
         if (votingType.equals(VotingType.MAYORZ)) {
-            count(votingId, result, new ArrayList<>(((MajorzVoting) voting).getMajorzCandidates()));
+            count(votingId, result, new ArrayList<>(((MajorityVoting) voting).getMajorzCandidates()));
         } else if (votingType.equals(VotingType.PROPORTZ)) {
-            ProporzVoting proporzVoting = (ProporzVoting) voting;
-            count(votingId, result, proporzVoting.getPorporzCandidates());
+            ProportionalVoting proportionalVoting = (ProportionalVoting) voting;
+            count(votingId, result, proportionalVoting.getPorporzCandidates());
         } else {
             throw new IllegalStateException("Voting having voting type '" + votingType + "' is not supported");
         }

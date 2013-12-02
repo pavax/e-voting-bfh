@@ -4,10 +4,7 @@ import ch.bfh.ti.advancedweb.voting.domain.ApplicationTestDataLoader;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.User;
 import ch.bfh.ti.advancedweb.voting.domain.UserRepository;
-import ch.bfh.ti.advancedweb.voting.domain.voting.MajorzVoting;
-import ch.bfh.ti.advancedweb.voting.domain.voting.MajorzVotingRepository;
-import ch.bfh.ti.advancedweb.voting.domain.voting.ProporzVoting;
-import ch.bfh.ti.advancedweb.voting.domain.voting.ProporzVotingRepository;
+import ch.bfh.ti.advancedweb.voting.domain.voting.*;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
@@ -27,19 +24,22 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
 
     private final UserRepository userRepository;
 
-    private final MajorzVotingRepository majorzVotingRepository;
+    private final MajorityVotingRepository majorityVotingRepository;
 
     private final ProporzVotingRepository proporzVotingRepository;
+
+    private final ReferendumVotingRepository referendumVotingRepository;
 
     private boolean initialised = false;
 
     private TransactionTemplate transactionTemplate;
 
     @Inject
-    public DefaultApplicationTestDataLoader(UserRepository userRepository, MajorzVotingRepository majorzVotingRepository, ProporzVotingRepository proporzVotingRepository, PlatformTransactionManager platformTransactionManager) {
+    public DefaultApplicationTestDataLoader(UserRepository userRepository, MajorityVotingRepository majorityVotingRepository, ProporzVotingRepository proporzVotingRepository, PlatformTransactionManager platformTransactionManager, ReferendumVotingRepository referendumVotingRepository) {
         this.userRepository = userRepository;
-        this.majorzVotingRepository = majorzVotingRepository;
+        this.majorityVotingRepository = majorityVotingRepository;
         this.proporzVotingRepository = proporzVotingRepository;
+        this.referendumVotingRepository = referendumVotingRepository;
         this.transactionTemplate = new TransactionTemplate(platformTransactionManager);
     }
 
@@ -51,6 +51,9 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
         setUpMajorzTestData();
         setUpMajorzTestData2();
         setupProporzTestData();
+
+        referendumVotingRepository.save(new ReferendumVoting("Familieninitiative", "Annahme der Familieninitiative?"));
+
     }
 
     private void setupProporzTestData() {
@@ -59,7 +62,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
         setupCandidate(candidates, "SVP", 8);
         setupCandidate(candidates, "CVP", 8);
         setupCandidate(candidates, "Grünen", 8);
-        proporzVotingRepository.save(new ProporzVoting("Proporzwahl Titel 1", 8, candidates));
+        proporzVotingRepository.save(new ProportionalVoting("Proporzwahl Titel 1", 8, candidates));
     }
 
     private void setupCandidate(List<Candidate> candidates, String partyName, int number) {
@@ -77,7 +80,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
         candidates.add(new Candidate("Beat", "Neuenegg", "CVP"));
         candidates.add(new Candidate("Sybille", "Küntzli", "FDP"));
         candidates.add(new Candidate("Gerhard", "Stäubli", "Grünen"));
-        majorzVotingRepository.save(new MajorzVoting("Majorzwahl Titel 1", 2, candidates));
+        majorityVotingRepository.save(new MajorityVoting("Majorzwahl Titel 1", 2, candidates));
     }
 
     private void setUpMajorzTestData2() {
@@ -86,7 +89,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
         candidates.add(new Candidate("Lisa", "Simpson", "SP"));
         candidates.add(new Candidate("Beat", "Streng", "SVP"));
         candidates.add(new Candidate("Marco", "Gschwind", "SVP"));
-        majorzVotingRepository.save(new MajorzVoting("Majorzwahl Titel 2", 2, candidates));
+        majorityVotingRepository.save(new MajorityVoting("Majorzwahl Titel 2", 2, candidates));
     }
 
     @Override

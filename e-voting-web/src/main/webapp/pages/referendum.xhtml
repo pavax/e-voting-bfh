@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{referendumVotringController.init}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>#{referendumVotingModel.selectedQuestionVoting.title}</h1>
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span7">
+                    <h2>Ihre Wahl</h2>
+
+                    <div class="well">
+                        <ul>
+                            <li>Sie können nur einmal Abstimmen</li>
+                        </ul>
+                    </div>
+
+                    <h:form>
+
+                        <div class="alert alert-info">
+                            <h:outputText value="#{referendumVotingModel.selectedQuestionVoting.question}"/>
+                        </div>
+
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

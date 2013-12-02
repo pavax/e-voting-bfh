@@ -9,7 +9,7 @@
 
     <ui:define name="metadata">
         <f:metadata>
-            <f:event type="preRenderView" listener="#{candidateResultController.init}"/>
+            <f:event type="preRenderView" listener="#{candidateVotingResultController.init}"/>
         </f:metadata>
     </ui:define>
 
@@ -17,7 +17,7 @@
         <h:form id="resultForm">
             <h1>
                 <h:outputFormat value="#{msg['voting.results.title']}">
-                    <f:param value="#{candidateResultModel.selectedCandidateVoting.title}"/>
+                    <f:param value="#{candidateVotingResultModel.selectedCandidateVoting.title}"/>
                 </h:outputFormat>
             </h1>
 
@@ -36,7 +36,7 @@
                         </thead>
                         <tbody>
 
-                        <ui:repeat value="#{candidateResultModel.candidateResults}" var="candidateResult">
+                        <ui:repeat value="#{candidateVotingResultModel.candidateResults}" var="candidateResult">
                             <tr>
                                 <td>#{candidateResult.candidate.firstName} </td>
                                 <td> #{candidateResult.candidate.lastName} </td>
@@ -52,32 +52,32 @@
                 </p:tab>
                 <p:tab id="tab2" title="#{msg['results.chart.title']}">
 
-                    <evoting:candidateResult id="growl" candidate="#{candidateResultModel.selectedCandidate}"/>
+                    <evoting:candidateResult id="growl" candidate="#{candidateVotingResultModel.selectedCandidate}"/>
 
                     <p:pieChart id="sample"
-                                rendered="#{candidateResultModel.selectedCandidateVoting.votingType == 'MAYORZ'}"
-                                value="#{candidateResultModel.pieModel}"
+                                rendered="#{candidateVotingResultModel.selectedCandidateVoting.votingType == 'MAYORZ'}"
+                                value="#{candidateVotingResultModel.pieModel}"
                                 legendPosition="w"
                                 showDataLabels="true"
                                 shadow="true"
                                 dataFormat="value"
                                 legendCols="3"
-                                title="#{candidateResultModel.selectedCandidateVoting.title}"
+                                title="#{candidateVotingResultModel.selectedCandidateVoting.title}"
                                 style="width:100%;height:500px;">
-                        <p:ajax event="itemSelect" listener="#{candidateResultController.candidateSelectedEvent}"
+                        <p:ajax event="itemSelect" listener="#{candidateVotingResultController.candidateSelectedEvent}"
                                 update=":resultForm:tabView:growl:pnl"/>
                     </p:pieChart>
 
                     <p:barChart id="horizontal"
-                                rendered="#{candidateResultModel.selectedCandidateVoting.votingType == 'PROPORTZ'}"
-                                value="#{candidateResultModel.chartModel}"
+                                rendered="#{candidateVotingResultModel.selectedCandidateVoting.votingType == 'PROPORTZ'}"
+                                value="#{candidateVotingResultModel.chartModel}"
                                 zoom="true"
                                 legendPosition="se"
-                                style="height:#{candidateResultModel.candidateResults.size()*10 + 500}px"
-                                title="#{candidateResultModel.selectedCandidateVoting.title}"
+                                style="height:#{candidateVotingResultModel.candidateResults.size()*10 + 500}px"
+                                title="#{candidateVotingResultModel.selectedCandidateVoting.title}"
                                 orientation="horizontal"
                                 min="0" max="200">
-                        <p:ajax event="itemSelect" listener="#{candidateResultController.candidateSelectedEvent}"
+                        <p:ajax event="itemSelect" listener="#{candidateVotingResultController.candidateSelectedEvent}"
                                 update=":resultForm:tabView:growl:pnl"/>
                     </p:barChart>
                 </p:tab>

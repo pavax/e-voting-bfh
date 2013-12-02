@@ -7,7 +7,6 @@
                 template="/WEB-INF/templates/default.xhtml">
 
 
-
     <ui:define name="metadata">
         <f:metadata>
             <f:event type="preRenderView" listener="#{votingListController.init}"/>
@@ -18,21 +17,21 @@
         <h:form>
             <h1>Aktuelle Majorz Wahlen</h1>
 
-            <ui:repeat value="#{util:mapToList(votingListModel.majorzVotingMap)}" var="entry">
+            <ui:repeat value="#{util:mapToList(votingListModel.majorityVotingMap)}" var="entry">
 
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{!entry.value}"
                                  value="#{entry.key.title}"
-                                 action="majorz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorzModel.alreadyVoted}"/>
+                                 action="majority.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorityVotingModel.voting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorityVotingModel.alreadyVoted}"/>
                 </h:commandButton>
 
 
                 <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value}"
                                  value="#{entry.key.title} (Abgestimmt)"
-                                 action="majorz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorzModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorzModel.alreadyVoted}"/>
+                                 action="majority.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorityVotingModel.voting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorityVotingModel.alreadyVoted}"/>
                 </h:commandButton>
 
             </ui:repeat>
@@ -40,24 +39,45 @@
 
             <h1>Aktuelle Proporz Wahlen</h1>
 
-            <ui:repeat value="#{util:mapToList(votingListModel.proporzVotingMap)}" var="entry">
+            <ui:repeat value="#{util:mapToList(votingListModel.proportionalVotingMap)}" var="entry">
 
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{!entry.value}"
                                  value="#{entry.key.title}"
-                                 action="proporz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{proporzModel.alreadyVoted}"/>
+                                 action="proportional.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{proportionalVotingModel.voting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{proportionalVotingModel.alreadyVoted}"/>
                 </h:commandButton>
 
 
                 <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value}"
                                  value="#{entry.key.title} (Abgestimmt)"
-                                 action="proporz.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{proporzModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{proporzModel.alreadyVoted}"/>
+                                 action="proportional.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{proportionalVotingModel.voting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{proportionalVotingModel.alreadyVoted}"/>
                 </h:commandButton>
 
             </ui:repeat>
+
+            <h1>Aktuelle Abstimmungen</h1>
+
+            <ui:repeat value="#{util:mapToList(votingListModel.referendumVotingMap)}" var="entry">
+
+                <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{!entry.value}"
+                                 value="#{entry.key.title}"
+                                 action="referendum.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{referendumVotingModel.selectedQuestionVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{referendumVotingModel.alreadyVoted}"/>
+                </h:commandButton>
+
+                <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value}"
+                                 value="#{entry.key.title} (Abgestimmt)"
+                                 action="referendum.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{entry.key}" target="#{referendumVotingModel.selectedQuestionVoting}"/>
+                    <f:setPropertyActionListener value="#{entry.value}" target="#{referendumVotingModel.alreadyVoted}"/>
+                </h:commandButton>
+
+            </ui:repeat>
+
         </h:form>
     </ui:define>
 </ui:composition>

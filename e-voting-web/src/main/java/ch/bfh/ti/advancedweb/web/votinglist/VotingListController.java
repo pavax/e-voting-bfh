@@ -1,8 +1,9 @@
 package ch.bfh.ti.advancedweb.web.votinglist;
 
 import ch.bfh.ti.advancedweb.voting.VotingService;
-import ch.bfh.ti.advancedweb.voting.domain.voting.MajorzVoting;
-import ch.bfh.ti.advancedweb.voting.domain.voting.ProporzVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.MajorityVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.ProportionalVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.ReferendumVoting;
 import ch.bfh.ti.advancedweb.web.CurrentUserModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -30,11 +31,14 @@ public class VotingListController {
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            final Map<MajorzVoting, Boolean> currentMajorzVotings = votingService.getCurrentMajorzVotings(currentUserModel.getUserId());
-            votingListModel.setMajorzVotingMap(currentMajorzVotings);
+            final Map<MajorityVoting, Boolean> currentMajorityVotings = votingService.getCurrentMajorityVotings(currentUserModel.getUserId());
+            votingListModel.setMajorityVotingMap(currentMajorityVotings);
 
-            final Map<ProporzVoting, Boolean> currentProporzVotings = votingService.getCurrentProporzVotings(currentUserModel.getUserId());
-            votingListModel.setProporzVotingMap(currentProporzVotings);
+            final Map<ProportionalVoting, Boolean> currentProportionalVotings = votingService.getCurrentProportionalVotings(currentUserModel.getUserId());
+            votingListModel.setProportionalVotingMap(currentProportionalVotings);
+
+            final Map<ReferendumVoting, Boolean> currentReferendumVotings = votingService.getCurrentReferendumVotings(currentUserModel.getUserId());
+            votingListModel.setReferendumVotingMap(currentReferendumVotings);
         }
     }
 }

@@ -1,7 +1,7 @@
-package ch.bfh.ti.advancedweb.web.voting.proporz;
+package ch.bfh.ti.advancedweb.web.voting.proportinal;
 
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
-import ch.bfh.ti.advancedweb.voting.domain.voting.ProporzVoting;
+import ch.bfh.ti.advancedweb.voting.domain.voting.ProportionalVoting;
 import ch.bfh.ti.advancedweb.web.voting.AbstractCandidateSelectionModel;
 import ch.bfh.ti.advancedweb.web.voting.CandidatePosition;
 import org.springframework.context.annotation.Scope;
@@ -11,7 +11,7 @@ import java.util.*;
 
 @Component
 @Scope("session")
-public class ProporzModel extends AbstractCandidateSelectionModel<ProporzVoting> {
+public class ProportionalVotingModel extends AbstractCandidateSelectionModel<ProportionalVoting> {
 
     private Map<String, List<Candidate>> partyCandidatesMap = new HashMap<>();
 
@@ -27,7 +27,7 @@ public class ProporzModel extends AbstractCandidateSelectionModel<ProporzVoting>
     }
 
     @Override
-    public void initPossibleCandidates(ProporzVoting voting) {
+    public void initPossibleCandidates(ProportionalVoting voting) {
         for (Candidate proporzCandidate : voting.getPorporzCandidates()) {
             final String partyName = proporzCandidate.getPartyName();
             if (partyCandidatesMap.containsKey(partyName)) {

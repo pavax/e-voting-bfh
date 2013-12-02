@@ -19,9 +19,11 @@ import java.util.*;
 @Transactional
 public class DefaultVotingService implements VotingService {
 
-    private final MajorzVotingRepository majorzVotingRepository;
+    private final MajorityVotingRepository majorityVotingRepository;
 
     private final ProporzVotingRepository proporzVotingRepository;
+
+    private final ReferendumVotingRepository referendumVotingRepository;
 
     private final VotingResultRepository votingResultRepository;
 
@@ -30,67 +32,78 @@ public class DefaultVotingService implements VotingService {
     private static final Sort SORT = new Sort(Sort.DEFAULT_DIRECTION, "created", "votingId");
 
     @Inject
-    public DefaultVotingService(MajorzVotingRepository majorzVotingRepository, ProporzVotingRepository proporzVotingRepository, VotingResultRepository votingResultRepository, UserRepository userRepository) {
-        this.majorzVotingRepository = majorzVotingRepository;
+    public DefaultVotingService(MajorityVotingRepository majorityVotingRepository, ProporzVotingRepository proporzVotingRepository, ReferendumVotingRepository referendumVotingRepository, VotingResultRepository votingResultRepository, UserRepository userRepository) {
+        this.majorityVotingRepository = majorityVotingRepository;
         this.proporzVotingRepository = proporzVotingRepository;
+        this.referendumVotingRepository = referendumVotingRepository;
         this.votingResultRepository = votingResultRepository;
         this.userRepository = userRepository;
     }
 
     @Override
-    public Map<MajorzVoting, Boolean> getCurrentMajorzVotings(String userId) {
-        Map<MajorzVoting, Boolean> resultMap = new LinkedHashMap<>();
-        final List<MajorzVoting> majorzVotings = majorzVotingRepository.findAll(SORT);
-        for (MajorzVoting majorzVoting : majorzVotings) {
-            majorzVoting.getMajorzCandidates().size();
-            final VotingResult resultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, majorzVoting.getVotingId());
-            resultMap.put(majorzVoting, resultByUser != null);
+    public Map<MajorityVoting, Boolean> getCurrentMajorityVotings(String userId) {
+        Map<MajorityVoting, Boolean> resultMap = new LinkedHashMap<>();
+        final List<MajorityVoting> majorityVotings = majorityVotingRepository.findAll(SORT);
+        for (MajorityVoting majorityVoting : majorityVotings) {
+            majorityVoting.getMajorzCandidates().size();
+            final VotingResult resultByUser = votingResultRepository.findVotingResultFromUser(userId, majorityVoting.getVotingId());
+            resultMap.put(majorityVoting, resultByUser != null);
         }
         return resultMap;
     }
 
     @Override
-    public Map<ProporzVoting, Boolean> getCurrentProporzVotings(String userId) {
-        Map<ProporzVoting, Boolean> resultMap = new LinkedHashMap<>();
-        final List<ProporzVoting> proporzVotings = proporzVotingRepository.findAll(SORT);
-        for (ProporzVoting proporzVoting : proporzVotings) {
-            proporzVoting.getPorporzCandidates().size();
-            final VotingResult resultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, proporzVoting.getVotingId());
-            resultMap.put(proporzVoting, resultByUser != null);
+    public Map<ProportionalVoting, Boolean> getCurrentProportionalVotings(String userId) {
+        Map<ProportionalVoting, Boolean> resultMap = new LinkedHashMap<>();
+        final List<ProportionalVoting> proportionalVotings = proporzVotingRepository.findAll(SORT);
+        for (ProportionalVoting proportionalVoting : proportionalVotings) {
+            proportionalVoting.getPorporzCandidates().size();
+            final VotingResult resultByUser = votingResultRepository.findVotingResultFromUser(userId, proportionalVoting.getVotingId());
+            resultMap.put(proportionalVoting, resultByUser != null);
         }
         return resultMap;
     }
 
     @Override
-    public void majorzVote(String userId, String majorzVotingId, Set<Candidate> candidates) {
+    public Map<ReferendumVoting, Boolean> getCurrentReferendumVotings(String userId) {
+        Map<ReferendumVoting, Boolean> resultMap = new LinkedHashMap<>();
+        final List<ReferendumVoting> referendumVotings = referendumVotingRepository.findAll(SORT);
+        for (ReferendumVoting referendumVoting : referendumVotings) {
+            final VotingResult resultByUser = votingResultRepository.findVotingResultFromUser(userId, referendumVoting.getVotingId());
+            resultMap.put(referendumVoting, resultByUser != null);
+        }
+        return resultMap;
+    }
+
+    @Override
+    public void saveMajorityVote(String userId, String majorityVotingId, Set<Candidate> candidates) {
         final User user = getUser(userId);
-        final MajorzVoting majorzVoting = getMajorzVoting(majorzVotingId);
-        checkExistingVotingResult(userId, majorzVotingId);
-        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(majorzVoting, new ArrayList<>(candidates), user);
+        final MajorityVoting majorityVoting = getMajorityVoting(majorityVotingId);
+        checkExistingVotingResult(userId, majorityVotingId);
+        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(majorityVoting, new ArrayList<>(candidates), user);
         votingResultRepository.save(proporzVotingResult);
     }
 
-    private void checkExistingVotingResult(String userId, String majorzVotingId) {
-        final VotingResult candidateVotingResultByUser = votingResultRepository.findCandidateVotingResultByUser(userId, majorzVotingId);
+    private void checkExistingVotingResult(String userId, String majorityVotingId) {
+        final VotingResult candidateVotingResultByUser = votingResultRepository.findVotingResultFromUser(userId, majorityVotingId);
         if (candidateVotingResultByUser != null) {
-            throw new IllegalStateException("User has already voted for " + majorzVotingId);
+            throw new IllegalStateException("User has already voted for " + majorityVotingId);
         }
     }
 
-
     @Override
-    public void proporzVote(String userId, String proporzVotingId, List<Candidate> candidates) {
+    public void saveProportionalVote(String userId, String proportionalVotingId, List<Candidate> candidates) {
         final User user = getUser(userId);
-        final ProporzVoting proporzVoting = getProporzVoting(proporzVotingId);
-        checkExistingVotingResult(userId, proporzVotingId);
-        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(proporzVoting, candidates, user);
+        final ProportionalVoting proportionalVoting = getProportionalVoting(proportionalVotingId);
+        checkExistingVotingResult(userId, proportionalVotingId);
+        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(proportionalVoting, candidates, user);
         votingResultRepository.save(proporzVotingResult);
     }
 
     @Override
-    public VotingResult getVotingResultForUser(String userId, Voting voting) {
+    public VotingResult getVotingsFromUser(String userId, Voting voting) {
         final User user = getUser(userId);
-        return votingResultRepository.findCandidateVotingResultByUser(user.getId(), voting.getVotingId());
+        return votingResultRepository.findVotingResultFromUser(user.getId(), voting.getVotingId());
     }
 
 
@@ -102,20 +115,20 @@ public class DefaultVotingService implements VotingService {
         return user;
     }
 
-    private ProporzVoting getProporzVoting(String proporzVotingId) {
-        final ProporzVoting proporzVoting = proporzVotingRepository.findOne(proporzVotingId);
-        if (proporzVoting == null) {
-            throw new IllegalArgumentException("Could not find Proporz Voting: " + proporzVoting);
+    private ProportionalVoting getProportionalVoting(String proportionalVotingId) {
+        final ProportionalVoting proportionalVoting = proporzVotingRepository.findOne(proportionalVotingId);
+        if (proportionalVoting == null) {
+            throw new IllegalArgumentException("Could not find Proportional Voting: " + proportionalVoting);
         }
-        return proporzVoting;
+        return proportionalVoting;
     }
 
 
-    private MajorzVoting getMajorzVoting(String majorzVotingId) {
-        final MajorzVoting majorzVoting = majorzVotingRepository.findOne(majorzVotingId);
-        if (majorzVoting == null) {
-            throw new IllegalArgumentException("Could not find Majorz Voting: " + majorzVotingId);
+    private MajorityVoting getMajorityVoting(String majorityVotingId) {
+        final MajorityVoting majorityVoting = majorityVotingRepository.findOne(majorityVotingId);
+        if (majorityVoting == null) {
+            throw new IllegalArgumentException("Could not find Majority Voting: " + majorityVotingId);
         }
-        return majorzVoting;
+        return majorityVoting;
     }
 }
