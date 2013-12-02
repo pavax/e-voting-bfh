@@ -37,9 +37,10 @@
                         <div class="nav-collapse collapse">
                             <ui:insert name="nav">
                                 <ul class="nav">
-                                    <li class="active"><a href="#">Home</a></li>
-                                    <li><a href="#about">About</a></li>
-                                    <li><a href="#contact">Contact</a></li>
+                                    <li class="#{view.viewId == '/pages/index.xhtml' ? 'active' : ''}"><a href="/pages/index.xhtml">Abstimmungen</a></li>
+                                    <h:panelGroup rendered="#{userModel.isAdmin()}">
+                                        <li class="#{view.viewId == '/pages/admin/index.xhtml' ? 'active' : ''}"><a href="/pages/admin/index.xhtml">Admin</a></li>
+                                    </h:panelGroup>
                                 </ul>
                             </ui:insert>
                             <h:form styleClass="navbar-form pull-right">
@@ -47,7 +48,7 @@
                                     <h:panelGroup rendered="#{!empty userModel.userId}">
                                         <p class="navbar-text">
                                             #{msg['login.welcome']} #{userModel.username}!
-                                            <a href="#{request.contextPath}/logout" >Logout</a>
+                                            <a href="#{request.contextPath}/logout">Logout</a>
                                         </p>
                                     </h:panelGroup>
                                     <h:panelGroup>

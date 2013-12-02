@@ -6,6 +6,7 @@ import ch.bfh.ti.advancedweb.voting.domain.UserRepository;
 import ch.bfh.ti.advancedweb.web.CurrentUserModel;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -29,5 +30,6 @@ public class UserAuthenticatedEvent implements ApplicationListener<Authenticatio
         final User user = userRepository.findOne(principal.getUserId());
         currentUserModel.setUsername(user.getUsername());
         currentUserModel.setUserId(user.getId());
+        currentUserModel.setRoles(AuthorityUtils.authorityListToSet(principal.getAuthorities()));
     }
 }
