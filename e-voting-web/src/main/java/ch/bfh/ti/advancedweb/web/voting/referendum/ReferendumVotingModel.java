@@ -42,4 +42,8 @@ public class ReferendumVotingModel {
     public void setAccept(boolean accept) {
         this.accept = accept;
     }
+
+    public boolean getAlreadyVoted() {
+        return votingState.equals(VotingState.VOTED);
+    }
 }

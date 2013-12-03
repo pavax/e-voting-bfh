@@ -37,12 +37,18 @@ public class ReferendumVotringController {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (referendumVotingModel.getVotingState().equals(VotingState.VOTED)) {
                 final ReferendumVotingResult votingResultForUser = (ReferendumVotingResult) votingService.getVotingFromUser(currentUserModel.getUserId(), referendumVotingModel.getSelectedQuestionVoting());
-                referendumVotingModel.setAccept(votingResultForUser.isVote());
+                referendumVotingModel.setAccept(votingResultForUser.isAccept());
             } else if (referendumVotingModel.getVotingState().equals(VotingState.SAVED)) {
                 final ReferendumBallot referendumBallot = ballotModel.findReferendumBallot(referendumVotingModel.getSelectedQuestionVoting().getVotingId());
                 referendumVotingModel.setAccept(referendumBallot.getAccept());
             }
         }
+    }
+
+    public String voteAction() {
+        ballotModel.addReferendumBallot(new ReferendumBallot(referendumVotingModel.isAccept(), referendumVotingModel.getSelectedQuestionVoting().getVotingId()));
+        referendumVotingModel.clear();
+        return "index.xhtml?faces-redirect=true";
     }
 
 }

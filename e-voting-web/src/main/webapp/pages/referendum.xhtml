@@ -32,6 +32,13 @@
                             <h:outputText value="#{referendumVotingModel.selectedQuestionVoting.question}"/>
                         </div>
 
+                        <p:selectBooleanCheckbox value="#{referendumVotingModel.accept}" />
+
+                        <h:commandButton disabled="#{referendumVotingModel.alreadyVoted}"
+                                         styleClass="btn btn-large btn-primary"
+                                         value="#{msg['vote.confirm']}"
+                                         action="#{referendumVotringController.voteAction}"/>
+
                     </h:form>
 
                 </div>

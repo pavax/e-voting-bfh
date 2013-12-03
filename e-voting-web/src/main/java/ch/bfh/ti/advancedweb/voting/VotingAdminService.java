@@ -13,5 +13,6 @@ public interface VotingAdminService {
 
     Set<CandidateResult> getCandidateResults(String votingId);
 
+    ReferendumResult getReferendumResult(String referendumVotingId);
 
 }

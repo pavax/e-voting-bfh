@@ -27,4 +27,5 @@ public class CandidateVotingResult extends VotingResult {
     public List<Candidate> getVotedCandidates() {
         return votedCandidates;
     }
+
 }

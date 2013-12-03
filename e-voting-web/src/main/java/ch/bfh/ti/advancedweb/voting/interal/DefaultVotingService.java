@@ -1,10 +1,12 @@
 package ch.bfh.ti.advancedweb.voting.interal;
 
 import ch.bfh.ti.advancedweb.voting.VotingService;
+import ch.bfh.ti.advancedweb.voting.VotingStoppedException;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.User;
 import ch.bfh.ti.advancedweb.voting.domain.UserRepository;
 import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResult;
+import ch.bfh.ti.advancedweb.voting.domain.result.ReferendumVotingResult;
 import ch.bfh.ti.advancedweb.voting.domain.result.VotingResult;
 import ch.bfh.ti.advancedweb.voting.domain.result.VotingResultRepository;
 import ch.bfh.ti.advancedweb.voting.domain.voting.*;
@@ -76,9 +78,10 @@ public class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public void saveMajorityVote(String userId, String majorityVotingId, Set<Candidate> candidates) {
+    public void saveMajorityVote(String userId, String majorityVotingId, Set<Candidate> candidates) throws VotingStoppedException {
         final User user = getUser(userId);
         final MajorityVoting majorityVoting = getMajorityVoting(majorityVotingId);
+        checkIsVotingOpen(majorityVotingId, majorityVoting.isOpen());
         checkExistingVotingResult(userId, majorityVotingId);
         final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(majorityVoting, new ArrayList<>(candidates), user);
         votingResultRepository.save(proporzVotingResult);
@@ -92,12 +95,27 @@ public class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public void saveProportionalVote(String userId, String proportionalVotingId, List<Candidate> candidates) {
+    public void saveProportionalVote(String userId, String proportionalVotingId, List<Candidate> candidates) throws VotingStoppedException {
         final User user = getUser(userId);
         final ProportionalVoting proportionalVoting = getProportionalVoting(proportionalVotingId);
+        checkIsVotingOpen(proportionalVotingId, proportionalVoting.isOpen());
         checkExistingVotingResult(userId, proportionalVotingId);
         final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(proportionalVoting, candidates, user);
         votingResultRepository.save(proporzVotingResult);
+    }
+
+    @Override
+    public void saveReferendumVote(String userId, String referendumVotingId, boolean acceptReferendum) throws VotingStoppedException {
+        final User user = getUser(userId);
+        final ReferendumVoting referendumVoting = getReferendumVoting(referendumVotingId);
+        checkIsVotingOpen(referendumVotingId, referendumVoting.isOpen());
+        votingResultRepository.save(new ReferendumVotingResult(referendumVoting, acceptReferendum, user));
+    }
+
+    private void checkIsVotingOpen(String referendumVotingId, boolean open) throws VotingStoppedException {
+        if (!open) {
+            throw new VotingStoppedException(referendumVotingId);
+        }
     }
 
     @Override
@@ -113,6 +131,15 @@ public class DefaultVotingService implements VotingService {
             throw new IllegalArgumentException("User not found: " + userId);
         }
         return user;
+    }
+
+
+    private ReferendumVoting getReferendumVoting(String referendumVotingId) {
+        final ReferendumVoting referendumVoting = referendumVotingRepository.findOne(referendumVotingId);
+        if (referendumVoting == null) {
+            throw new IllegalArgumentException("Could not find Referendum Voting: " + referendumVoting);
+        }
+        return referendumVoting;
     }
 
     private ProportionalVoting getProportionalVoting(String proportionalVotingId) {

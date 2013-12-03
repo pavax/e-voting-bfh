@@ -1,9 +1,11 @@
 package ch.bfh.ti.advancedweb.voting.interal;
 
 import ch.bfh.ti.advancedweb.voting.CandidateResult;
+import ch.bfh.ti.advancedweb.voting.ReferendumResult;
 import ch.bfh.ti.advancedweb.voting.VotingAdminService;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResultRepository;
+import ch.bfh.ti.advancedweb.voting.domain.result.ReferendumVotingResultRepository;
 import ch.bfh.ti.advancedweb.voting.domain.result.VotingResultRepository;
 import ch.bfh.ti.advancedweb.voting.domain.voting.*;
 import org.springframework.data.domain.Sort;
@@ -19,11 +21,14 @@ public class DefaultVotingAdminService implements VotingAdminService {
 
     private final VotingRepository votingRepository;
 
+    private final ReferendumVotingResultRepository referendumVotingResultRepository;
+
     private final CandidateVotingResultRepository candidateVotingResultRepository;
 
     @Inject
-    public DefaultVotingAdminService(VotingRepository votingRepository, VotingResultRepository votingResultRepository, CandidateVotingResultRepository candidateVotingResultRepository) {
+    public DefaultVotingAdminService(VotingRepository votingRepository, VotingResultRepository votingResultRepository, ReferendumVotingResultRepository referendumVotingResultRepository, CandidateVotingResultRepository candidateVotingResultRepository) {
         this.votingRepository = votingRepository;
+        this.referendumVotingResultRepository = referendumVotingResultRepository;
         this.candidateVotingResultRepository = candidateVotingResultRepository;
     }
 
@@ -57,6 +62,13 @@ public class DefaultVotingAdminService implements VotingAdminService {
         Collections.sort(result);
 
         return new LinkedHashSet<>(result);
+    }
+
+    @Override
+    public ReferendumResult getReferendumResult(String referendumVotingId) {
+        final int acceptCount = referendumVotingResultRepository.countAcceptVotes(referendumVotingId);
+        final int rejectCount = referendumVotingResultRepository.countRejectVotes(referendumVotingId);
+        return new ReferendumResult(acceptCount, rejectCount);
     }
 
     private void count(String votingId, Collection<CandidateResult> result, List<Candidate> candidateList) {

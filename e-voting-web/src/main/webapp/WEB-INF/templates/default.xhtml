@@ -2,7 +2,8 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Advanced Web Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -22,6 +23,14 @@
 
         <ui:insert name="metadata"/>
 
+        <h:form id="confirmForm">
+            <p:confirmDialog global="true">
+                <p:commandButton value="#{msg['yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                                 icon="ui-icon-check"/>
+                <p:commandButton value="#{msg['no']}" type="button" styleClass="ui-confirmdialog-no"
+                                 icon="ui-icon-close"/>
+            </p:confirmDialog>
+        </h:form>
 
         <h:panelGroup>
             <div class="navbar navbar-inverse navbar-fixed-top">
@@ -37,9 +46,11 @@
                         <div class="nav-collapse collapse">
                             <ui:insert name="nav">
                                 <ul class="nav">
-                                    <li class="#{view.viewId == '/pages/index.xhtml' ? 'active' : ''}"><a href="/pages/index.xhtml">Abstimmungen</a></li>
+                                    <li class="#{view.viewId == '/pages/index.xhtml' ? 'active' : ''}"><a
+                                            href="/pages/index.xhtml">Abstimmungen</a></li>
                                     <h:panelGroup rendered="#{userModel.isAdmin()}">
-                                        <li class="#{view.viewId == '/pages/admin/index.xhtml' ? 'active' : ''}"><a href="/pages/admin/index.xhtml">Admin</a></li>
+                                        <li class="#{view.viewId == '/pages/admin/index.xhtml' ? 'active' : ''}"><a
+                                                href="/pages/admin/index.xhtml">Admin</a></li>
                                     </h:panelGroup>
                                 </ul>
                             </ui:insert>

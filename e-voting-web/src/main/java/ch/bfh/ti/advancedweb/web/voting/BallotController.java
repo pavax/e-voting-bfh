@@ -1,6 +1,7 @@
 package ch.bfh.ti.advancedweb.web.voting;
 
 import ch.bfh.ti.advancedweb.voting.VotingService;
+import ch.bfh.ti.advancedweb.voting.VotingStoppedException;
 import ch.bfh.ti.advancedweb.web.CurrentUserModel;
 import ch.bfh.ti.advancedweb.web.utils.MessageUtils;
 import org.springframework.context.annotation.Scope;
@@ -32,10 +33,26 @@ public class BallotController {
         final String userId = currentUserModel.getUserId();
 
         for (MajorityBallot majorityBallot : ballotModel.getMajorityBallots()) {
-            votingService.saveMajorityVote(userId, majorityBallot.getVotingId(), majorityBallot.getCandidates());
+            try {
+                votingService.saveMajorityVote(userId, majorityBallot.getVotingId(), majorityBallot.getCandidates());
+            } catch (VotingStoppedException e) {
+                MessageUtils.addErrorMessage("voting.already.stopped.exception");
+            }
         }
         for (ProportionalBallot proportionalBallot : ballotModel.getProportionalBallots()) {
-            votingService.saveProportionalVote(userId, proportionalBallot.getVotingId(), proportionalBallot.getCandidates());
+            try {
+                votingService.saveProportionalVote(userId, proportionalBallot.getVotingId(), proportionalBallot.getCandidates());
+            } catch (VotingStoppedException e) {
+                MessageUtils.addErrorMessage("voting.already.stopped.exception");
+            }
+        }
+
+        for (ReferendumBallot referendumBallot : ballotModel.getReferendumBallots()) {
+            try {
+                votingService.saveReferendumVote(userId, referendumBallot.getVotingId(), referendumBallot.getAccept());
+            } catch (VotingStoppedException e) {
+                MessageUtils.addErrorMessage("voting.already.stopped.exception");
+            }
         }
 
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);

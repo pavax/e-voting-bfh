@@ -8,7 +8,7 @@ public class ReferendumVoting extends Voting {
     private String question;
 
     public ReferendumVoting(String title, String question) {
-        super(title, VotingType.QUESTION);
+        super(title, VotingType.REFERENDUM);
         this.question = question;
     }
 

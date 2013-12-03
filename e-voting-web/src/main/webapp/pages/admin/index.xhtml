@@ -2,7 +2,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/default.xhtml">
 
     <ui:define name="metadata">
@@ -13,16 +13,38 @@
 
     <ui:define name="content">
         <h:form>
-            <h1><h:outputText value="#{msg['current.votings']}" /></h1>
+            <h1><h:outputText value="#{msg['current.votings']}"/></h1>
 
             <ui:repeat value="#{adminVotingListModel.votingList}" var="voting">
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary"
                                  value="#{voting.title}"
+                                 rendered="#{voting.votingType != 'REFERENDUM'}"
                                  action="candidate-results.xhtml?faces-redirect=true">
                     <f:setPropertyActionListener value="#{voting}"
                                                  target="#{candidateVotingResultModel.selectedCandidateVoting}"/>
                 </h:commandButton>
+
+                <h:commandButton styleClass="btn btn-large btn-block btn-primary"
+                                 value="#{voting.title}"
+                                 rendered="#{voting.votingType == 'REFERENDUM'}"
+                                 action="referendum-results.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{voting}"
+                                                 target="#{referendumVotingResultModel.selectedVoting}"/>
+                </h:commandButton>
             </ui:repeat>
+
+            <br />
+
+            <h:panelGroup layout="block" styleClass="hero-unit">
+                <p:commandButton styleClass="btn btn-block btn-danger"
+                                 value="#{msg['stopp.all.votings']}"
+                                 action="#{adminVotingListController.stopAllVotings}">
+                    <p:confirm header="#{msg['stopp.current.votings']}" message="#{msg['are.you.sure']}"/>
+                </p:commandButton>
+
+            </h:panelGroup>
+
+
         </h:form>
     </ui:define>
 </ui:composition>

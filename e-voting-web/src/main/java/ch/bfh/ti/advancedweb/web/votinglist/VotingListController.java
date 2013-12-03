@@ -48,17 +48,18 @@ public class VotingListController {
         }
     }
 
-    private <T extends Voting> Map<T, VotingState> initVotingStateMap(Map<T, Boolean> currentMajorityVotings) {
+    private <T extends Voting> Map<T, VotingState> initVotingStateMap(Map<T, Boolean> votings) {
         final Map<T, VotingState> votingStateMap = new LinkedHashMap<>();
-        for (T majorityVoting : currentMajorityVotings.keySet()) {
-            final boolean contains = ballotModel.contains(majorityVoting.getVotingId());
-            if (contains) {
-                votingStateMap.put(majorityVoting, VotingState.SAVED);
+        for (T voting : votings.keySet()) {
+            if (!voting.isOpen()) {
+                votingStateMap.put(voting, VotingState.STOPPED);
+            } else if (ballotModel.contains(voting.getVotingId())) {
+                votingStateMap.put(voting, VotingState.SAVED);
             } else {
-                if (currentMajorityVotings.get(majorityVoting)) {
-                    votingStateMap.put(majorityVoting, VotingState.VOTED);
+                if (votings.get(voting)) {
+                    votingStateMap.put(voting, VotingState.VOTED);
                 } else {
-                    votingStateMap.put(majorityVoting, VotingState.NEW);
+                    votingStateMap.put(voting, VotingState.NEW);
                 }
             }
         }

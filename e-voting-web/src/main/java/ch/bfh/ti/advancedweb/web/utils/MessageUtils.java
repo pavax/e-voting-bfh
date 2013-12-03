@@ -12,6 +12,11 @@ public final class MessageUtils {
         return bundle.getString(key);
     }
 
+    public static void addErrorMessage(String key) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, translate(key), null));
+    }
+
     public static void addWarnMessage(String key) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, translate(key), null));

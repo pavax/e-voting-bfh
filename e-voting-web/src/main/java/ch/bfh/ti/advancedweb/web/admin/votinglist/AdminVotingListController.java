@@ -30,4 +30,8 @@ public class AdminVotingListController {
             adminVotingListModel.setVotingList(currentVotings);
         }
     }
+
+    public void stopAllVotings() {
+        votingAdminService.stopAllVotings();
+    }
 }

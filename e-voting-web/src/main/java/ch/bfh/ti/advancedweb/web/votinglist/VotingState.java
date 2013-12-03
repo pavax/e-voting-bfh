@@ -2,5 +2,5 @@ package ch.bfh.ti.advancedweb.web.votinglist;
 
 public enum VotingState {
 
-    VOTED, SAVED, NEW
+    VOTED, SAVED, STOPPED, NEW
 }

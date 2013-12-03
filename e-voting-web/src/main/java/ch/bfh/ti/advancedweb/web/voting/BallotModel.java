@@ -18,7 +18,7 @@ public class BallotModel {
     private Set<ReferendumBallot> referendumBallots = new LinkedHashSet<>();
 
 
-    public void clearAll(){
+    public void clearAll() {
         this.majorityBallots.clear();
         this.proportionalBallots.clear();
         this.referendumBallots.clear();
@@ -87,7 +87,17 @@ public class BallotModel {
         this.proportionalBallots.add(proportionalBallot);
     }
 
+    public void addReferendumBallot(ReferendumBallot referendumBallot) {
+        final ReferendumBallot existing = findReferendumBallot(referendumBallot.getVotingId());
+        if (existing != null) {
+            this.referendumBallots.remove(existing);
+        }
+        this.referendumBallots.add(referendumBallot);
+    }
+
     public boolean containsAny() {
         return this.getProportionalBallots().size() != 0 || this.getMajorityBallots().size() != 0 || this.getReferendumBallots().size() != 0;
     }
+
+
 }
