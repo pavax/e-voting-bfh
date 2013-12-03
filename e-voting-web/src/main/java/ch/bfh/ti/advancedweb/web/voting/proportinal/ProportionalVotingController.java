@@ -42,7 +42,7 @@ public class ProportionalVotingController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (proportionalVotingModel.getVotingState().equals(VotingState.VOTED)) {
-                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingsFromUser(currentUserModel.getUserId(), proportionalVotingModel.getVoting());
+                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingFromUser(currentUserModel.getUserId(), proportionalVotingModel.getVoting());
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
                     selectCandidate(candidate);
                 }

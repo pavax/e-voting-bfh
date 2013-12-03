@@ -41,7 +41,7 @@ public class MajorityVotingController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (majorzModel.getVotingState().equals(VotingState.VOTED)) {
-                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingsFromUser(currentUserModel.getUserId(), majorzModel.getVoting());
+                final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingFromUser(currentUserModel.getUserId(), majorzModel.getVoting());
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
                     this.selectCandidate(candidate);
                 }

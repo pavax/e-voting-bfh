@@ -19,7 +19,7 @@ public interface VotingService {
 
     Map<ReferendumVoting, Boolean> getCurrentReferendumVotings(String userId);
 
-    VotingResult getVotingsFromUser(String userId, Voting voting);
+    VotingResult getVotingFromUser(String userId, Voting voting);
 
     void saveMajorityVote(String userId, String majorityVotingId, Set<Candidate> candidates);
 

@@ -101,7 +101,7 @@ public class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public VotingResult getVotingsFromUser(String userId, Voting voting) {
+    public VotingResult getVotingFromUser(String userId, Voting voting) {
         final User user = getUser(userId);
         return votingResultRepository.findVotingResultFromUser(user.getId(), voting.getVotingId());
     }

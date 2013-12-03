@@ -36,7 +36,7 @@ public class ReferendumVotringController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (referendumVotingModel.getVotingState().equals(VotingState.VOTED)) {
-                final ReferendumVotingResult votingResultForUser = (ReferendumVotingResult) votingService.getVotingsFromUser(currentUserModel.getUserId(), referendumVotingModel.getSelectedQuestionVoting());
+                final ReferendumVotingResult votingResultForUser = (ReferendumVotingResult) votingService.getVotingFromUser(currentUserModel.getUserId(), referendumVotingModel.getSelectedQuestionVoting());
                 referendumVotingModel.setAccept(votingResultForUser.isVote());
             } else if (referendumVotingModel.getVotingState().equals(VotingState.SAVED)) {
                 final ReferendumBallot referendumBallot = ballotModel.findReferendumBallot(referendumVotingModel.getSelectedQuestionVoting().getVotingId());
