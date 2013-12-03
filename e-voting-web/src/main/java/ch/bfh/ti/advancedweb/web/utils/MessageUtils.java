@@ -17,4 +17,9 @@ public final class MessageUtils {
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, translate(key), null));
     }
 
+    public static void addInfoMessage(String key) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, translate(key), null));
+    }
+
 }

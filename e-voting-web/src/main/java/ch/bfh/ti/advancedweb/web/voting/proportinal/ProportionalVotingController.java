@@ -5,7 +5,10 @@ import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResult;
 import ch.bfh.ti.advancedweb.web.CurrentUserModel;
 import ch.bfh.ti.advancedweb.web.utils.MessageUtils;
+import ch.bfh.ti.advancedweb.web.voting.BallotModel;
 import ch.bfh.ti.advancedweb.web.voting.CandidatePosition;
+import ch.bfh.ti.advancedweb.web.voting.ProportionalBallot;
+import ch.bfh.ti.advancedweb.web.votinglist.VotingState;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,21 +26,29 @@ public class ProportionalVotingController {
 
     private final VotingService votingService;
 
+    private final BallotModel ballotModel;
+
     private final CurrentUserModel currentUserModel;
 
     @Inject
-    public ProportionalVotingController(ProportionalVotingModel proportionalVotingModel, VotingService votingService, CurrentUserModel currentUserModel) {
+    public ProportionalVotingController(ProportionalVotingModel proportionalVotingModel, VotingService votingService, BallotModel ballotModel, CurrentUserModel currentUserModel) {
         this.proportionalVotingModel = proportionalVotingModel;
         this.votingService = votingService;
+        this.ballotModel = ballotModel;
         this.currentUserModel = currentUserModel;
     }
 
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            if (proportionalVotingModel.isAlreadyVoted()) {
+            if (proportionalVotingModel.getVotingState().equals(VotingState.VOTED)) {
                 final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingsFromUser(currentUserModel.getUserId(), proportionalVotingModel.getVoting());
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
+                    selectCandidate(candidate);
+                }
+            } else if (proportionalVotingModel.getVotingState().equals(VotingState.SAVED)) {
+                final ProportionalBallot proportionalBallots = ballotModel.findProportionalBallot(proportionalVotingModel.getVotingId());
+                for (Candidate candidate : proportionalBallots.getCandidates()) {
                     selectCandidate(candidate);
                 }
             }
@@ -80,7 +91,9 @@ public class ProportionalVotingController {
                 selectedCanidates.add(candidatePosition.getCandidate());
             }
         }
-        votingService.saveProportionalVote(currentUserModel.getUserId(), proportionalVotingModel.getVotingId(), selectedCanidates);
+
+        ballotModel.addProportionalBallot(new ProportionalBallot(selectedCanidates, proportionalVotingModel.getVotingId()));
+        //votingService.saveProportionalVote(currentUserModel.getUserId(), proportionalVotingModel.getVotingId(), selectedCanidates);
         proportionalVotingModel.clear();
         return "index.xhtml?faces-redirect=true";
     }

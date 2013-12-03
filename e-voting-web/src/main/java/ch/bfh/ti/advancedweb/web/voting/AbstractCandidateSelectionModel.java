@@ -2,6 +2,7 @@ package ch.bfh.ti.advancedweb.web.voting;
 
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.voting.AbstractCandidateVoting;
+import ch.bfh.ti.advancedweb.web.votinglist.VotingState;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,8 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
     private T voting;
 
     private String votingId;
+
+    private VotingState votingState;
 
     private boolean alreadyVoted;
 
@@ -27,7 +30,7 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
 
     public void clear() {
         candidatePositions.clear();
-        alreadyVoted = false;
+        votingState = null;
         voting = null;
         votingId = null;
     }
@@ -71,15 +74,20 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
         return voting;
     }
 
-    public boolean isAlreadyVoted() {
-        return alreadyVoted;
+    public VotingState getVotingState() {
+        return votingState;
     }
 
-    public void setAlreadyVoted(boolean alreadyVoted) {
-        this.alreadyVoted = alreadyVoted;
+    public void setVotingState(VotingState votingState) {
+        this.votingState = votingState;
+        alreadyVoted = this.votingState.equals(VotingState.VOTED);
     }
 
     public String getVotingId() {
         return votingId;
+    }
+
+    public boolean isAlreadyVoted() {
+        return alreadyVoted;
     }
 }

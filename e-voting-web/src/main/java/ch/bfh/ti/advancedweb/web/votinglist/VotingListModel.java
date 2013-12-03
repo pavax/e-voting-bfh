@@ -12,34 +12,34 @@ import java.util.Map;
 @Scope("view")
 public class VotingListModel {
 
-    private Map<MajorityVoting, Boolean> majorityVotingMap;
+    private Map<MajorityVoting, VotingState> majorityVotingMap;
 
-    private Map<ProportionalVoting, Boolean> proportionalVotingMap;
+    private Map<ProportionalVoting, VotingState> proportionalVotingMap;
 
-    private Map<ReferendumVoting, Boolean> referendumVotingMap;
+    private Map<ReferendumVoting, VotingState> referendumVotingMap;
 
-    public Map<MajorityVoting, Boolean> getMajorityVotingMap() {
+    public Map<MajorityVoting, VotingState> getMajorityVotingMap() {
         return majorityVotingMap;
     }
 
-    public void setMajorityVotingMap(Map<MajorityVoting, Boolean> majorityVotingMap) {
+    public void setMajorityVotingMap(Map<MajorityVoting, VotingState> majorityVotingMap) {
         this.majorityVotingMap = majorityVotingMap;
     }
 
 
-    public void setProportionalVotingMap(Map<ProportionalVoting, Boolean> proportionalVotingMap) {
+    public void setProportionalVotingMap(Map<ProportionalVoting, VotingState> proportionalVotingMap) {
         this.proportionalVotingMap = proportionalVotingMap;
     }
 
-    public Map<ProportionalVoting, Boolean> getProportionalVotingMap() {
+    public Map<ProportionalVoting, VotingState> getProportionalVotingMap() {
         return proportionalVotingMap;
     }
 
-    public void setReferendumVotingMap(Map<ReferendumVoting, Boolean> questionVotingMap) {
+    public void setReferendumVotingMap(Map<ReferendumVoting, VotingState> questionVotingMap) {
         this.referendumVotingMap = questionVotingMap;
     }
 
-    public Map<ReferendumVoting, Boolean> getReferendumVotingMap() {
+    public Map<ReferendumVoting, VotingState> getReferendumVotingMap() {
         return referendumVotingMap;
     }
 }
