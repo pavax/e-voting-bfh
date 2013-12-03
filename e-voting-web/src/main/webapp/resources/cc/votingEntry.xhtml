@@ -5,14 +5,14 @@
 
     <composite:interface>
 
-        <composite:attribute name="votingStatus" type="ch.bfh.ti.advancedweb.web.votinglist.VotingState"
+        <composite:attribute name="votingStatus" type="ch.bfh.ti.advancedweb.evoting.web.votinglist.VotingState"
                              required="true"/>
 
         <composite:attribute name="votingStatusModel" required="true"/>
 
         <composite:attribute name="votingModel" required="true"/>
 
-        <composite:attribute name="voting" type="ch.bfh.ti.advancedweb.voting.domain.voting.Voting" required="true"/>
+        <composite:attribute name="voting" type="ch.bfh.ti.advancedweb.evoting.domain.voting.Voting" required="true"/>
 
         <composite:attribute name="action" targets="actionButton1 actionButton2 actionButton" required="true"/>
 

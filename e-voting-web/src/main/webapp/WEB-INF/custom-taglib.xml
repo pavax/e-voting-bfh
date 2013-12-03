@@ -10,7 +10,7 @@
 
     <function>
         <function-name>mapToList</function-name>
-        <function-class>ch.bfh.ti.advancedweb.web.utils.JstlUtils</function-class>
+        <function-class>ch.bfh.ti.advancedweb.evoting.web.utils.JstlUtils</function-class>
         <function-signature>java.util.List mapToList(java.util.Map)</function-signature>
     </function>
 </facelet-taglib>

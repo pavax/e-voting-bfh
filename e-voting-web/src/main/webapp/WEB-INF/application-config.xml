@@ -4,11 +4,11 @@
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <import resource="classpath:/ch/bfh/ti/advancedweb/voting/voting-config.xml"/>
+    <import resource="classpath:/ch/bfh/ti/advancedweb/evoting/voting-config.xml"/>
 
-    <import resource="classpath:/ch/bfh/ti/advancedweb/voting/web/web-config.xml"/>
+    <import resource="classpath:/ch/bfh/ti/advancedweb/evoting/web/web-config.xml"/>
 
-    <import resource="classpath:/ch/bfh/ti/advancedweb/voting/web/web-security-config.xml"/>
+    <import resource="classpath:/ch/bfh/ti/advancedweb/evoting/web/web-security-config.xml"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
@@ -24,7 +24,7 @@
         </property>
         <property name="packagesToScan">
             <list>
-                <value>ch.bfh.ti.advancedweb.voting.domain</value>
+                <value>ch.bfh.ti.advancedweb.evoting.domain</value>
             </list>
         </property>
     </bean>
