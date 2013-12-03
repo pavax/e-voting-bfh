@@ -14,7 +14,10 @@ public class User {
 
     private String password;
 
-    public User(String username, String password) {
+    private Boolean admin;
+
+    public User(String username, String password, Boolean admin) {
+        this.admin = admin;
         this.id = UUID.randomUUID().toString();
         this.password = password;
         this.username = username;
@@ -38,5 +41,9 @@ public class User {
 
     public String getId() {
         return id;
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 }

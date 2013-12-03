@@ -17,6 +17,13 @@ public class BallotModel {
 
     private Set<ReferendumBallot> referendumBallots = new LinkedHashSet<>();
 
+
+    public void clearAll(){
+        this.majorityBallots.clear();
+        this.proportionalBallots.clear();
+        this.referendumBallots.clear();
+    }
+
     public Set<MajorityBallot> getMajorityBallots() {
         return Collections.unmodifiableSet(this.majorityBallots);
     }

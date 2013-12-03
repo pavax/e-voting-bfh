@@ -11,12 +11,4 @@
 
     <jpa:repositories base-package="ch.bfh.ti.advancedweb.voting.domain"/>
 
-    <bean id="defaultUserDetailsService" class="ch.bfh.ti.advancedweb.voting.interal.DefaultUserDetailsService">
-        <constructor-arg name="userRepository" ref="userRepository"/>
-        <constructor-arg name="admins">
-            <set>
-                <value>admin</value>
-            </set>
-        </constructor-arg>
-    </bean>
 </beans>

@@ -15,20 +15,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class DefaultUserDetailsService implements UserDetailsService {
 
     public static final String ROLE_USER = "ROLE_USER";
 
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     private final UserRepository userRepository;
 
-    private final Set<String> admins;
-
     @Inject
-    public DefaultUserDetailsService(UserRepository userRepository, Set<String> admins) {
+    public DefaultUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.admins = admins;
     }
 
     @Override
@@ -36,7 +34,7 @@ public class DefaultUserDetailsService implements UserDetailsService {
         final User userByUsername = userRepository.findUserByUsername(username);
         Set<String> roles = new HashSet<>();
         roles.add(ROLE_USER);
-        if (admins.contains(username)) {
+        if (userByUsername.isAdmin()) {
             roles.add(ROLE_ADMIN);
         }
         final List<GrantedAuthority> role_user = AuthorityUtils.createAuthorityList(roles.toArray(new String[roles.size()]));

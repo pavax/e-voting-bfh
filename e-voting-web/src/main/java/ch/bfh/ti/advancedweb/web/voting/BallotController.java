@@ -6,6 +6,7 @@ import ch.bfh.ti.advancedweb.web.utils.MessageUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 @Component
@@ -26,7 +27,7 @@ public class BallotController {
     }
 
 
-    public void saveAllBallots() {
+    public String saveAllBallots() {
 
         final String userId = currentUserModel.getUserId();
 
@@ -37,7 +38,12 @@ public class BallotController {
             votingService.saveProportionalVote(userId, proportionalBallot.getVotingId(), proportionalBallot.getCandidates());
         }
 
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         MessageUtils.addWarnMessage("saved.all.ballots");
+
+        this.ballotModel.clearAll();
+
+        return "index.xhtml?faces-redirect=true";
 
     }
 }
