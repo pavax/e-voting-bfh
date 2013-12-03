@@ -11,7 +11,7 @@ import java.util.List;
 public class ProportionalVoting extends AbstractCandidateVoting {
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PROPORZ_VOTING", referencedColumnName = "votingId")
+    @JoinColumn(name = "PROPORTIONAL_VOTING", referencedColumnName = "votingId")
     private List<Candidate> proportionalCandidates = new ArrayList<>();
 
     public ProportionalVoting(String title, int openPositions, List<Candidate> proportionalCandidates) {

@@ -83,15 +83,7 @@ public class DefaultVotingService implements VotingService {
         final MajorityVoting majorityVoting = getMajorityVoting(majorityVotingId);
         checkIsVotingOpen(majorityVotingId, majorityVoting.isOpen());
         checkExistingVotingResult(userId, majorityVotingId);
-        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(majorityVoting, new ArrayList<>(candidates), user);
-        votingResultRepository.save(proporzVotingResult);
-    }
-
-    private void checkExistingVotingResult(String userId, String majorityVotingId) {
-        final VotingResult candidateVotingResultByUser = votingResultRepository.findVotingResultFromUser(userId, majorityVotingId);
-        if (candidateVotingResultByUser != null) {
-            throw new IllegalStateException("User has already voted for " + majorityVotingId);
-        }
+        votingResultRepository.save(new CandidateVotingResult(majorityVoting, new ArrayList<>(candidates), user));
     }
 
     @Override
@@ -100,8 +92,7 @@ public class DefaultVotingService implements VotingService {
         final ProportionalVoting proportionalVoting = getProportionalVoting(proportionalVotingId);
         checkIsVotingOpen(proportionalVotingId, proportionalVoting.isOpen());
         checkExistingVotingResult(userId, proportionalVotingId);
-        final CandidateVotingResult proporzVotingResult = new CandidateVotingResult(proportionalVoting, candidates, user);
-        votingResultRepository.save(proporzVotingResult);
+        votingResultRepository.save(new CandidateVotingResult(proportionalVoting, candidates, user));
     }
 
     @Override
@@ -112,16 +103,23 @@ public class DefaultVotingService implements VotingService {
         votingResultRepository.save(new ReferendumVotingResult(referendumVoting, acceptReferendum, user));
     }
 
+    @Override
+    public VotingResult getVotingFromUser(String userId, Voting voting) {
+        final User user = getUser(userId);
+        return votingResultRepository.findVotingResultFromUser(user.getId(), voting.getVotingId());
+    }
+
     private void checkIsVotingOpen(String referendumVotingId, boolean open) throws VotingStoppedException {
         if (!open) {
             throw new VotingStoppedException(referendumVotingId);
         }
     }
 
-    @Override
-    public VotingResult getVotingFromUser(String userId, Voting voting) {
-        final User user = getUser(userId);
-        return votingResultRepository.findVotingResultFromUser(user.getId(), voting.getVotingId());
+    private void checkExistingVotingResult(String userId, String majorityVotingId) {
+        final VotingResult candidateVotingResultByUser = votingResultRepository.findVotingResultFromUser(userId, majorityVotingId);
+        if (candidateVotingResultByUser != null) {
+            throw new IllegalStateException("User has already voted for " + majorityVotingId);
+        }
     }
 
 

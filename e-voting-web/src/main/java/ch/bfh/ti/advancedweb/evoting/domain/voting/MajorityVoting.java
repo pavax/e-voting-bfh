@@ -11,7 +11,7 @@ import java.util.Set;
 public class MajorityVoting extends AbstractCandidateVoting {
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "MAYORZ_VOTING", referencedColumnName = "votingId")
+    @JoinColumn(name = "MAJORITY_VOTING", referencedColumnName = "votingId")
     private Set<Candidate> majorityCandidates = new HashSet<>();
 
     public MajorityVoting(String title, int openPositions, Set<Candidate> majorityCandidates) {
