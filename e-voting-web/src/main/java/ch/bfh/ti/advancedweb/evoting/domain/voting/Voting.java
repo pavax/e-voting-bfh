@@ -55,4 +55,21 @@ public abstract class Voting {
     public void setOpen(boolean open) {
         this.open = open;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Voting)) return false;
+
+        Voting voting = (Voting) o;
+
+        if (votingId != null ? !votingId.equals(voting.votingId) : voting.votingId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return votingId != null ? votingId.hashCode() : 0;
+    }
 }
