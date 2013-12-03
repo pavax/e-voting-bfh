@@ -1,0 +1,56 @@
+<ui:component xmlns=""
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:composite="http://java.sun.com/jsf/composite" xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+
+        <composite:attribute name="votingStatus" type="ch.bfh.ti.advancedweb.web.votinglist.VotingState"
+                             required="true"/>
+
+        <composite:attribute name="votingStatusModel" required="true"/>
+
+        <composite:attribute name="votingModel" required="true"/>
+
+        <composite:attribute name="voting" type="ch.bfh.ti.advancedweb.voting.domain.voting.Voting" required="true"/>
+
+        <composite:attribute name="action" targets="actionButton1 actionButton2 actionButton" required="true"/>
+
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:commandButton id="actionButton" styleClass="btn btn-large btn-block btn-primary"
+                         rendered="#{cc.attrs.votingStatus == 'NEW'}"
+                         value="#{cc.attrs.voting.title}"
+                >
+            <f:setPropertyActionListener value="#{cc.attrs.voting}" target="#{cc.attrs.votingModel}"/>
+            <f:setPropertyActionListener value="#{cc.attrs.votingStatus}"
+                                         target="#{cc.attrs.votingStatusModel}"/>
+        </h:commandButton>
+
+        <h:commandButton id="actionButton1" styleClass="btn btn-large btn-block"
+                         rendered="#{cc.attrs.votingStatus == 'VOTED'}"
+                         value="#{cc.attrs.voting.title} (#{msg['current.voting.voted']})"
+                >
+            <f:setPropertyActionListener value="#{cc.attrs.voting}" target="#{cc.attrs.votingModel}"/>
+            <f:setPropertyActionListener value="#{cc.attrs.votingStatus}"
+                                         target="#{cc.attrs.votingStatusModel}"/>
+        </h:commandButton>
+
+        <h:commandButton id="actionButton2" styleClass="btn btn-large btn-block btn-inverse"
+                         rendered="#{cc.attrs.votingStatus == 'SAVED'}"
+                         value="#{cc.attrs.voting.title} (#{msg['current.voting.tempSaved']})"
+                >
+            <f:setPropertyActionListener value="#{cc.attrs.voting}" target="#{cc.attrs.votingModel}"/>
+            <f:setPropertyActionListener value="#{cc.attrs.votingStatus}"
+                                         target="#{cc.attrs.votingStatusModel}"/>
+        </h:commandButton>
+
+        <h:panelGroup layout="block" styleClass="alert alert-info" rendered="#{cc.attrs.votingStatus == 'STOPPED'}">
+            <h:outputText value="#{cc.attrs.voting.title} #{msg['current.voting.stopped']}"/>
+        </h:panelGroup>
+
+    </composite:implementation>
+
+</ui:component>

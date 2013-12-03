@@ -3,8 +3,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:util="http://ti.bfh.ch./util" xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/templates/default.xhtml">
+                xmlns:evoting="http://ti.bfh.ch./util"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml"
+        >
 
 
     <ui:define name="metadata">
@@ -19,91 +21,39 @@
 
             <p:messages autoUpdate="true"/>
 
-            <ui:repeat value="#{util:mapToList(votingListModel.majorityVotingMap)}" var="entry">
+            <ui:repeat value="#{evoting:mapToList(votingListModel.majorityVotingMap)}" var="entry">
 
-                <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{entry.value == 'NEW'}"
-                                 value="#{entry.key.title}"
-                                 action="majority.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorityVotingModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorityVotingModel.votingState}"/>
-                </h:commandButton>
-
-                <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value == 'VOTED'}"
-                                 value="#{entry.key.title} (Abgestimmt)"
-                                 action="majority.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorityVotingModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorityVotingModel.votingState}"/>
-                </h:commandButton>
-
-                <h:commandButton styleClass="btn btn-large btn-block btn-inverse" rendered="#{entry.value == 'SAVED'}"
-                                 value="#{entry.key.title} (Zwischengespeichert)"
-                                 action="majority.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{majorityVotingModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{majorityVotingModel.votingState}"/>
-                </h:commandButton>
+                <evoting:votingEntry id="majority"
+                                     voting="#{entry.key}"
+                                     votingStatus="#{entry.value}"
+                                     votingModel="#{majorityVotingModel.voting}"
+                                     votingStatusModel="#{majorityVotingModel.votingState}"
+                                     action="majority.xhtml?faces-redirect=true">
+                </evoting:votingEntry>
 
             </ui:repeat>
 
-
             <h1><h:outputText value="#{msg['currenz.proportional_voting.title']}"/></h1>
 
-            <ui:repeat value="#{util:mapToList(votingListModel.proportionalVotingMap)}" var="entry">
+            <ui:repeat value="#{evoting:mapToList(votingListModel.proportionalVotingMap)}" var="entry">
 
-                <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{entry.value == 'NEW'}"
-                                 value="#{entry.key.title}"
-                                 action="proportional.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{proportionalVotingModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}"
-                                                 target="#{proportionalVotingModel.votingState}"/>
-                </h:commandButton>
-
-
-                <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value == 'VOTED'}"
-                                 value="#{entry.key.title} (Abgestimmt)"
-                                 action="proportional.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{proportionalVotingModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}"
-                                                 target="#{proportionalVotingModel.votingState}"/>
-                </h:commandButton>
-
-                <h:commandButton styleClass="btn btn-large btn-block btn-inverse" rendered="#{entry.value == 'SAVED'}"
-                                 value="#{entry.key.title} (Zwischengespeichert)"
-                                 action="proportional.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}" target="#{proportionalVotingModel.voting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}"
-                                                 target="#{proportionalVotingModel.votingState}"/>
-                </h:commandButton>
-
+                <evoting:votingEntry id="proporz"
+                                     voting="#{entry.key}"
+                                     votingStatus="#{entry.value}"
+                                     votingModel="#{proportionalVotingModel.voting}"
+                                     votingStatusModel="#{proportionalVotingModel.votingState}"
+                                     action="proportional.xhtml?faces-redirect=true"/>
             </ui:repeat>
 
             <h1><h:outputText value="#{msg['current.referendum_voting.title']}"/></h1>
 
-            <ui:repeat value="#{util:mapToList(votingListModel.referendumVotingMap)}" var="entry">
-
-                <h:commandButton styleClass="btn btn-large btn-block btn-primary" rendered="#{entry.value == 'NEW'}"
-                                 value="#{entry.key.title}"
-                                 action="referendum.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}"
-                                                 target="#{referendumVotingModel.selectedQuestionVoting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{referendumVotingModel.votingState}"/>
-                </h:commandButton>
-
-                <h:commandButton styleClass="btn btn-large btn-block" rendered="#{entry.value == 'VOTED'}"
-                                 value="#{entry.key.title} (Abgestimmt)"
-                                 action="referendum.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}"
-                                                 target="#{referendumVotingModel.selectedQuestionVoting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{referendumVotingModel.votingState}"/>
-                </h:commandButton>
-
-                <h:commandButton styleClass="btn btn-large btn-block btn-inverse" rendered="#{entry.value == 'SAVED'}"
-                                 value="#{entry.key.title} (Zwischengespeichert)"
-                                 action="referendum.xhtml?faces-redirect=true">
-                    <f:setPropertyActionListener value="#{entry.key}"
-                                                 target="#{referendumVotingModel.selectedQuestionVoting}"/>
-                    <f:setPropertyActionListener value="#{entry.value}" target="#{referendumVotingModel.votingState}"/>
-                </h:commandButton>
-
+            <ui:repeat value="#{evoting:mapToList(votingListModel.referendumVotingMap)}" var="entry">
+                <evoting:votingEntry id="referendum"
+                                     voting="#{entry.key}"
+                                     votingStatus="#{entry.value}"
+                                     votingModel="#{referendumVotingModel.selectedQuestionVoting}"
+                                     votingStatusModel="#{referendumVotingModel.votingState}"
+                                     action="referendum.xhtml?faces-redirect=true"/>
             </ui:repeat>
 
             <br/>
