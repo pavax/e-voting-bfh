@@ -1,6 +1,6 @@
 package ch.bfh.ti.advancedweb.web.admin.results;
 
-import ch.bfh.ti.advancedweb.voting.ReferendumResult;
+import ch.bfh.ti.advancedweb.voting.ReferendumResultData;
 import ch.bfh.ti.advancedweb.voting.VotingAdminService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,9 +24,9 @@ public class ReferendumVotingResultController {
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            final ReferendumResult referendumResult = votingAdminService.getReferendumResult(referendumVotingResultModel.getSelectedVoting().getVotingId());
+            final ReferendumResultData referendumResultData = votingAdminService.getReferendumResult(referendumVotingResultModel.getSelectedVoting().getVotingId());
             referendumVotingResultModel.clear();
-            referendumVotingResultModel.setReferendumResult(referendumResult);
+            referendumVotingResultModel.setReferendumResultData(referendumResultData);
         }
     }
 }

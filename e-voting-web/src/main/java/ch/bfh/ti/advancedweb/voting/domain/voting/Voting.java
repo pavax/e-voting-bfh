@@ -17,7 +17,7 @@ public abstract class Voting {
     private VotingType votingType;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    private Date createDate;
 
     private boolean open = true;
 
@@ -25,7 +25,7 @@ public abstract class Voting {
         this.votingId = UUID.randomUUID().toString();
         this.title = title;
         this.votingType = votingType;
-        this.created = new Date();
+        this.createDate = new Date();
     }
 
     protected Voting() {
@@ -44,8 +44,8 @@ public abstract class Voting {
         return votingType;
     }
 
-    public Date getCreated() {
-        return created;
+    public Date getCreateDate() {
+        return createDate;
     }
 
     public boolean isOpen() {

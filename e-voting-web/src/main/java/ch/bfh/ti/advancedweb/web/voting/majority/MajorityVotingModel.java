@@ -24,7 +24,7 @@ public class MajorityVotingModel extends AbstractCandidateSelectionModel<Majorit
 
     @Override
     public void initPossibleCandidates(MajorityVoting voting) {
-        this.possibleCandidates.addAll(voting.getMajorzCandidates());
+        this.possibleCandidates.addAll(voting.getMajorityCandidates());
     }
 
     @Override

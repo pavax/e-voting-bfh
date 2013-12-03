@@ -11,19 +11,19 @@ public class MajorityVoting extends AbstractCandidateVoting {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "MAYORZ_VOTING", referencedColumnName = "votingId")
-    private Set<Candidate> majorzCandidates = new HashSet<>();
+    private Set<Candidate> majorityCandidates = new HashSet<>();
 
-    public MajorityVoting(String title, int openPositions, Set<Candidate> majorzCandidates) {
-        super(title, VotingType.MAYORZ, openPositions);
-        this.majorzCandidates.addAll(majorzCandidates);
+    public MajorityVoting(String title, int openPositions, Set<Candidate> majorityCandidates) {
+        super(title, VotingType.MAJORITY, openPositions);
+        this.majorityCandidates.addAll(majorityCandidates);
     }
 
     protected MajorityVoting() {
         // FOR JPA
     }
 
-    public Set<Candidate> getMajorzCandidates() {
-        return majorzCandidates;
+    public Set<Candidate> getMajorityCandidates() {
+        return majorityCandidates;
     }
 
 }

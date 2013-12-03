@@ -2,13 +2,13 @@ package ch.bfh.ti.advancedweb.voting;
 
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 
-public class CandidateResult implements Comparable<CandidateResult> {
+public class CandidateResultData implements Comparable<CandidateResultData> {
 
     private Candidate candidate;
 
     private int votes;
 
-    public CandidateResult(Candidate candidate, int votes) {
+    public CandidateResultData(Candidate candidate, int votes) {
         this.candidate = candidate;
         this.votes = votes;
     }
@@ -38,7 +38,7 @@ public class CandidateResult implements Comparable<CandidateResult> {
     }
 
     @Override
-    public int compareTo(CandidateResult o) {
+    public int compareTo(CandidateResultData o) {
         return Integer.compare(o.votes, votes);
     }
 }

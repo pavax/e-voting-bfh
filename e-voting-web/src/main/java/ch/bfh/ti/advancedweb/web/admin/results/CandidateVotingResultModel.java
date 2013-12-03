@@ -1,6 +1,6 @@
 package ch.bfh.ti.advancedweb.web.admin.results;
 
-import ch.bfh.ti.advancedweb.voting.CandidateResult;
+import ch.bfh.ti.advancedweb.voting.CandidateResultData;
 import ch.bfh.ti.advancedweb.voting.domain.voting.Voting;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -17,16 +17,16 @@ public class CandidateVotingResultModel {
 
     private Voting selectedCandidateVoting;
 
-    private List<CandidateResult> candidateResults;
+    private List<CandidateResultData> candidateResultDatas;
 
     private PieChartModel pieModel;
 
     private CartesianChartModel chartModel;
 
-    private CandidateResult selectedCandidate;
+    private CandidateResultData selectedCandidate;
 
     public void clear() {
-        this.candidateResults = null;
+        this.candidateResultDatas = null;
         this.pieModel = null;
         this.chartModel = null;
         this.selectedCandidate = null;
@@ -40,25 +40,25 @@ public class CandidateVotingResultModel {
         this.selectedCandidateVoting = selectedCandidateVoting;
     }
 
-    public void setCandidateResults(List<CandidateResult> candidateResults) {
-        this.candidateResults = candidateResults;
-        initCharts(candidateResults);
+    public void setCandidateResultDatas(List<CandidateResultData> candidateResultDatas) {
+        this.candidateResultDatas = candidateResultDatas;
+        initCharts(candidateResultDatas);
     }
 
-    private void initCharts(List<CandidateResult> candidateResults) {
+    private void initCharts(List<CandidateResultData> candidateResultDatas) {
         this.pieModel = new PieChartModel();
         this.chartModel = new CartesianChartModel();
         final ChartSeries chartSeries = new ChartSeries();
         this.chartModel.addSeries(chartSeries);
-        for (CandidateResult candidateResult : candidateResults) {
-            final String category = candidateResult.getCandidate().getFirstName() + " " + candidateResult.getCandidate().getLastName() + " (" + candidateResult.getCandidate().getPartyName() + ")";
-            this.pieModel.set(category, candidateResult.getVotes());
-            chartSeries.set(category, candidateResult.getVotes());
+        for (CandidateResultData candidateResultData : candidateResultDatas) {
+            final String category = candidateResultData.getCandidate().getFirstName() + " " + candidateResultData.getCandidate().getLastName() + " (" + candidateResultData.getCandidate().getPartyName() + ")";
+            this.pieModel.set(category, candidateResultData.getVotes());
+            chartSeries.set(category, candidateResultData.getVotes());
         }
     }
 
-    public List<CandidateResult> getCandidateResults() {
-        return candidateResults;
+    public List<CandidateResultData> getCandidateResultDatas() {
+        return candidateResultDatas;
     }
 
 
@@ -70,11 +70,11 @@ public class CandidateVotingResultModel {
         return chartModel;
     }
 
-    public void setSelectedCandidate(CandidateResult selectedCandidate) {
+    public void setSelectedCandidate(CandidateResultData selectedCandidate) {
         this.selectedCandidate = selectedCandidate;
     }
 
-    public CandidateResult getSelectedCandidate() {
+    public CandidateResultData getSelectedCandidate() {
         return selectedCandidate;
     }
 }

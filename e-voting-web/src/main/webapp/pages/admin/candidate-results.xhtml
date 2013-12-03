@@ -36,7 +36,7 @@
                         </thead>
                         <tbody>
 
-                        <ui:repeat value="#{candidateVotingResultModel.candidateResults}" var="candidateResult">
+                        <ui:repeat value="#{candidateVotingResultModel.candidateResultDatas}" var="candidateResult">
                             <tr>
                                 <td>#{candidateResult.candidate.firstName} </td>
                                 <td> #{candidateResult.candidate.lastName} </td>
@@ -55,7 +55,7 @@
                     <evoting:candidateResult id="growl" candidate="#{candidateVotingResultModel.selectedCandidate}"/>
 
                     <p:pieChart id="sample"
-                                rendered="#{candidateVotingResultModel.selectedCandidateVoting.votingType == 'MAYORZ'}"
+                                rendered="#{candidateVotingResultModel.selectedCandidateVoting.votingType == 'MAJORITY'}"
                                 value="#{candidateVotingResultModel.pieModel}"
                                 legendPosition="w"
                                 showDataLabels="true"
@@ -69,11 +69,11 @@
                     </p:pieChart>
 
                     <p:barChart id="horizontal"
-                                rendered="#{candidateVotingResultModel.selectedCandidateVoting.votingType == 'PROPORTZ'}"
+                                rendered="#{candidateVotingResultModel.selectedCandidateVoting.votingType == 'PROPORTIONAL'}"
                                 value="#{candidateVotingResultModel.chartModel}"
                                 zoom="true"
                                 legendPosition="se"
-                                style="height:#{candidateVotingResultModel.candidateResults.size()*10 + 500}px"
+                                style="height:#{candidateVotingResultModel.candidateResultDatas.size()*10 + 500}px"
                                 title="#{candidateVotingResultModel.selectedCandidateVoting.title}"
                                 orientation="horizontal"
                                 min="0" max="200">

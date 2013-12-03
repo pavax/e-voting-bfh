@@ -1,7 +1,7 @@
 package ch.bfh.ti.advancedweb.web.admin.results;
 
 
-import ch.bfh.ti.advancedweb.voting.CandidateResult;
+import ch.bfh.ti.advancedweb.voting.CandidateResultData;
 import ch.bfh.ti.advancedweb.voting.VotingAdminService;
 import org.primefaces.event.ItemSelectEvent;
 import org.springframework.context.annotation.Scope;
@@ -28,14 +28,14 @@ public class CandidateVotingResultController {
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            final Set<CandidateResult> candidateResults = votingAdminService.getCandidateResults(candidateVotingResultModel.getSelectedCandidateVoting().getVotingId());
+            final Set<CandidateResultData> candidateResultDatas = votingAdminService.getCandidateResults(candidateVotingResultModel.getSelectedCandidateVoting().getVotingId());
             candidateVotingResultModel.clear();
-            candidateVotingResultModel.setCandidateResults(new ArrayList<>(candidateResults));
+            candidateVotingResultModel.setCandidateResultDatas(new ArrayList<>(candidateResultDatas));
         }
     }
 
     public void candidateSelectedEvent(ItemSelectEvent event) {
-        final CandidateResult selectedCandidate = this.candidateVotingResultModel.getCandidateResults().get(event.getItemIndex());
+        final CandidateResultData selectedCandidate = this.candidateVotingResultModel.getCandidateResultDatas().get(event.getItemIndex());
         this.candidateVotingResultModel.setSelectedCandidate(selectedCandidate);
     }
 }

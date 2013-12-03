@@ -31,7 +31,7 @@ public class DefaultVotingService implements VotingService {
 
     private final UserRepository userRepository;
 
-    private static final Sort SORT = new Sort(Sort.DEFAULT_DIRECTION, "created", "votingId");
+    private static final Sort SORT = new Sort(Sort.DEFAULT_DIRECTION, "createDate", "votingId");
 
     @Inject
     public DefaultVotingService(MajorityVotingRepository majorityVotingRepository, ProporzVotingRepository proporzVotingRepository, ReferendumVotingRepository referendumVotingRepository, VotingResultRepository votingResultRepository, UserRepository userRepository) {
@@ -47,7 +47,7 @@ public class DefaultVotingService implements VotingService {
         Map<MajorityVoting, Boolean> resultMap = new LinkedHashMap<>();
         final List<MajorityVoting> majorityVotings = majorityVotingRepository.findAll(SORT);
         for (MajorityVoting majorityVoting : majorityVotings) {
-            majorityVoting.getMajorzCandidates().size();
+            majorityVoting.getMajorityCandidates().size();
             final VotingResult resultByUser = votingResultRepository.findVotingResultFromUser(userId, majorityVoting.getVotingId());
             resultMap.put(majorityVoting, resultByUser != null);
         }
@@ -59,7 +59,7 @@ public class DefaultVotingService implements VotingService {
         Map<ProportionalVoting, Boolean> resultMap = new LinkedHashMap<>();
         final List<ProportionalVoting> proportionalVotings = proporzVotingRepository.findAll(SORT);
         for (ProportionalVoting proportionalVoting : proportionalVotings) {
-            proportionalVoting.getPorporzCandidates().size();
+            proportionalVoting.getProportionalCandidates().size();
             final VotingResult resultByUser = votingResultRepository.findVotingResultFromUser(userId, proportionalVoting.getVotingId());
             resultMap.put(proportionalVoting, resultByUser != null);
         }

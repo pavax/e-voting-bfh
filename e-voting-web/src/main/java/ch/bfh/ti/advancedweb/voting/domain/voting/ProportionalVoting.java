@@ -11,11 +11,11 @@ public class ProportionalVoting extends AbstractCandidateVoting {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PROPORZ_VOTING", referencedColumnName = "votingId")
-    private List<Candidate> porporzCandidates = new ArrayList<>();
+    private List<Candidate> proportionalCandidates = new ArrayList<>();
 
-    public ProportionalVoting(String title, int openPositions, List<Candidate> porporzCandidates) {
-        super(title, VotingType.PROPORTZ, openPositions);
-        this.porporzCandidates.addAll(porporzCandidates);
+    public ProportionalVoting(String title, int openPositions, List<Candidate> proportionalCandidates) {
+        super(title, VotingType.PROPORTIONAL, openPositions);
+        this.proportionalCandidates.addAll(proportionalCandidates);
     }
 
     protected ProportionalVoting() {
@@ -23,7 +23,7 @@ public class ProportionalVoting extends AbstractCandidateVoting {
     }
 
 
-    public List<Candidate> getPorporzCandidates() {
-        return porporzCandidates;
+    public List<Candidate> getProportionalCandidates() {
+        return proportionalCandidates;
     }
 }

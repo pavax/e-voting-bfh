@@ -1,7 +1,7 @@
 package ch.bfh.ti.advancedweb.voting.interal;
 
-import ch.bfh.ti.advancedweb.voting.CandidateResult;
-import ch.bfh.ti.advancedweb.voting.ReferendumResult;
+import ch.bfh.ti.advancedweb.voting.CandidateResultData;
+import ch.bfh.ti.advancedweb.voting.ReferendumResultData;
 import ch.bfh.ti.advancedweb.voting.VotingAdminService;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.result.CandidateVotingResultRepository;
@@ -42,19 +42,19 @@ public class DefaultVotingAdminService implements VotingAdminService {
 
     @Override
     public List<Voting> getCurrentVotings() {
-        return votingRepository.findAll(new Sort("created"));
+        return votingRepository.findAll(new Sort("createDate"));
     }
 
     @Override
-    public Set<CandidateResult> getCandidateResults(String votingId) {
+    public Set<CandidateResultData> getCandidateResults(String votingId) {
         final Voting voting = votingRepository.findOne(votingId);
-        List<CandidateResult> result = new ArrayList<>();
+        List<CandidateResultData> result = new ArrayList<>();
         final VotingType votingType = voting.getVotingType();
-        if (votingType.equals(VotingType.MAYORZ)) {
-            count(votingId, result, new ArrayList<>(((MajorityVoting) voting).getMajorzCandidates()));
-        } else if (votingType.equals(VotingType.PROPORTZ)) {
+        if (votingType.equals(VotingType.MAJORITY)) {
+            count(votingId, result, new ArrayList<>(((MajorityVoting) voting).getMajorityCandidates()));
+        } else if (votingType.equals(VotingType.PROPORTIONAL)) {
             ProportionalVoting proportionalVoting = (ProportionalVoting) voting;
-            count(votingId, result, proportionalVoting.getPorporzCandidates());
+            count(votingId, result, proportionalVoting.getProportionalCandidates());
         } else {
             throw new IllegalStateException("Voting having voting type '" + votingType + "' is not supported");
         }
@@ -65,16 +65,16 @@ public class DefaultVotingAdminService implements VotingAdminService {
     }
 
     @Override
-    public ReferendumResult getReferendumResult(String referendumVotingId) {
+    public ReferendumResultData getReferendumResult(String referendumVotingId) {
         final int acceptCount = referendumVotingResultRepository.countAcceptVotes(referendumVotingId);
         final int rejectCount = referendumVotingResultRepository.countRejectVotes(referendumVotingId);
-        return new ReferendumResult(acceptCount, rejectCount);
+        return new ReferendumResultData(acceptCount, rejectCount);
     }
 
-    private void count(String votingId, Collection<CandidateResult> result, List<Candidate> candidateList) {
+    private void count(String votingId, Collection<CandidateResultData> result, List<Candidate> candidateList) {
         for (Candidate candidate : candidateList) {
             final int votes = candidateVotingResultRepository.countVotesForCandidate(votingId, candidate.getCandidateId());
-            result.add(new CandidateResult(candidate, votes));
+            result.add(new CandidateResultData(candidate, votes));
         }
     }
 }

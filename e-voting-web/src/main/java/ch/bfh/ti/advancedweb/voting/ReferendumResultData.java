@@ -1,12 +1,12 @@
 package ch.bfh.ti.advancedweb.voting;
 
-public class ReferendumResult {
+public class ReferendumResultData {
 
     private int acceptCount;
 
     private int rejectCount;
 
-    public ReferendumResult(int acceptCount, int rejectCount) {
+    public ReferendumResultData(int acceptCount, int rejectCount) {
         this.acceptCount = acceptCount;
         this.rejectCount = rejectCount;
     }

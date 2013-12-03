@@ -1,6 +1,6 @@
 package ch.bfh.ti.advancedweb.voting.interal;
 
-import ch.bfh.ti.advancedweb.voting.domain.ApplicationTestDataLoader;
+import ch.bfh.ti.advancedweb.voting.ApplicationTestDataLoader;
 import ch.bfh.ti.advancedweb.voting.domain.Candidate;
 import ch.bfh.ti.advancedweb.voting.domain.User;
 import ch.bfh.ti.advancedweb.voting.domain.UserRepository;
@@ -45,15 +45,21 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
 
     @Override
     public void loadTestData() {
+        setupUserTestData();
+        setupMajorzTestData();
+        setupMajorzTestData2();
+        setupProporzTestData();
+        setupReferendumTestData();
+    }
+
+    private void setupUserTestData() {
         userRepository.save(new User("max", "secret", false));
         userRepository.save(new User("moritz", "secret", false));
         userRepository.save(new User("admin", "secret", true));
-        setUpMajorzTestData();
-        setUpMajorzTestData2();
-        setupProporzTestData();
+    }
 
+    private void setupReferendumTestData() {
         referendumVotingRepository.save(new ReferendumVoting("Familieninitiative", "Annahme der Familieninitiative?"));
-
     }
 
     private void setupProporzTestData() {
@@ -71,7 +77,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
         }
     }
 
-    private void setUpMajorzTestData() {
+    private void setupMajorzTestData() {
         Set<Candidate> candidates = new HashSet<>();
         candidates.add(new Candidate("Hans", "Fehr", "SP"));
         candidates.add(new Candidate("Peter", "Stückli", "SP"));
@@ -83,7 +89,7 @@ public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoad
         majorityVotingRepository.save(new MajorityVoting("Majorzwahl Titel 1", 2, candidates));
     }
 
-    private void setUpMajorzTestData2() {
+    private void setupMajorzTestData2() {
         Set<Candidate> candidates = new HashSet<>();
         candidates.add(new Candidate("Kevin", "Cueni", "SP"));
         candidates.add(new Candidate("Lisa", "Simpson", "SP"));

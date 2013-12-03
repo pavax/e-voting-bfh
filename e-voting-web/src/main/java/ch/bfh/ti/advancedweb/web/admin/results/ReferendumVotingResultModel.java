@@ -1,6 +1,6 @@
 package ch.bfh.ti.advancedweb.web.admin.results;
 
-import ch.bfh.ti.advancedweb.voting.ReferendumResult;
+import ch.bfh.ti.advancedweb.voting.ReferendumResultData;
 import ch.bfh.ti.advancedweb.voting.domain.voting.Voting;
 import org.primefaces.model.chart.PieChartModel;
 import org.springframework.context.annotation.Scope;
@@ -13,25 +13,25 @@ public class ReferendumVotingResultModel {
 
     private Voting selectedVoting;
 
-    private ReferendumResult referendumResult;
+    private ReferendumResultData referendumResultData;
 
     private PieChartModel pieModel;
 
 
     public void clear() {
         this.pieModel = null;
-        this.referendumResult = null;
+        this.referendumResultData = null;
     }
 
-    public ReferendumResult getReferendumResult() {
-        return referendumResult;
+    public ReferendumResultData getReferendumResultData() {
+        return referendumResultData;
     }
 
-    public void setReferendumResult(ReferendumResult referendumResult) {
-        this.referendumResult = referendumResult;
+    public void setReferendumResultData(ReferendumResultData referendumResultData) {
+        this.referendumResultData = referendumResultData;
         this.pieModel = new PieChartModel();
-        this.pieModel.set("JA", referendumResult.getAcceptCount());
-        this.pieModel.set("NEIN", referendumResult.getRejectCount());
+        this.pieModel.set("JA", referendumResultData.getAcceptCount());
+        this.pieModel.set("NEIN", referendumResultData.getRejectCount());
     }
 
     public Voting getSelectedVoting() {

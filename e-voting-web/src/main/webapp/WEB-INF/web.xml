@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <display-name>JavaServerFaces</display-name>
+    <display-name>e-voting</display-name>
 
     <!-- Change to "Production" when you are ready to deploy -->
     <context-param>
@@ -11,11 +11,13 @@
         <param-value>Development</param-value>
     </context-param>
 
+    <!-- Register our custom taglib -->
     <context-param>
         <param-name>facelets.LIBRARIES</param-name>
         <param-value>/WEB-INF/custom-taglib.xml</param-value>
     </context-param>
 
+    <!-- Register primefaces theme -->
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>bootstrap</param-value>
@@ -33,7 +35,7 @@
         <param-value>/WEB-INF/application-config.xml</param-value>
     </context-param>
 
-
+    <!-- Register JSF Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -44,6 +46,8 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
+
+    <!-- Add Spring-Security Servlet -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -58,12 +62,13 @@
     </filter-mapping>
 
 
-    <!-- Welcome page -->
+    <!-- Define welcome pages -->
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
+    <!-- Define error pages -->
     <error-page>
         <error-code>403</error-code>
         <location>/errors/error_403.xhtml</location>
@@ -73,6 +78,5 @@
         <error-code>404</error-code>
         <location>/errors/error_404.xhtml</location>
     </error-page>
-
 
 </web-app>

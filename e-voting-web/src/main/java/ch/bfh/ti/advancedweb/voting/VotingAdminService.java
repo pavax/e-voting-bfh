@@ -11,8 +11,8 @@ public interface VotingAdminService {
 
     List<Voting> getCurrentVotings();
 
-    Set<CandidateResult> getCandidateResults(String votingId);
+    Set<CandidateResultData> getCandidateResults(String votingId);
 
-    ReferendumResult getReferendumResult(String referendumVotingId);
+    ReferendumResultData getReferendumResult(String referendumVotingId);
 
 }

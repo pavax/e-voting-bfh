@@ -28,7 +28,7 @@ public class ProportionalVotingModel extends AbstractCandidateSelectionModel<Pro
 
     @Override
     public void initPossibleCandidates(ProportionalVoting voting) {
-        for (Candidate proporzCandidate : voting.getPorporzCandidates()) {
+        for (Candidate proporzCandidate : voting.getProportionalCandidates()) {
             final String partyName = proporzCandidate.getPartyName();
             if (partyCandidatesMap.containsKey(partyName)) {
                 final List<Candidate> candidates = partyCandidatesMap.get(partyName);
