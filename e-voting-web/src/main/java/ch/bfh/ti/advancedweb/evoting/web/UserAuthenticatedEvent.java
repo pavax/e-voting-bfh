@@ -1,9 +1,8 @@
-package ch.bfh.ti.advancedweb.evoting.web.security;
+package ch.bfh.ti.advancedweb.evoting.web;
 
 import ch.bfh.ti.advancedweb.evoting.UserPrincipal;
 import ch.bfh.ti.advancedweb.evoting.domain.User;
 import ch.bfh.ti.advancedweb.evoting.domain.UserRepository;
-import ch.bfh.ti.advancedweb.evoting.web.CurrentUserModel;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 @Component
-public class UserAuthenticatedEvent implements ApplicationListener<AuthenticationSuccessEvent> {
+class UserAuthenticatedEvent implements ApplicationListener<AuthenticationSuccessEvent> {
 
     private final CurrentUserModel currentUserModel;
 

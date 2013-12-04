@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 @Entity
 public class ReferendumVotingResult extends VotingResult {
 
-    private boolean accept;
+    private Boolean accept;
 
-    public ReferendumVotingResult(Voting voting, boolean accept, User voter) {
+    public ReferendumVotingResult(Voting voting, Boolean accept, User voter) {
         super(voting, voter);
         this.accept = accept;
     }
@@ -20,7 +20,7 @@ public class ReferendumVotingResult extends VotingResult {
         super();
     }
 
-    public boolean isAccept() {
+    public Boolean isAccept() {
         return accept;
     }
 }

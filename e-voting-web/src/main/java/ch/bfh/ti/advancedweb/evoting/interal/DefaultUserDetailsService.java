@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class DefaultUserDetailsService implements UserDetailsService {
+class DefaultUserDetailsService implements UserDetailsService {
 
     public static final String ROLE_USER = "ROLE_USER";
 

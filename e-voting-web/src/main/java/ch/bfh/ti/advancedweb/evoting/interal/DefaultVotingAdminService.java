@@ -17,7 +17,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class DefaultVotingAdminService implements VotingAdminService {
+class DefaultVotingAdminService implements VotingAdminService {
 
     private final VotingRepository votingRepository;
 

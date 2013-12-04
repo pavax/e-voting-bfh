@@ -19,7 +19,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class DefaultVotingService implements VotingService {
+class DefaultVotingService implements VotingService {
 
     private final MajorityVotingRepository majorityVotingRepository;
 
@@ -83,7 +83,7 @@ public class DefaultVotingService implements VotingService {
         final MajorityVoting majorityVoting = getMajorityVoting(majorityVotingId);
         checkIsVotingOpen(majorityVotingId, majorityVoting.isOpen());
         checkExistingVotingResult(userId, majorityVotingId);
-        votingResultRepository.save(new CandidateVotingResult(majorityVoting, new ArrayList<>(candidates), user));
+        votingResultRepository.save(new CandidateVotingResult(majorityVoting, candidates, user));
     }
 
     @Override
@@ -96,7 +96,7 @@ public class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public void saveReferendumVote(String userId, String referendumVotingId, boolean acceptReferendum) throws VotingStoppedException {
+    public void saveReferendumVote(String userId, String referendumVotingId, Boolean acceptReferendum) throws VotingStoppedException {
         final User user = getUser(userId);
         final ReferendumVoting referendumVoting = getReferendumVoting(referendumVotingId);
         checkIsVotingOpen(referendumVotingId, referendumVoting.isOpen());

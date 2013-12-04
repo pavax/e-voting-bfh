@@ -23,7 +23,6 @@ public class AdminVotingListController {
         this.adminVotingListModel = adminVotingListModel;
     }
 
-
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             final List<Voting> currentVotings = votingAdminService.getCurrentVotings();

@@ -23,7 +23,7 @@ public interface VotingService {
 
     void saveProportionalVote(String userId, String proportionalVotingId, List<Candidate> candidates) throws VotingStoppedException;
 
-    void saveReferendumVote(String userId, String referendumVotingId, boolean acceptReferendum) throws VotingStoppedException;
+    void saveReferendumVote(String userId, String referendumVotingId, Boolean acceptReferendum) throws VotingStoppedException;
 
     VotingResult getVotingFromUser(String userId, Voting voting);
 }

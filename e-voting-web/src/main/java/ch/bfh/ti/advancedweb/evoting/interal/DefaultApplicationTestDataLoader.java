@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, ApplicationListener<ContextRefreshedEvent> {
+class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, ApplicationListener<ContextRefreshedEvent> {
 
     private final UserRepository userRepository;
 
