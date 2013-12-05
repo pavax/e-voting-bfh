@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * The MajorityVotingModel containing all Fields and Methods in order to select Candidates for a Majority Voting
+ */
 @Component
 @Scope("session")
 public class MajorityVotingModel extends AbstractCandidateSelectionModel<MajorityVoting> {

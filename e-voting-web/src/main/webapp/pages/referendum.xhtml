@@ -39,7 +39,7 @@
                         <p:commandButton disabled="#{referendumVotingModel.alreadyVoted}"
                                          styleClass="btn btn-large btn-primary"
                                          value="#{msg['vote.confirm']}"
-                                         action="#{referendumVotringController.voteAction}">
+                                         action="#{referendumVotringController.saveReferendumVoting}">
                             <p:confirm header="#{msg['save.votes.confirmation.title']}"
                                        message="#{msg['save.votes.confirmation.text']}"/>
                         </p:commandButton>

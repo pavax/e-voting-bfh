@@ -1,4 +1,4 @@
-package ch.bfh.ti.advancedweb.evoting.web.voting;
+package ch.bfh.ti.advancedweb.evoting.web.voting.ballot;
 
 import ch.bfh.ti.advancedweb.evoting.VotingService;
 import ch.bfh.ti.advancedweb.evoting.VotingStoppedException;
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+/**
+ * Controls the current saved Ballots in the BallotModel
+ */
 @Component
 @Scope("request")
 public class BallotController {
@@ -27,7 +30,11 @@ public class BallotController {
         this.currentUserModel = currentUserModel;
     }
 
-
+    /**
+     * Saves all current saved Ballots which are saved in the BallotModel
+     *
+     * @return index.xhtml view-id
+     */
     public String saveAllBallots() {
 
         final String userId = currentUserModel.getUserId();
@@ -39,6 +46,7 @@ public class BallotController {
                 MessageUtils.addErrorMessage("voting.already.stopped.exception");
             }
         }
+
         for (ProportionalBallot proportionalBallot : ballotModel.getProportionalBallots()) {
             try {
                 votingService.saveProportionalVote(userId, proportionalBallot.getVotingId(), proportionalBallot.getCandidates());
@@ -61,6 +69,5 @@ public class BallotController {
         this.ballotModel.clearAll();
 
         return "index.xhtml?faces-redirect=true";
-
     }
 }

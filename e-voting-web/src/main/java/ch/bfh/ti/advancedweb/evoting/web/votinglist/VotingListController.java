@@ -5,7 +5,7 @@ import ch.bfh.ti.advancedweb.evoting.domain.voting.MajorityVoting;
 import ch.bfh.ti.advancedweb.evoting.domain.voting.ProportionalVoting;
 import ch.bfh.ti.advancedweb.evoting.domain.voting.ReferendumVoting;
 import ch.bfh.ti.advancedweb.evoting.domain.voting.Voting;
-import ch.bfh.ti.advancedweb.evoting.web.voting.BallotModel;
+import ch.bfh.ti.advancedweb.evoting.web.voting.ballot.BallotModel;
 import ch.bfh.ti.advancedweb.evoting.web.CurrentUserModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,10 @@ import javax.inject.Inject;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
+/**
+ * VotingListController is responsible to retrieve the list of current running votes
+ */
 @Component
 @Scope("request")
 public class VotingListController {
@@ -35,6 +39,13 @@ public class VotingListController {
         this.ballotModel = ballotModel;
     }
 
+    /**
+     * Fetches the current running MajorityVoting, ProportionalVoting and ReferendumVoting
+     * <p/>
+     * The Method checks the VotingState of each Voting whether there is already a saved BallotModel or not
+     * <p/>
+     * Invoked on Page-Initialization
+     */
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             final Map<MajorityVoting, Boolean> currentMajorityVotings = votingService.getCurrentMajorityVotings(currentUserModel.getUserId());

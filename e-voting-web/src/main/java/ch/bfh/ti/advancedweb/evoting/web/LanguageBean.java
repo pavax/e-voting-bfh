@@ -11,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Bean in order to switch the Languages
+ */
 @Component
 @Scope(value = "session")
 public class LanguageBean implements Serializable {
@@ -50,7 +53,11 @@ public class LanguageBean implements Serializable {
         this.localeCode = localeCode;
     }
 
-    //value change event listener
+    /**
+     * Invoked by the valueChangeListener
+     *
+     * @param e the ValueChangeEvent containig the new key of the selected language
+     */
     public void countryLocaleCodeChanged(ValueChangeEvent e) {
         setNewLocaleByKey(e.getNewValue().toString());
     }

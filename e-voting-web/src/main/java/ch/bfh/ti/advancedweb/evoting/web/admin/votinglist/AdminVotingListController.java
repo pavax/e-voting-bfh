@@ -31,6 +31,6 @@ public class AdminVotingListController {
     }
 
     public void stopAllVotings() {
-        votingAdminService.stopAllVotings();
+        votingAdminService.stopAllCurrentVotings();
     }
 }

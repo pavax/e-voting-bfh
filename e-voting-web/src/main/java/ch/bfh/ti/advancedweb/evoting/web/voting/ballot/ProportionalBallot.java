@@ -1,4 +1,4 @@
-package ch.bfh.ti.advancedweb.evoting.web.voting;
+package ch.bfh.ti.advancedweb.evoting.web.voting.ballot;
 
 import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 

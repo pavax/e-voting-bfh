@@ -61,7 +61,7 @@
                         <p:commandButton disabled="#{proportionalVotingModel.alreadyVoted}"
                                          styleClass="btn btn-large btn-primary"
                                          value="#{msg['vote.confirm']}"
-                                         action="#{proportionalVotingController.voteAction}">
+                                         action="#{proportionalVotingController.saveProportionalVoting}">
                             <p:confirm header="#{msg['save.votes.confirmation.title']}"
                                        message="#{msg['save.votes.confirmation.text']}"/>
                         </p:commandButton>

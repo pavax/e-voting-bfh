@@ -1,4 +1,4 @@
-package ch.bfh.ti.advancedweb.evoting.web.voting;
+package ch.bfh.ti.advancedweb.evoting.web.voting.ballot;
 
 public class ReferendumBallot {
 

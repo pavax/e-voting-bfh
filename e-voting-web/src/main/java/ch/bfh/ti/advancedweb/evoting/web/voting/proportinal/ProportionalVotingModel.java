@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * The ProportionalVotingModel containing all Fields and Methods in order to select Candidates for a Proportional Voting
+ */
 @Component
 @Scope("session")
 public class ProportionalVotingModel extends AbstractCandidateSelectionModel<ProportionalVoting> {

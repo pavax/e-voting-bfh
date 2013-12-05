@@ -2,6 +2,9 @@ package ch.bfh.ti.advancedweb.evoting.web;
 
 import java.util.Set;
 
+/**
+ * The CurrentUserModel contains all information about the current logged-in User
+ */
 public class CurrentUserModel {
 
     private String userId;
@@ -34,7 +37,7 @@ public class CurrentUserModel {
         this.roles = roles;
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return roles.contains("ROLE_ADMIN");
     }
 }

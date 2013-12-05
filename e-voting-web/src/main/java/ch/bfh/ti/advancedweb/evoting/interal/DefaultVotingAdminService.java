@@ -33,7 +33,7 @@ class DefaultVotingAdminService implements VotingAdminService {
     }
 
     @Override
-    public void stopAllVotings() {
+    public void stopAllCurrentVotings() {
         final List<Voting> votings = votingRepository.findAll();
         for (Voting voting : votings) {
             voting.setOpen(false);

@@ -16,8 +16,10 @@
         <sec:intercept-url pattern="/pages/*" access="ROLE_USER"/>
     </sec:http>
 
-    <sec:authentication-manager>
+    <sec:authentication-manager alias="authenticationManager">
         <sec:authentication-provider user-service-ref="defaultUserDetailsService">
         </sec:authentication-provider>
     </sec:authentication-manager>
+
+    <sec:global-method-security secured-annotations="enabled"/>
 </beans>

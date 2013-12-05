@@ -2,6 +2,9 @@ package ch.bfh.ti.advancedweb.evoting.web.voting;
 
 import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 
+/**
+ * Wraps a Candidate in order to display a free position for an Candidate
+ */
 public class CandidatePosition {
 
     private Candidate candidate;

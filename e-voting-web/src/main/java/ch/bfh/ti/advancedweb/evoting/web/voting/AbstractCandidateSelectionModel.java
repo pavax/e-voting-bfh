@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Provides common Fields and Methods for an Candidate Selection
+ *
+ * @param <T> A concrete Type of AbstractCandidateVoting (MajorityVoting or ProportionalVoting)
+ */
 public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidateVoting> {
 
     private T voting;
@@ -20,6 +25,11 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
 
     private List<CandidatePosition> candidatePositions = new ArrayList<>();
 
+    /**
+     * Initializes the current-model according to the given voting
+     *
+     * @param voting the selected Voting to handle
+     */
     public void setVoting(T voting) {
         clear();
         this.voting = voting;
@@ -28,6 +38,9 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
         this.initPossibleCandidates(voting);
     }
 
+    /**
+     * Clears all relevant Fields
+     */
     public void clear() {
         candidatePositions.clear();
         votingState = null;
@@ -36,6 +49,11 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
     }
 
 
+    /**
+     * Adds the selected Candidate to the next available CandidatePosition
+     *
+     * @param candidate the candidate to select
+     */
     public void addCandidateToTheNextFreePosition(Candidate candidate) {
         for (CandidatePosition candidatePosition : candidatePositions) {
             if (candidatePosition.getCandidate() == null) {
@@ -45,6 +63,9 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
         }
     }
 
+    /**
+     * Initializes the candidatePosition according to the available positions
+     */
     public void initCandidatePositions() {
         this.candidatePositions.clear();
         for (int i = 0; i < voting.getOpenPositions(); i++) {
@@ -52,6 +73,11 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
         }
     }
 
+    /**
+     * Checks if all available positions are already filled
+     *
+     * @return true if all positions are filled
+     */
     public boolean isMaxPositionsFilled() {
         int counter = 0;
         for (CandidatePosition candidatePosition : candidatePositions) {
@@ -62,8 +88,21 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
         return counter >= voting.getOpenPositions();
     }
 
+    /**
+     * Checks if the provided Candidate is disabled
+     * <p/>
+     * Might be the case if the candidate is already voted or is voted twice
+     *
+     * @param candidate the Candidate to check against
+     * @return true if the given Candidate is disabled
+     */
     public abstract boolean candidateDisabled(Candidate candidate);
 
+    /**
+     * Initializes the possible Candidate for the Model according to the given Voting
+     *
+     * @param voting containing the possible Candidates
+     */
     public abstract void initPossibleCandidates(T voting);
 
     public List<CandidatePosition> getCandidatePositions() {
@@ -87,6 +126,11 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
         return votingId;
     }
 
+    /**
+     * Checks if the user already voted (Saved Vote to the Database)
+     *
+     * @return true if the User already voted for the current voting
+     */
     public boolean isAlreadyVoted() {
         return alreadyVoted;
     }

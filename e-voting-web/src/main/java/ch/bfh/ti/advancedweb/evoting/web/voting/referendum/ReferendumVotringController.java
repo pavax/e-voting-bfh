@@ -3,8 +3,8 @@ package ch.bfh.ti.advancedweb.evoting.web.voting.referendum;
 import ch.bfh.ti.advancedweb.evoting.VotingService;
 import ch.bfh.ti.advancedweb.evoting.domain.result.ReferendumVotingResult;
 import ch.bfh.ti.advancedweb.evoting.web.CurrentUserModel;
-import ch.bfh.ti.advancedweb.evoting.web.voting.BallotModel;
-import ch.bfh.ti.advancedweb.evoting.web.voting.ReferendumBallot;
+import ch.bfh.ti.advancedweb.evoting.web.voting.ballot.BallotModel;
+import ch.bfh.ti.advancedweb.evoting.web.voting.ballot.ReferendumBallot;
 import ch.bfh.ti.advancedweb.evoting.web.votinglist.VotingState;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ public class ReferendumVotringController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (referendumVotingModel.getVotingState().equals(VotingState.VOTED)) {
-                final ReferendumVotingResult votingResultForUser = (ReferendumVotingResult) votingService.getVotingFromUser(currentUserModel.getUserId(), referendumVotingModel.getSelectedQuestionVoting());
+                final ReferendumVotingResult votingResultForUser = (ReferendumVotingResult) votingService.getVotingResultForUserAndVotingId(currentUserModel.getUserId(), referendumVotingModel.getSelectedQuestionVoting().getVotingId());
                 referendumVotingModel.setAccept(votingResultForUser.isAccept());
             } else if (referendumVotingModel.getVotingState().equals(VotingState.SAVED)) {
                 final ReferendumBallot referendumBallot = ballotModel.findReferendumBallot(referendumVotingModel.getSelectedQuestionVoting().getVotingId());
@@ -45,7 +45,7 @@ public class ReferendumVotringController {
         }
     }
 
-    public String voteAction() {
+    public String saveReferendumVoting() {
         ballotModel.addReferendumBallot(new ReferendumBallot(referendumVotingModel.isAccept(), referendumVotingModel.getSelectedQuestionVoting().getVotingId()));
         referendumVotingModel.clear();
         return "index.xhtml?faces-redirect=true";

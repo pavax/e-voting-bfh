@@ -104,9 +104,9 @@ class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public VotingResult getVotingFromUser(String userId, Voting voting) {
+    public VotingResult getVotingResultForUserAndVotingId(String userId, String votingId) {
         final User user = getUser(userId);
-        return votingResultRepository.findVotingResultFromUser(user.getId(), voting.getVotingId());
+        return votingResultRepository.findVotingResultFromUser(user.getId(), votingId);
     }
 
     private void checkIsVotingOpen(String referendumVotingId, boolean open) throws VotingStoppedException {

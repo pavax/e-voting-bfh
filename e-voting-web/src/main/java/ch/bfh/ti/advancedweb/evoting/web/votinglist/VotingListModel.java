@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+
+/**
+ * Contains a Map for all running MajorityVoting, ProportionalVoting and ReferendumVoting
+ * having the VotingState (according to the current logged-in User) as the Maps Value
+ */
 @Component
 @Scope("view")
 public class VotingListModel {
@@ -25,7 +30,6 @@ public class VotingListModel {
     public void setMajorityVotingMap(Map<MajorityVoting, VotingState> majorityVotingMap) {
         this.majorityVotingMap = majorityVotingMap;
     }
-
 
     public void setProportionalVotingMap(Map<ProportionalVoting, VotingState> proportionalVotingMap) {
         this.proportionalVotingMap = proportionalVotingMap;

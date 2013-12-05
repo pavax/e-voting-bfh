@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+/**
+ * Initializes the CurrentUserModel after a successful Authentication
+ */
 @Component
 class UserAuthenticatedEvent implements ApplicationListener<AuthenticationSuccessEvent> {
 
