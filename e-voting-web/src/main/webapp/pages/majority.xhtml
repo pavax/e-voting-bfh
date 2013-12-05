@@ -18,18 +18,23 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span7">
-                    <h2>Ihre Wahl</h2>
+                    <h2>#{msg['user.votes.title']}</h2>
 
                     <div class="well">
                         <ul>
-                            <li>Sie können max #{majorityVotingModel.voting.openPositions} Kandidaten wählen</li>
-                            <li>Sie können nur die verüfgbaren Kandidaten wählen d.h Keine eigenen Kandiaten wählen</li>
-                            <li>Sie können einen Kandidaten max zweimal wählen</li>
+                            <li>
+                                <h:outputFormat value="#{msg['proportional.voting.infotext.1']}"><f:param
+                                        value="#{proportionalVotingModel.voting.openPositions}"/>
+                                </h:outputFormat>
+                            </li>
+                            <li>#{msg['majority.voting.infotext.1']}</li>
+                            <li>#{msg['majority.voting.infotext.2']}</li>
                         </ul>
                     </div>
 
                     <h:form id="selectedCandidates">
-                        <ui:repeat value="#{majorityVotingModel.candidatePositions}" var="candidatePosition" varStatus="state">
+                        <ui:repeat value="#{majorityVotingModel.candidatePositions}" var="candidatePosition"
+                                   varStatus="state">
                             <div class="well">
                                 <h:panelGroup rendered="#{!empty candidatePosition.candidate}">
                                     #{candidatePosition.candidate.firstName} #{candidatePosition.candidate.lastName}
@@ -39,17 +44,20 @@
                                                      action="#{majorityVotingController.removedSelectedCandidate(state.index)}"/>
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{empty candidatePosition.candidate}">
-                                    Freie Position
+                                    #{msg['free.candidate.position']}
                                 </h:panelGroup>
                             </div>
                         </ui:repeat>
 
                         <br/>
 
-                        <h:commandButton disabled="#{majorityVotingModel.alreadyVoted}"
+                        <p:commandButton disabled="#{majorityVotingModel.alreadyVoted}"
                                          styleClass="btn btn-large btn-primary"
                                          value="#{msg['vote.confirm']}"
-                                         action="#{majorityVotingController.voteAction}"/>
+                                         action="#{majorityVotingController.voteAction}">
+                            <p:confirm header="#{msg['save.votes.confirmation.title']}"
+                                       message="#{msg['save.votes.confirmation.text']}"/>
+                        </p:commandButton>
                     </h:form>
                 </div>
                 <div class="span5">

@@ -10,7 +10,8 @@
                         default-target-url="/pages/index.xhtml"
                         authentication-failure-url="/login.xhtml?login_error=true"
                         always-use-default-target="true"/>
-        <sec:logout logout-url="/logout"/>
+        <sec:logout logout-url="/logout" invalidate-session="true"/>
+        <sec:session-management session-fixation-protection="migrateSession"/>
         <sec:intercept-url pattern="/pages/admin/*" access="ROLE_ADMIN"/>
         <sec:intercept-url pattern="/pages/*" access="ROLE_USER"/>
     </sec:http>

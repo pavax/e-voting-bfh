@@ -22,22 +22,27 @@
 
                     <div class="well">
                         <ul>
-                            <li>Sie können nur einmal Abstimmen</li>
+                            <li>#{msg['referendum.infotext.onlyOneVote']}</li>
                         </ul>
                     </div>
 
                     <h:form>
 
-                        <div class="alert alert-info">
+                        <div class="alert alert-info" style="font-size: x-large">
                             <h:outputText value="#{referendumVotingModel.selectedQuestionVoting.question}"/>
+
+                            <p:selectBooleanCheckbox value="#{referendumVotingModel.accept}"/> Ja
                         </div>
 
-                        <p:selectBooleanCheckbox value="#{referendumVotingModel.accept}" />
+                        <br/>
 
-                        <h:commandButton disabled="#{referendumVotingModel.alreadyVoted}"
+                        <p:commandButton disabled="#{referendumVotingModel.alreadyVoted}"
                                          styleClass="btn btn-large btn-primary"
                                          value="#{msg['vote.confirm']}"
-                                         action="#{referendumVotringController.voteAction}"/>
+                                         action="#{referendumVotringController.voteAction}">
+                            <p:confirm header="#{msg['save.votes.confirmation.title']}"
+                                       message="#{msg['save.votes.confirmation.text']}"/>
+                        </p:commandButton>
 
                     </h:form>
 

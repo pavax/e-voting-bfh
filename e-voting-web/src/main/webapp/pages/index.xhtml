@@ -57,10 +57,11 @@
             <br/>
 
             <h:panelGroup layout="block" class="hero-unit" rendered="#{ballotModel.containsAny()}">
-                <h:commandButton styleClass="btn btn-large btn-block btn-danger"
-                                 action="#{ballotController.saveAllBallots}" value="SAVE ALL"/>
+                <p:commandButton styleClass="btn btn-large btn-block btn-danger"
+                                 action="#{ballotController.saveAllBallots}" value="#{msg['send.ballots']}">
+                    <p:confirm header="#{msg['send.ballots.confirmation.titel']}" message="#{msg['are.you.sure']}"/>
+                </p:commandButton>
             </h:panelGroup>
-
         </h:form>
     </ui:define>
 </ui:composition>
