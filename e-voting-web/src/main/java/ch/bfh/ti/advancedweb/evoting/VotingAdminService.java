@@ -35,7 +35,7 @@ public interface VotingAdminService {
     Set<CandidateResultData> getMajorityVotingResultData(String votingId);
 
 
-     ProportionalVotingResultData getProportionalVotingResultData(String votingId);
+    ProportionalVotingResultData getProportionalVotingResultData(String votingId);
 
 
     /**
