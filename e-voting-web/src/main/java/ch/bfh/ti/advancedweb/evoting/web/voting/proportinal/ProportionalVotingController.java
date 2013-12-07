@@ -109,6 +109,7 @@ public class ProportionalVotingController {
         for (Candidate candidate : candidateList) {
             proportionalVotingModel.addCandidateToTheNextFreePosition(candidate);
         }
+        proportionalVotingModel.setPartyListName(partyName);
     }
 
     /**

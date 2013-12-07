@@ -34,10 +34,20 @@
             <p:tabView id="tabView">
 
                 <p:tab id="tab1" title="#{msg['results.list.title']}">
+
                     <p:tabView id="tabView2"
                                value="#{evoting:setToList(proportionalVotingResultModel.proportionalVotingResultData.partyResultDatas)}"
                                var="partyResultData">
                         <p:tab title="#{partyResultData.partyName}">
+
+                            <h:panelGroup styleClass="alert alert-info" layout="block">
+                                #{msg['party.votes']}: #{partyResultData.partyVotes}
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="alert alert-info" layout="block">
+                                #{msg['total.positions']}: #{partyResultData.partyPositionCount}
+                            </h:panelGroup>
+
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
@@ -48,7 +58,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
 
                                 <ui:repeat value="#{partyResultData.candidateResults.toArray()}" var="x">
                                     <tr>

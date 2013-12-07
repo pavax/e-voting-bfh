@@ -55,6 +55,7 @@ class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, App
     private void setupUserTestData() {
         userRepository.save(new User("max", "secret", false));
         userRepository.save(new User("moritz", "secret", false));
+        userRepository.save(new User("susi", "secret", false));
         userRepository.save(new User("admin", "secret", true));
     }
 
