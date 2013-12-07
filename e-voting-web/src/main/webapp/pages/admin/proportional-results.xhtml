@@ -3,8 +3,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:evoting="http://ti.bfh.ch./util"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:evoting="http://ti.bfh.ch./util"
                 template="/WEB-INF/templates/default.xhtml">
 
     <ui:define name="metadata">
@@ -19,12 +19,53 @@
                 <h:outputFormat value="#{msg['voting.results.title']}">
                     <f:param value="#{proportionalVotingResultModel.selectedProportionalVoting.title}"/>
                 </h:outputFormat>
+
             </h1>
+
+            <h:panelGroup styleClass="alert alert-info" layout="block">
+                #{msg['total.party.votes']}: #{proportionalVotingResultModel.proportionalVotingResultData.countTotalPartyVotes}
+            </h:panelGroup>
+
+            <h:panelGroup styleClass="alert alert-info" layout="block">
+                #{msg['total.positions']}: #{proportionalVotingResultModel.selectedProportionalVoting.openPositions}
+            </h:panelGroup>
+
 
             <p:tabView id="tabView">
 
                 <p:tab id="tab1" title="#{msg['results.list.title']}">
-                    TODO
+                    <p:tabView id="tabView2"
+                               value="#{evoting:setToList(proportionalVotingResultModel.proportionalVotingResultData.partyResultDatas)}"
+                               var="partyResultData">
+                        <p:tab title="#{partyResultData.partyName}">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#{msg['candidate.firstName']}</th>
+                                    <th>#{msg['candidate.lastName']}</th>
+                                    <th>#{msg['candidate.partyName']}</th>
+                                    <th>#{msg['candidate.votes']}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                <ui:repeat value="#{partyResultData.candidateResults.toArray()}" var="x">
+                                    <tr>
+                                        <td>#{x.candidate.firstName} </td>
+                                        <td> #{x.candidate.lastName} </td>
+                                        <td>#{x.candidate.partyName}</td>
+                                        <td>#{x.votes} (#{x.elected})</td>
+                                    </tr>
+                                </ui:repeat>
+
+                                </tbody>
+                            </table>
+
+                        </p:tab>
+
+
+                    </p:tabView>
                 </p:tab>
                 <p:tab id="tab2" title="#{msg['results.chart.title']}">
 

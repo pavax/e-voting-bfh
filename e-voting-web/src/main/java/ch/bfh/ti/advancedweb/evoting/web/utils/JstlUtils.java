@@ -3,6 +3,7 @@ package ch.bfh.ti.advancedweb.evoting.web.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public  class JstlUtils {
 
@@ -16,9 +17,17 @@ public  class JstlUtils {
             return null;
         }
 
-        List<Map.Entry<T, S>> list = new ArrayList<Map.Entry<T, S>>();
+        List<Map.Entry<T, S>> list = new ArrayList<>();
         list.addAll(map.entrySet());
 
         return list;
+    }
+
+    /**
+     * Converts a Set to a List. This is needed since
+     * very some primefaces components can not iterate a Set
+     */
+    public static <T> List<T> setToList(Set<T> set) {
+        return new ArrayList<>(set);
     }
 }

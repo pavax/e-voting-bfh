@@ -35,7 +35,7 @@ public class CandidateVotingResult extends VotingResult {
         checkVotedCandidateFrequency(votedCandidates);
         this.votedCandidates.addAll(votedCandidates);
         this.partyListName = partyListName;
-        if (partyListName != null) {
+        if (partyListName != null && !partyListName.isEmpty()) {
             countCandidatePartyVotes(votedCandidates, partyListName);
             countAdditionalPartyVotes(proportionalVoting, votedCandidates);
         }

@@ -27,6 +27,7 @@ public class ProportionalVotingResultController {
             final ProportionalVotingResultData proportionalVotingResultData = votingAdminService.getProportionalVotingResultData(proportionalVotingResultModel.getSelectedProportionalVoting().getVotingId());
             proportionalVotingResultModel.clear();
             proportionalVotingResultModel.setProportionalVotingResultData(proportionalVotingResultData);
+
         }
     }
 }

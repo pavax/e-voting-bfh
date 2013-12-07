@@ -64,7 +64,7 @@ class DefaultVotingAdminService implements VotingAdminService {
         final int openPositions = proportionalVoting.getOpenPositions();
 
         final Integer countTotalPartyVotes = candidateVotingResultRepository.countTotalPartyVotes(votingId);
-        final Set<PartyResultData> partyResultList = new TreeSet<>();
+        final Set<PartyResultData> partyResultList = new HashSet<>();
         int quotient = 0;
         if (countTotalPartyVotes != null) {
             quotient = (countTotalPartyVotes / (openPositions + 1)) + 1;
@@ -79,7 +79,9 @@ class DefaultVotingAdminService implements VotingAdminService {
                 }
             }
         }
-        return new ProportionalVotingResultData(partyResultList, countTotalPartyVotes, quotient);
+        final List<PartyResultData> arrayList = new ArrayList<>(partyResultList);
+        Collections.sort(arrayList);
+        return new ProportionalVotingResultData(new LinkedHashSet<>(arrayList), countTotalPartyVotes, quotient);
     }
 
     @Override
@@ -114,7 +116,7 @@ class DefaultVotingAdminService implements VotingAdminService {
         }
         final Map<Candidate, Integer> sortedMap = MapUtil.sortByValue(map);
         for (Map.Entry<Candidate, Integer> candidateIntegerEntry : sortedMap.entrySet()) {
-            if (candidateIntegerEntry.getValue() != null && candidateIntegerEntry.getValue() != 0) {
+            if (candidateIntegerEntry.getValue() != null) {
                 boolean elected = result.size() < positions;
                 result.add(new CandidateResultData(candidateIntegerEntry.getKey(), candidateIntegerEntry.getValue(), elected));
             }

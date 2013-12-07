@@ -21,6 +21,10 @@
                 </h:outputFormat>
             </h1>
 
+            <h:panelGroup styleClass="alert alert-info" layout="block">
+                #{msg['total.positions']}: #{majorityVotingResultModel.selectedMajorityVoting.openPositions}
+            </h:panelGroup>
+
             <p:tabView id="tabView">
 
                 <p:tab id="tab1" title="#{msg['results.list.title']}">

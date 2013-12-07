@@ -13,4 +13,9 @@
         <function-class>ch.bfh.ti.advancedweb.evoting.web.utils.JstlUtils</function-class>
         <function-signature>java.util.List mapToList(java.util.Map)</function-signature>
     </function>
+    <function>
+        <function-name>setToList</function-name>
+        <function-class>ch.bfh.ti.advancedweb.evoting.web.utils.JstlUtils</function-class>
+        <function-signature>java.util.List setToList(java.util.Set)</function-signature>
+    </function>
 </facelet-taglib>
