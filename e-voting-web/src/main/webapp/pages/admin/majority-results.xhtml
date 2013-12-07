@@ -45,7 +45,12 @@
                                 <td>#{candidateResult.candidate.firstName} </td>
                                 <td> #{candidateResult.candidate.lastName} </td>
                                 <td>#{candidateResult.candidate.partyName}</td>
-                                <td>#{candidateResult.votes} (#{candidateResult.elected})</td>
+                                <td>
+                                    #{candidateResult.votes}
+                                    <h:outputText rendered="#{candidateResult.elected}"
+                                                  style="font-weight: bold"
+                                                  value="(#{msg['candidate.elected']})"/>
+                                </td>
                             </tr>
                         </ui:repeat>
 

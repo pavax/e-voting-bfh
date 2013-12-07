@@ -96,7 +96,7 @@ class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public void saveReferendumVote(String userId, String referendumVotingId, Boolean acceptReferendum) throws VotingStoppedException {
+    public void saveReferendumVote(String userId, String referendumVotingId, boolean acceptReferendum) throws VotingStoppedException {
         final User user = getUser(userId);
         final ReferendumVoting referendumVoting = getReferendumVoting(referendumVotingId);
         checkIsVotingOpen(referendumVotingId, referendumVoting.isOpen());

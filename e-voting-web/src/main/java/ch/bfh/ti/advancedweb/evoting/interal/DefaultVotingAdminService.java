@@ -64,7 +64,7 @@ class DefaultVotingAdminService implements VotingAdminService {
         final int openPositions = proportionalVoting.getOpenPositions();
 
         final Integer countTotalPartyVotes = candidateVotingResultRepository.countTotalPartyVotes(votingId);
-        final Set<PartyResultData> partyResultList = new HashSet<>();
+        final Set<PartyResultData> result = new HashSet<>();
         int quotient = 0;
         if (countTotalPartyVotes != null) {
             quotient = (countTotalPartyVotes / (openPositions + 1)) + 1;
@@ -75,13 +75,13 @@ class DefaultVotingAdminService implements VotingAdminService {
                     final int partyPositionCount = Math.round(partyVotes / quotient);
                     final List<Candidate> candidatesByParty = proportionalVoting.getCandidatesByParty(partyName);
                     final Set<CandidateResultData> candidateResultDataSet = determineSelectedCandidatesForParty(partyPositionCount, votingId, new HashSet<>(candidatesByParty));
-                    partyResultList.add(new PartyResultData(partyName, candidateResultDataSet, partyVotes, partyPositionCount));
+                    result.add(new PartyResultData(partyName, candidateResultDataSet, partyVotes, partyPositionCount));
                 }
             }
         }
-        final List<PartyResultData> arrayList = new ArrayList<>(partyResultList);
-        Collections.sort(arrayList);
-        return new ProportionalVotingResultData(new LinkedHashSet<>(arrayList), countTotalPartyVotes, quotient);
+        final List<PartyResultData> sortedResult = new ArrayList<>(result);
+        Collections.sort(sortedResult);
+        return new ProportionalVotingResultData(new LinkedHashSet<>(sortedResult), countTotalPartyVotes, quotient);
     }
 
     @Override

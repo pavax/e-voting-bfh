@@ -29,6 +29,7 @@
                             </li>
                             <li>#{msg['proportional.voting.infotext.2']}</li>
                             <li>#{msg['proporitional.voting.infotext.3']}</li>
+                            <li>#{msg['proporitional.voting.infotext.4']}</li>
                         </ul>
                     </div>
 
@@ -41,7 +42,7 @@
                         <h:outputText value="Partei:" style="font-weight: bold"/>
                         <br/>
                         <p:selectOneMenu value="#{proportionalVotingModel.partyListName}"
-                                         disabled="#{proportionalVotingModel.alreadyVoted}">
+                                         disabled="#{!proportionalVotingModel.oneCandidateSelected or proportionalVotingModel.alreadyVoted }">
                             <f:selectItem itemLabel="Keine Partei" itemValue="#{null}"/>
                             <f:selectItems value="#{proportionalVotingModel.possibleParties}"/>
                         </p:selectOneMenu>
@@ -70,11 +71,11 @@
 
                         <br/>
 
-
-                        <p:commandButton disabled="#{proportionalVotingModel.alreadyVoted}"
-                                         styleClass="btn btn-large btn-primary"
-                                         value="#{msg['vote.confirm']}"
-                                         action="#{proportionalVotingController.saveProportionalVoting}">
+                        <p:commandButton
+                                disabled="#{!proportionalVotingModel.oneCandidateSelected or proportionalVotingModel.alreadyVoted}"
+                                styleClass="btn btn-large btn-primary"
+                                value="#{msg['vote.confirm']}"
+                                action="#{proportionalVotingController.saveProportionalVoting}">
                             <p:confirm header="#{msg['save.votes.confirmation.title']}"
                                        message="#{msg['save.votes.confirmation.text']}"/>
                         </p:commandButton>

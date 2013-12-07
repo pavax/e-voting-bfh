@@ -127,11 +127,20 @@ public abstract class AbstractCandidateSelectionModel<T extends AbstractCandidat
     }
 
     /**
-     * Checks if the user already voted (Saved Vote to the Database)
+     * Checks if the user already voted (Saved a Vote to the Database)
      *
      * @return true if the User already voted for the current voting
      */
     public boolean isAlreadyVoted() {
         return alreadyVoted;
+    }
+
+    public boolean isOneCandidateSelected(){
+        for (CandidatePosition candidatePosition : candidatePositions) {
+            if (candidatePosition.getCandidate() != null){
+                return true;
+            }
+        }
+        return false;
     }
 }

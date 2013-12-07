@@ -29,6 +29,7 @@
                             </li>
                             <li>#{msg['majority.voting.infotext.1']}</li>
                             <li>#{msg['majority.voting.infotext.2']}</li>
+                            <li>#{msg['proporitional.voting.infotext.4']}</li>
                         </ul>
                     </div>
 
@@ -51,7 +52,7 @@
 
                         <br/>
 
-                        <p:commandButton disabled="#{majorityVotingModel.alreadyVoted}"
+                        <p:commandButton disabled="#{!majorityVotingModel.oneCandidateSelected or majorityVotingModel.alreadyVoted}"
                                          styleClass="btn btn-large btn-primary"
                                          value="#{msg['vote.confirm']}"
                                          action="#{majorityVotingController.saveMajorityVoting}">

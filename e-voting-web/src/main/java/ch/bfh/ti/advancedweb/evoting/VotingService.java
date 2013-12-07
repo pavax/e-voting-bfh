@@ -77,7 +77,7 @@ public interface VotingService {
      * @param acceptReferendum   Boolean whether the user accepts the referendum or not
      * @throws VotingStoppedException
      */
-    void saveReferendumVote(String userId, String referendumVotingId, Boolean acceptReferendum) throws VotingStoppedException;
+    void saveReferendumVote(String userId, String referendumVotingId, boolean acceptReferendum) throws VotingStoppedException;
 
     /**
      * Retrieve the saved User's Vote for the given Voting

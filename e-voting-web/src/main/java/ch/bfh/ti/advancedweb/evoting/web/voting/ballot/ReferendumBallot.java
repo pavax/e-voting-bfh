@@ -4,14 +4,14 @@ public class ReferendumBallot {
 
     private String votingId;
 
-    private Boolean accept;
+    private boolean accept;
 
-    public ReferendumBallot(Boolean accept, String votingId) {
+    public ReferendumBallot(boolean accept, String votingId) {
         this.accept = accept;
         this.votingId = votingId;
     }
 
-    public Boolean getAccept() {
+    public boolean getAccept() {
         return accept;
     }
 

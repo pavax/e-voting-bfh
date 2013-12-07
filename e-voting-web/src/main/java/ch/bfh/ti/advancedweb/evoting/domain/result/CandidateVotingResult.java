@@ -2,15 +2,15 @@ package ch.bfh.ti.advancedweb.evoting.domain.result;
 
 import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 import ch.bfh.ti.advancedweb.evoting.domain.User;
-import ch.bfh.ti.advancedweb.evoting.domain.voting.*;
+import ch.bfh.ti.advancedweb.evoting.domain.voting.MajorityVoting;
+import ch.bfh.ti.advancedweb.evoting.domain.voting.ProportionalVoting;
+import ch.bfh.ti.advancedweb.evoting.domain.voting.Voting;
+import ch.bfh.ti.advancedweb.evoting.domain.voting.VotingType;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class CandidateVotingResult extends VotingResult {
@@ -31,6 +31,7 @@ public class CandidateVotingResult extends VotingResult {
      */
     public CandidateVotingResult(ProportionalVoting proportionalVoting, List<Candidate> votedCandidates, String partyListName, User voter) {
         super(proportionalVoting, voter);
+        checkAtLeastOneCandidate(votedCandidates);
         validateProportionalVotingType(proportionalVoting);
         checkVotedCandidateFrequency(votedCandidates);
         this.votedCandidates.addAll(votedCandidates);
@@ -43,11 +44,17 @@ public class CandidateVotingResult extends VotingResult {
 
     public CandidateVotingResult(MajorityVoting majorityVoting, Set<Candidate> votedCandidates, User voter) {
         super(majorityVoting, voter);
+        checkAtLeastOneCandidate(votedCandidates);
         validateMajorityVotingType(majorityVoting);
         this.votedCandidates.addAll(votedCandidates);
         this.partyListName = null;
     }
 
+    private void checkAtLeastOneCandidate(Collection<Candidate> votedCandidates) {
+        if (votedCandidates.isEmpty()) {
+            throw new IllegalArgumentException("At least one candidate must be selected");
+        }
+    }
 
     private void countCandidatePartyVotes(List<Candidate> votedCandidates, String partyListName) {
         for (Candidate votedCandidate : votedCandidates) {

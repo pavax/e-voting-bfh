@@ -29,8 +29,8 @@ public class ReferendumVotingResultModel {
     public void setReferendumResultData(ReferendumResultData referendumResultData) {
         this.referendumResultData = referendumResultData;
         this.pieModel = new PieChartModel();
-        this.pieModel.set("JA", referendumResultData.getAcceptCount());
-        this.pieModel.set("NEIN", referendumResultData.getRejectCount());
+        this.pieModel.set("JA (Stimmen: " + referendumResultData.getAcceptCount() + ")", referendumResultData.getAcceptCount());
+        this.pieModel.set("NEIN (Stimmen: " + referendumResultData.getRejectCount() + ")", referendumResultData.getRejectCount());
     }
 
     public ReferendumVoting getSelectedReferendumVoting() {
