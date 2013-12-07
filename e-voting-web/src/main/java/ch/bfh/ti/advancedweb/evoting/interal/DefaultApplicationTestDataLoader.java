@@ -26,7 +26,7 @@ class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, App
 
     private final MajorityVotingRepository majorityVotingRepository;
 
-    private final ProporzVotingRepository proporzVotingRepository;
+    private final ProportionalVotingRepository proportionalVotingRepository;
 
     private final ReferendumVotingRepository referendumVotingRepository;
 
@@ -35,10 +35,10 @@ class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, App
     private TransactionTemplate transactionTemplate;
 
     @Inject
-    public DefaultApplicationTestDataLoader(UserRepository userRepository, MajorityVotingRepository majorityVotingRepository, ProporzVotingRepository proporzVotingRepository, PlatformTransactionManager platformTransactionManager, ReferendumVotingRepository referendumVotingRepository) {
+    public DefaultApplicationTestDataLoader(UserRepository userRepository, MajorityVotingRepository majorityVotingRepository, ProportionalVotingRepository proportionalVotingRepository, PlatformTransactionManager platformTransactionManager, ReferendumVotingRepository referendumVotingRepository) {
         this.userRepository = userRepository;
         this.majorityVotingRepository = majorityVotingRepository;
-        this.proporzVotingRepository = proporzVotingRepository;
+        this.proportionalVotingRepository = proportionalVotingRepository;
         this.referendumVotingRepository = referendumVotingRepository;
         this.transactionTemplate = new TransactionTemplate(platformTransactionManager);
     }
@@ -68,7 +68,7 @@ class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, App
         setupCandidate(candidates, "SVP", 8);
         setupCandidate(candidates, "CVP", 8);
         setupCandidate(candidates, "Grünen", 8);
-        proporzVotingRepository.save(new ProportionalVoting("Proporzwahl Titel 1", 8, candidates));
+        proportionalVotingRepository.save(new ProportionalVoting("Proporzwahl Titel 1", 8, candidates));
     }
 
     private void setupCandidate(List<Candidate> candidates, String partyName, int number) {

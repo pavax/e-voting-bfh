@@ -24,7 +24,7 @@ public class ReferendumVotingResultController {
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            final ReferendumResultData referendumResultData = votingAdminService.getReferendumResult(referendumVotingResultModel.getSelectedVoting().getVotingId());
+            final ReferendumResultData referendumResultData = votingAdminService.getReferendumResult(referendumVotingResultModel.getSelectedReferendumVoting().getVotingId());
             referendumVotingResultModel.clear();
             referendumVotingResultModel.setReferendumResultData(referendumResultData);
         }

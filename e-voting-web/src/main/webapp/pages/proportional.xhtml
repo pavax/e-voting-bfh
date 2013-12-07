@@ -35,8 +35,21 @@
                     <h:form id="selectedCandidates">
 
                         <h:outputText value="Alle Positionen wurden von Ihnen bereits gewählt"
-                                      rendered="#{proportionalVotingModel.maxPositionsFilled}"/>
+                                      rendered="#{proportionalVotingModel.maxPositionsFilled and !proportionalVotingModel.alreadyVoted}"/>
 
+                        <br/>
+                        <h:outputText value="Partei:" style="font-weight: bold"/>
+                        <br/>
+                        <p:selectOneMenu value="#{proportionalVotingModel.partyListName}"
+                                         disabled="#{proportionalVotingModel.alreadyVoted}">
+                            <f:selectItem itemLabel="Keine Partei" itemValue="#{null}"/>
+                            <f:selectItems value="#{proportionalVotingModel.possibleParties}"/>
+                        </p:selectOneMenu>
+
+                        <br/>
+                        <br/>
+                        <h:outputText value="Kandidaten:" style="font-weight: bold"/>
+                        <br/>
                         <ui:repeat value="#{proportionalVotingModel.candidatePositions}"
                                    var="candidatePosition"
                                    varStatus="state">

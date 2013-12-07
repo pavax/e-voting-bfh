@@ -18,6 +18,8 @@ public class ProportionalVotingModel extends AbstractCandidateSelectionModel<Pro
 
     private Map<String, List<Candidate>> partyCandidatesMap = new HashMap<>();
 
+    private String partyListName;
+
     @Override
     public void clear() {
         super.clear();
@@ -46,5 +48,23 @@ public class ProportionalVotingModel extends AbstractCandidateSelectionModel<Pro
 
     public Map<String, List<Candidate>> getPartyCandidatesMap() {
         return partyCandidatesMap;
+    }
+
+    public String getPartyListName() {
+        return partyListName;
+    }
+
+    public void setPartyListName(String partyListName) {
+        this.partyListName = partyListName;
+    }
+
+    public List<String> getPossibleParties() {
+        Set<String> partyNames = new HashSet<>();
+        for (CandidatePosition candidatePosition : getCandidatePositions()) {
+            if (candidatePosition.getCandidate() != null){
+                partyNames.add(candidatePosition.getCandidate().getPartyName());
+            }
+        }
+        return new ArrayList<>(partyNames);
     }
 }

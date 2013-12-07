@@ -10,9 +10,12 @@ public class ProportionalBallot {
 
     private List<Candidate> candidates;
 
-    public ProportionalBallot(List<Candidate> candidates, String votingId) {
+    private String partyListName;
+
+    public ProportionalBallot(List<Candidate> candidates, String votingId, String partyListName) {
         this.candidates = candidates;
         this.votingId = votingId;
+        this.partyListName = partyListName;
     }
 
     public List<Candidate> getCandidates() {
@@ -38,5 +41,13 @@ public class ProportionalBallot {
     @Override
     public int hashCode() {
         return votingId != null ? votingId.hashCode() : 0;
+    }
+
+    public void setPartyListName(String partyListName) {
+        this.partyListName = partyListName;
+    }
+
+    public String getPartyListName() {
+        return partyListName;
     }
 }

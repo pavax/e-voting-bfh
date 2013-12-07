@@ -64,9 +64,10 @@ public interface VotingService {
      * @param userId               saves the vote for the given userId
      * @param proportionalVotingId saves the vote the given  proportional voting
      * @param candidates           give the vote to given Set of Candidate
+     * @param partyListName        optionally the name of the party
      * @throws VotingStoppedException
      */
-    void saveProportionalVote(String userId, String proportionalVotingId, List<Candidate> candidates) throws VotingStoppedException;
+    void saveProportionalVote(String userId, String proportionalVotingId, String partyListName, List<Candidate> candidates) throws VotingStoppedException;
 
     /**
      * Saves a User's Vote for the given Referendum-Voting

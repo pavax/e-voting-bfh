@@ -1,12 +1,9 @@
 package ch.bfh.ti.advancedweb.evoting.interal;
 
-import ch.bfh.ti.advancedweb.evoting.CandidateResultData;
-import ch.bfh.ti.advancedweb.evoting.ReferendumResultData;
-import ch.bfh.ti.advancedweb.evoting.VotingAdminService;
+import ch.bfh.ti.advancedweb.evoting.*;
 import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 import ch.bfh.ti.advancedweb.evoting.domain.result.CandidateVotingResultRepository;
 import ch.bfh.ti.advancedweb.evoting.domain.result.ReferendumVotingResultRepository;
-import ch.bfh.ti.advancedweb.evoting.domain.result.VotingResultRepository;
 import ch.bfh.ti.advancedweb.evoting.domain.voting.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -19,6 +16,10 @@ import java.util.*;
 @Transactional
 class DefaultVotingAdminService implements VotingAdminService {
 
+    private final MajorityVotingRepository majorityVotingRepository;
+
+    private final ProportionalVotingRepository proportionalVotingRepository;
+
     private final VotingRepository votingRepository;
 
     private final ReferendumVotingResultRepository referendumVotingResultRepository;
@@ -26,10 +27,12 @@ class DefaultVotingAdminService implements VotingAdminService {
     private final CandidateVotingResultRepository candidateVotingResultRepository;
 
     @Inject
-    public DefaultVotingAdminService(VotingRepository votingRepository, VotingResultRepository votingResultRepository, ReferendumVotingResultRepository referendumVotingResultRepository, CandidateVotingResultRepository candidateVotingResultRepository) {
+    public DefaultVotingAdminService(VotingRepository votingRepository, ProportionalVotingRepository proportionalVotingRepository, ReferendumVotingResultRepository referendumVotingResultRepository, CandidateVotingResultRepository candidateVotingResultRepository, MajorityVotingRepository majorityVotingRepository) {
         this.votingRepository = votingRepository;
+        this.proportionalVotingRepository = proportionalVotingRepository;
         this.referendumVotingResultRepository = referendumVotingResultRepository;
         this.candidateVotingResultRepository = candidateVotingResultRepository;
+        this.majorityVotingRepository = majorityVotingRepository;
     }
 
     @Override
@@ -46,22 +49,37 @@ class DefaultVotingAdminService implements VotingAdminService {
     }
 
     @Override
-    public Set<CandidateResultData> getCandidateResults(String votingId) {
-        final Voting voting = votingRepository.findOne(votingId);
-        List<CandidateResultData> result = new ArrayList<>();
-        final VotingType votingType = voting.getVotingType();
-        if (votingType.equals(VotingType.MAJORITY)) {
-            count(votingId, result, new ArrayList<>(((MajorityVoting) voting).getMajorityCandidates()));
-        } else if (votingType.equals(VotingType.PROPORTIONAL)) {
-            ProportionalVoting proportionalVoting = (ProportionalVoting) voting;
-            count(votingId, result, proportionalVoting.getProportionalCandidates());
-        } else {
-            throw new IllegalStateException("Voting having voting type '" + votingType + "' is not supported");
+    public Set<CandidateResultData> getMajorityVotingResultData(String votingId) {
+        final MajorityVoting majorityVoting = majorityVotingRepository.findOne(votingId);
+        return getMajorityResult(votingId, majorityVoting.getMajorityCandidates(), majorityVoting.getOpenPositions());
+    }
+
+    @Override
+    public ProportionalVotingResultData getProportionalVotingResultData(String votingId) {
+        final ProportionalVoting proportionalVoting = proportionalVotingRepository.findOne(votingId);
+        if (!proportionalVoting.getVotingType().equals(VotingType.PROPORTIONAL)) {
+            throw new IllegalStateException("Voting having voting type '" + proportionalVoting.getVotingType() + "' is not supported");
         }
 
-        Collections.sort(result);
+        final int openPositions = proportionalVoting.getOpenPositions();
 
-        return new LinkedHashSet<>(result);
+        final Integer countTotalPartyVotes = candidateVotingResultRepository.countTotalPartyVotes(votingId);
+        final Set<PartyResultData> partyResultList = new TreeSet<>();
+        int quotient = 0;
+        if (countTotalPartyVotes != null) {
+            quotient = (countTotalPartyVotes / (openPositions + 1)) + 1;
+            final Set<String> allPartyNames = proportionalVoting.getAllPartyNames();
+            for (String partyName : allPartyNames) {
+                final Integer partyVotes = candidateVotingResultRepository.countPartyVotes(votingId, partyName);
+                if (partyVotes != null) {
+                    final int partyPositionCount = Math.round(partyVotes / quotient);
+                    final List<Candidate> candidatesByParty = proportionalVoting.getCandidatesByParty(partyName);
+                    final Set<CandidateResultData> candidateResultDataSet = determineSelectedCandidatesForParty(partyPositionCount, votingId, new HashSet<>(candidatesByParty));
+                    partyResultList.add(new PartyResultData(partyName, candidateResultDataSet, partyVotes, partyPositionCount));
+                }
+            }
+        }
+        return new ProportionalVotingResultData(partyResultList, countTotalPartyVotes, quotient);
     }
 
     @Override
@@ -71,10 +89,61 @@ class DefaultVotingAdminService implements VotingAdminService {
         return new ReferendumResultData(acceptCount, rejectCount);
     }
 
-    private void count(String votingId, Collection<CandidateResultData> result, List<Candidate> candidateList) {
+
+    /**
+     * Nachdem bekannt ist, wie viele Sitze den Parteien zukommen, gilt es, die gewählten Personen zu ernennen.
+     * Gewählt sind die Personen, die am meisten Stimmen erhalten haben. Die nicht gewählten Kandidatinnen und Kandidaten
+     * sind Ersatzleute in der Reihenfolge der erzielten Stimmen. Beim Rücktritt eines oder einer Gewählten rückt
+     * die erste Ersatzperson nach
+     *
+     * @param partyPositionCount
+     * @param votingId
+     * @param candidatesByParty
+     * @return
+     */
+    private Set<CandidateResultData> determineSelectedCandidatesForParty(int partyPositionCount, String votingId, HashSet<Candidate> candidatesByParty) {
+        return getMajorityResult(votingId, candidatesByParty, partyPositionCount);
+    }
+
+    private Set<CandidateResultData> getMajorityResult(String votingId, Set<Candidate> candidateList, int positions) {
+        Set<CandidateResultData> result = new HashSet<>();
+        Map<Candidate, Integer> map = new HashMap<>();
         for (Candidate candidate : candidateList) {
-            final int votes = candidateVotingResultRepository.countVotesForCandidate(votingId, candidate.getCandidateId());
-            result.add(new CandidateResultData(candidate, votes));
+            final Integer votes = candidateVotingResultRepository.countVotesForCandidate(votingId, candidate.getCandidateId());
+            map.put(candidate, votes);
+        }
+        final Map<Candidate, Integer> sortedMap = MapUtil.sortByValue(map);
+        for (Map.Entry<Candidate, Integer> candidateIntegerEntry : sortedMap.entrySet()) {
+            if (candidateIntegerEntry.getValue() != null && candidateIntegerEntry.getValue() != 0) {
+                boolean elected = result.size() < positions;
+                result.add(new CandidateResultData(candidateIntegerEntry.getKey(), candidateIntegerEntry.getValue(), elected));
+            }
+        }
+        final LinkedList<CandidateResultData> list = new LinkedList<>(result);
+        Collections.sort(list);
+        return new LinkedHashSet<>(list);
+    }
+
+    private static class MapUtil {
+        public static <K, V extends Comparable<? super V>> Map<K, V>
+        sortByValue(Map<K, V> map) {
+            List<Map.Entry<K, V>> list =
+                    new LinkedList<Map.Entry<K, V>>(map.entrySet());
+            Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+                public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                    return (o2.getValue()).compareTo(o1.getValue());
+                }
+            });
+
+            Map<K, V> result = new LinkedHashMap<K, V>();
+            for (Map.Entry<K, V> entry : list) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+            return result;
         }
     }
 }
+
+
+
+

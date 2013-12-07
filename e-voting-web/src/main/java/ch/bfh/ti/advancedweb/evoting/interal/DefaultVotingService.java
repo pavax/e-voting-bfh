@@ -23,7 +23,7 @@ class DefaultVotingService implements VotingService {
 
     private final MajorityVotingRepository majorityVotingRepository;
 
-    private final ProporzVotingRepository proporzVotingRepository;
+    private final ProportionalVotingRepository proportionalVotingRepository;
 
     private final ReferendumVotingRepository referendumVotingRepository;
 
@@ -34,9 +34,9 @@ class DefaultVotingService implements VotingService {
     private static final Sort SORT = new Sort(Sort.DEFAULT_DIRECTION, "createDate", "votingId");
 
     @Inject
-    public DefaultVotingService(MajorityVotingRepository majorityVotingRepository, ProporzVotingRepository proporzVotingRepository, ReferendumVotingRepository referendumVotingRepository, VotingResultRepository votingResultRepository, UserRepository userRepository) {
+    public DefaultVotingService(MajorityVotingRepository majorityVotingRepository, ProportionalVotingRepository proportionalVotingRepository, ReferendumVotingRepository referendumVotingRepository, VotingResultRepository votingResultRepository, UserRepository userRepository) {
         this.majorityVotingRepository = majorityVotingRepository;
-        this.proporzVotingRepository = proporzVotingRepository;
+        this.proportionalVotingRepository = proportionalVotingRepository;
         this.referendumVotingRepository = referendumVotingRepository;
         this.votingResultRepository = votingResultRepository;
         this.userRepository = userRepository;
@@ -57,7 +57,7 @@ class DefaultVotingService implements VotingService {
     @Override
     public Map<ProportionalVoting, Boolean> getCurrentProportionalVotings(String userId) {
         Map<ProportionalVoting, Boolean> resultMap = new LinkedHashMap<>();
-        final List<ProportionalVoting> proportionalVotings = proporzVotingRepository.findAll(SORT);
+        final List<ProportionalVoting> proportionalVotings = proportionalVotingRepository.findAll(SORT);
         for (ProportionalVoting proportionalVoting : proportionalVotings) {
             proportionalVoting.getProportionalCandidates().size();
             final VotingResult resultByUser = votingResultRepository.findVotingResultFromUser(userId, proportionalVoting.getVotingId());
@@ -87,12 +87,12 @@ class DefaultVotingService implements VotingService {
     }
 
     @Override
-    public void saveProportionalVote(String userId, String proportionalVotingId, List<Candidate> candidates) throws VotingStoppedException {
+    public void saveProportionalVote(String userId, String proportionalVotingId, String partyListName, List<Candidate> candidates) throws VotingStoppedException {
         final User user = getUser(userId);
         final ProportionalVoting proportionalVoting = getProportionalVoting(proportionalVotingId);
         checkIsVotingOpen(proportionalVotingId, proportionalVoting.isOpen());
         checkExistingVotingResult(userId, proportionalVotingId);
-        votingResultRepository.save(new CandidateVotingResult(proportionalVoting, candidates, user));
+        votingResultRepository.save(new CandidateVotingResult(proportionalVoting, candidates, partyListName, user));
     }
 
     @Override
@@ -141,7 +141,7 @@ class DefaultVotingService implements VotingService {
     }
 
     private ProportionalVoting getProportionalVoting(String proportionalVotingId) {
-        final ProportionalVoting proportionalVoting = proporzVotingRepository.findOne(proportionalVotingId);
+        final ProportionalVoting proportionalVoting = proportionalVotingRepository.findOne(proportionalVotingId);
         if (proportionalVoting == null) {
             throw new IllegalArgumentException("Could not find Proportional Voting: " + proportionalVoting);
         }

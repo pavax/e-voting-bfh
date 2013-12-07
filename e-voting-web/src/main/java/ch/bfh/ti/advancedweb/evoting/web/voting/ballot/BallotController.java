@@ -49,7 +49,7 @@ public class BallotController {
 
         for (ProportionalBallot proportionalBallot : ballotModel.getProportionalBallots()) {
             try {
-                votingService.saveProportionalVote(userId, proportionalBallot.getVotingId(), proportionalBallot.getCandidates());
+                votingService.saveProportionalVote(userId, proportionalBallot.getVotingId(), proportionalBallot.getPartyListName(), proportionalBallot.getCandidates());
             } catch (VotingStoppedException e) {
                 MessageUtils.addErrorMessage("voting.already.stopped.exception");
             }

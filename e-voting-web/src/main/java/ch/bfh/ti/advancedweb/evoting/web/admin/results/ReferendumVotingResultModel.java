@@ -1,7 +1,7 @@
 package ch.bfh.ti.advancedweb.evoting.web.admin.results;
 
 import ch.bfh.ti.advancedweb.evoting.ReferendumResultData;
-import ch.bfh.ti.advancedweb.evoting.domain.voting.Voting;
+import ch.bfh.ti.advancedweb.evoting.domain.voting.ReferendumVoting;
 import org.primefaces.model.chart.PieChartModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -11,12 +11,11 @@ import org.springframework.stereotype.Component;
 @Scope("session")
 public class ReferendumVotingResultModel {
 
-    private Voting selectedVoting;
+    private ReferendumVoting selectedReferendumVoting;
 
     private ReferendumResultData referendumResultData;
 
     private PieChartModel pieModel;
-
 
     public void clear() {
         this.pieModel = null;
@@ -34,12 +33,12 @@ public class ReferendumVotingResultModel {
         this.pieModel.set("NEIN", referendumResultData.getRejectCount());
     }
 
-    public Voting getSelectedVoting() {
-        return selectedVoting;
+    public ReferendumVoting getSelectedReferendumVoting() {
+        return selectedReferendumVoting;
     }
 
-    public void setSelectedVoting(Voting selectedVoting) {
-        this.selectedVoting = selectedVoting;
+    public void setSelectedReferendumVoting(ReferendumVoting selectedReferendumVoting) {
+        this.selectedReferendumVoting = selectedReferendumVoting;
     }
 
     public PieChartModel getPieModel() {

@@ -49,15 +49,19 @@ public class ProportionalVotingController {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             if (proportionalVotingModel.getVotingState().equals(VotingState.VOTED)) {
+                proportionalVotingModel.initCandidatePositions();
                 final CandidateVotingResult votingResultForUser = (CandidateVotingResult) votingService.getVotingResultForUserAndVotingId(currentUserModel.getUserId(), proportionalVotingModel.getVoting().getVotingId());
                 for (Candidate candidate : votingResultForUser.getVotedCandidates()) {
                     selectCandidate(candidate);
                 }
+                proportionalVotingModel.setPartyListName(votingResultForUser.getPartyListName());
             } else if (proportionalVotingModel.getVotingState().equals(VotingState.SAVED)) {
-                final ProportionalBallot proportionalBallots = ballotModel.findProportionalBallot(proportionalVotingModel.getVotingId());
-                for (Candidate candidate : proportionalBallots.getCandidates()) {
+                proportionalVotingModel.initCandidatePositions();
+                final ProportionalBallot proportionalBallot = ballotModel.findProportionalBallot(proportionalVotingModel.getVotingId());
+                for (Candidate candidate : proportionalBallot.getCandidates()) {
                     selectCandidate(candidate);
                 }
+                proportionalVotingModel.setPartyListName(proportionalBallot.getPartyListName());
             }
         }
     }
@@ -121,7 +125,7 @@ public class ProportionalVotingController {
             }
         }
 
-        ballotModel.addProportionalBallot(new ProportionalBallot(selectedCanidates, proportionalVotingModel.getVotingId()));
+        ballotModel.addProportionalBallot(new ProportionalBallot(selectedCanidates, proportionalVotingModel.getVotingId(), proportionalVotingModel.getPartyListName()));
         proportionalVotingModel.clear();
         return "index.xhtml?faces-redirect=true";
     }

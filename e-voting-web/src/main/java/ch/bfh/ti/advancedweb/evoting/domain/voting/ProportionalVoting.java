@@ -2,10 +2,11 @@ package ch.bfh.ti.advancedweb.evoting.domain.voting;
 
 import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import java.util.*;
 
 @Entity
 public class ProportionalVoting extends AbstractCandidateVoting {
@@ -25,5 +26,23 @@ public class ProportionalVoting extends AbstractCandidateVoting {
 
     public List<Candidate> getProportionalCandidates() {
         return Collections.unmodifiableList(this.proportionalCandidates);
+    }
+
+    public Set<String> getAllPartyNames() {
+        Set<String> allParties = new HashSet<>();
+        for (Candidate proportionalCandidate : proportionalCandidates) {
+            allParties.add(proportionalCandidate.getPartyName());
+        }
+        return allParties;
+    }
+
+    public List<Candidate> getCandidatesByParty(String partyName) {
+        List<Candidate> candidatesListByParty = new ArrayList<>();
+        for (Candidate proportionalCandidate : proportionalCandidates) {
+            if (proportionalCandidate.getPartyName().equals(partyName)){
+                candidatesListByParty.add(proportionalCandidate);
+            }
+        }
+        return candidatesListByParty;
     }
 }

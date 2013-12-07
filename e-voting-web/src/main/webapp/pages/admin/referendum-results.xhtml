@@ -17,7 +17,7 @@
         <h:form id="resultForm">
             <h1>
                 <h:outputFormat value="#{msg['voting.results.title']}">
-                    <f:param value="#{referendumVotingResultModel.selectedVoting.title}"/>
+                    <f:param value="#{referendumVotingResultModel.selectedReferendumVoting.title}"/>
                 </h:outputFormat>
             </h1>
 
@@ -28,7 +28,7 @@
                         shadow="true"
                         dataFormat="value"
                         legendCols="3"
-                        title="#{referendumVotingResultModel.selectedVoting.title}"
+                        title="#{referendumVotingResultModel.selectedReferendumVoting.title}"
                         style="width:100%;height:500px;">
             </p:pieChart>
 

@@ -32,7 +32,11 @@ public interface VotingAdminService {
      * @param votingId the given votingId for the result to retrieve
      * @return the Set of CandidateResultData
      */
-    Set<CandidateResultData> getCandidateResults(String votingId);
+    Set<CandidateResultData> getMajorityVotingResultData(String votingId);
+
+
+     ProportionalVotingResultData getProportionalVotingResultData(String votingId);
+
 
     /**
      * Retrieves the sum of accepted and rejected votes for the given referendum Voting

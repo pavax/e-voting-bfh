@@ -19,10 +19,10 @@
             <ui:repeat value="#{adminVotingListModel.votingList}" var="voting">
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary"
                                  value="#{voting.title}"
-                                 rendered="#{voting.votingType != 'REFERENDUM'}"
-                                 action="candidate-results.xhtml?faces-redirect=true">
+                                 rendered="#{voting.votingType == 'MAJORITY'}"
+                                 action="majority-results.xhtml?faces-redirect=true">
                     <f:setPropertyActionListener value="#{voting}"
-                                                 target="#{candidateVotingResultModel.selectedCandidateVoting}"/>
+                                                 target="#{majorityVotingResultModel.selectedMajorityVoting}"/>
                 </h:commandButton>
 
                 <h:commandButton styleClass="btn btn-large btn-block btn-primary"
@@ -30,11 +30,19 @@
                                  rendered="#{voting.votingType == 'REFERENDUM'}"
                                  action="referendum-results.xhtml?faces-redirect=true">
                     <f:setPropertyActionListener value="#{voting}"
-                                                 target="#{referendumVotingResultModel.selectedVoting}"/>
+                                                 target="#{referendumVotingResultModel.selectedReferendumVoting}"/>
+                </h:commandButton>
+
+                <h:commandButton styleClass="btn btn-large btn-block btn-primary"
+                                 value="#{voting.title}"
+                                 rendered="#{voting.votingType == 'PROPORTIONAL'}"
+                                 action="proportional-results.xhtml?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{voting}"
+                                                 target="#{proportionalVotingResultModel.selectedProportionalVoting}"/>
                 </h:commandButton>
             </ui:repeat>
 
-            <br />
+            <br/>
 
             <h:panelGroup layout="block" styleClass="hero-unit">
                 <p:commandButton styleClass="btn btn-block btn-danger"

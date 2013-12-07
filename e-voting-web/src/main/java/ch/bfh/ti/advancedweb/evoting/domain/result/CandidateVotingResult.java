@@ -2,8 +2,7 @@ package ch.bfh.ti.advancedweb.evoting.domain.result;
 
 import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 import ch.bfh.ti.advancedweb.evoting.domain.User;
-import ch.bfh.ti.advancedweb.evoting.domain.voting.Voting;
-import ch.bfh.ti.advancedweb.evoting.domain.voting.VotingType;
+import ch.bfh.ti.advancedweb.evoting.domain.voting.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,17 +18,56 @@ public class CandidateVotingResult extends VotingResult {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Candidate> votedCandidates = new ArrayList<>();
 
-    public CandidateVotingResult(Voting voting, List<Candidate> votedCandidates, User voter) {
-        super(voting, voter);
-        validateProportionalVotingType(voting);
+    private String partyListName;
+
+    // (Kandidaten- und Zusatzstimmen = Parteistimmen)
+    private int partyListVotes = 0;
+
+    /**
+     * @param proportionalVoting
+     * @param votedCandidates
+     * @param partyListName      Mit der Partei- bzw. Listenbezeichnung geben die Wählerinnen und Wähler an, welche Partei sie grundsätzlich unterstützen wollen. Allfällige leere Linien auf dem Wahlzettel werden zu Zusatzstimmen, welche die Sitzverteilung mitbeeinflussen. Ohne Listenbezeichnung bleiben die leeren Kandidierenden-Linien ohne Wirkung.
+     * @param voter
+     */
+    public CandidateVotingResult(ProportionalVoting proportionalVoting, List<Candidate> votedCandidates, String partyListName, User voter) {
+        super(proportionalVoting, voter);
+        validateProportionalVotingType(proportionalVoting);
         checkVotedCandidateFrequency(votedCandidates);
         this.votedCandidates.addAll(votedCandidates);
+        this.partyListName = partyListName;
+        if (partyListName != null) {
+            countCandidatePartyVotes(votedCandidates, partyListName);
+            countAdditionalPartyVotes(proportionalVoting, votedCandidates);
+        }
     }
 
-    public CandidateVotingResult(Voting voting, Set<Candidate> votedCandidates, User voter) {
-        super(voting, voter);
-        validateMajorityVotingType(voting);
+    public CandidateVotingResult(MajorityVoting majorityVoting, Set<Candidate> votedCandidates, User voter) {
+        super(majorityVoting, voter);
+        validateMajorityVotingType(majorityVoting);
         this.votedCandidates.addAll(votedCandidates);
+        this.partyListName = null;
+    }
+
+
+    private void countCandidatePartyVotes(List<Candidate> votedCandidates, String partyListName) {
+        for (Candidate votedCandidate : votedCandidates) {
+            if (votedCandidate.getPartyName().equals(partyListName)) {
+                partyListVotes++;
+            }
+        }
+    }
+
+    /**
+     * Leere Linien zählen für diese Partei
+     *
+     * @param proportionalVoting
+     * @param votedCandidates
+     */
+    private void countAdditionalPartyVotes(ProportionalVoting proportionalVoting, List<Candidate> votedCandidates) {
+        if (votedCandidates.size() != proportionalVoting.getOpenPositions()) {
+            int additionalPartyListVotes = proportionalVoting.getOpenPositions() - votedCandidates.size();
+            partyListVotes = partyListVotes + additionalPartyListVotes;
+        }
     }
 
     private void validateProportionalVotingType(Voting voting) {
@@ -61,4 +99,11 @@ public class CandidateVotingResult extends VotingResult {
         return Collections.unmodifiableList(this.votedCandidates);
     }
 
+    public int getPartyListVotes() {
+        return partyListVotes;
+    }
+
+    public String getPartyListName() {
+        return partyListName;
+    }
 }

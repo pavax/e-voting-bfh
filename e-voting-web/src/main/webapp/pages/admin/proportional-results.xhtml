@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:evoting="http://ti.bfh.ch./util"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{proportionalVotingResultController.init}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="resultForm">
+            <h1>
+                <h:outputFormat value="#{msg['voting.results.title']}">
+                    <f:param value="#{proportionalVotingResultModel.selectedProportionalVoting.title}"/>
+                </h:outputFormat>
+            </h1>
+
+            <p:tabView id="tabView">
+
+                <p:tab id="tab1" title="#{msg['results.list.title']}">
+                    TODO
+                </p:tab>
+                <p:tab id="tab2" title="#{msg['results.chart.title']}">
+
+                    <p:pieChart id="sample"
+                                value="#{proportionalVotingResultModel.partyPieChartModel}"
+                                legendPosition="w"
+                                showDataLabels="true"
+                                shadow="true"
+                                dataFormat="value"
+                                legendCols="3"
+                                title="#{proportionalVotingResultModel.selectedProportionalVoting.title}"
+                                style="width:100%;height:500px;">
+                    </p:pieChart>
+
+                </p:tab>
+
+            </p:tabView>
+        </h:form>
+    </ui:define>
+</ui:composition>

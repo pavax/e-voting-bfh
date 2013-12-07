@@ -14,23 +14,23 @@ import java.util.Set;
 
 @Component
 @Scope("request")
-public class CandidateVotingResultController {
+public class MajorityVotingResultController {
 
-    private final CandidateVotingResultModel candidateVotingResultModel;
+    private final MajorityVotingResultModel candidateVotingResultModel;
 
     private final VotingAdminService votingAdminService;
 
     @Inject
-    public CandidateVotingResultController(CandidateVotingResultModel adminModel, VotingAdminService votingAdminService) {
+    public MajorityVotingResultController(MajorityVotingResultModel adminModel, VotingAdminService votingAdminService) {
         this.candidateVotingResultModel = adminModel;
         this.votingAdminService = votingAdminService;
     }
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            final Set<CandidateResultData> candidateResultDatas = votingAdminService.getCandidateResults(candidateVotingResultModel.getSelectedCandidateVoting().getVotingId());
+            final Set<CandidateResultData> majorityVotingResultData = votingAdminService.getMajorityVotingResultData(candidateVotingResultModel.getSelectedMajorityVoting().getVotingId());
             candidateVotingResultModel.clear();
-            candidateVotingResultModel.setCandidateResultDatas(new ArrayList<>(candidateResultDatas));
+            candidateVotingResultModel.setCandidateResultDatas(new ArrayList<>(majorityVotingResultData));
         }
     }
 
