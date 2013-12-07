@@ -37,7 +37,7 @@ public class ProportionalVotingResultModel {
         //
         partyPieChartModel = new PieChartModel();
         for (PartyResultData partyResultData : proportionalVotingResultData.getPartyResultDatas()) {
-            partyPieChartModel.set(partyResultData.getPartyName() + "( Sitze: " + partyResultData.getPartyPositionCount() + ")", partyResultData.getPartyVotes());
+            partyPieChartModel.set(partyResultData.getPartyName() + " (Stimmen: " + partyResultData.getPartyVotes() + " | Sitze: " + partyResultData.getPartyPositionCount() + ")", partyResultData.getPartyVotes());
         }
 
     }

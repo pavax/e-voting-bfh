@@ -64,7 +64,10 @@
                                         <td>#{x.candidate.firstName} </td>
                                         <td> #{x.candidate.lastName} </td>
                                         <td>#{x.candidate.partyName}</td>
-                                        <td>#{x.votes} (#{x.elected})</td>
+                                        <td>#{x.votes}
+                                            <h:outputText rendered="#{x.elected}" style="font-weight: bold"
+                                                          value="(#{msg['candidate.elected']})"/>
+                                        </td>
                                     </tr>
                                 </ui:repeat>
 
@@ -83,8 +86,7 @@
                                 legendPosition="w"
                                 showDataLabels="true"
                                 shadow="true"
-                                dataFormat="value"
-                                legendCols="3"
+                                legendCols="1"
                                 title="#{proportionalVotingResultModel.selectedProportionalVoting.title}"
                                 style="width:100%;height:500px;">
                     </p:pieChart>
