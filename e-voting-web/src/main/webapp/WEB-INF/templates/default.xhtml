@@ -47,10 +47,10 @@
                             <ui:insert name="nav">
                                 <ul class="nav">
                                     <li class="#{view.viewId == '/pages/index.xhtml' ? 'active' : ''}"><a
-                                            href="/pages/index.xhtml">Abstimmungen</a></li>
+                                            href="/pages/index.xhtml">#{msg['menu.voting.title']}</a></li>
                                     <h:panelGroup rendered="#{userModel.isAdmin()}">
                                         <li class="#{view.viewId == '/pages/admin/index.xhtml' ? 'active' : ''}"><a
-                                                href="/pages/admin/index.xhtml">Admin</a></li>
+                                                href="/pages/admin/index.xhtml">#{msg['menu.admin.title']}</a></li>
                                     </h:panelGroup>
                                 </ul>
                             </ui:insert>
