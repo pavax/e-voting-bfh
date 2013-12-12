@@ -19,7 +19,7 @@ public interface VotingAdminService {
     void stopAllCurrentVotings();
 
     /**
-     * Retrieves all Current Votes
+     * Retrieves all Current Votes sorted by their creation date
      *
      * @return List of current Votes
      */
@@ -27,19 +27,24 @@ public interface VotingAdminService {
 
     /**
      * Retrieves the Set of CandidateResultData having the sum of the votes for each candidate of the given votingId
-     * The Voting must match ether to an MajorityVoting or an ProportionalVoting
+     * The Voting must match ether to an MajorityVotnng
      *
-     * @param votingId the given votingId for the result to retrieve
+     * @param votingId the given votingId (matching to an Majority-Voting) for the result to retrieve
      * @return the Set of CandidateResultData
      */
     Set<CandidateResultData> getMajorityVotingResultData(String votingId);
 
-
+    /**
+     * Calculates the proportional voting result (withouth the Restverteilung) for the given votingId and returns the DTO
+     *
+     * @param votingId the given votingId (matching to an Proportional-Voting) for the result to retrieve
+     * @return a ProportionalVotingResultData containing the total-party counts and the party-counts and elected candidates of each party
+     */
     ProportionalVotingResultData getProportionalVotingResultData(String votingId);
 
 
     /**
-     * Retrieves the sum of accepted and rejected votes for the given referendum Voting
+     * Retrieves the sum of accepted and rejected votes for the given referendum Voting and returns the DTO
      *
      * @param referendumVotingId the Id of the Referendum to retrieve
      * @return the ReferendumResultData containing the sum of accepted and rejected votes for the given Referendum

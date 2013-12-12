@@ -56,7 +56,6 @@ class DefaultVotingAdminService implements VotingAdminService {
         return getMajorityResult(votingId, majorityVoting.getMajorityCandidates(), majorityVoting.getOpenPositions());
     }
 
-
     @Override
     public ProportionalVotingResultData getProportionalVotingResultData(String votingId) {
         final ProportionalVoting proportionalVoting = proportionalVotingRepository.findOne(votingId);
@@ -64,18 +63,8 @@ class DefaultVotingAdminService implements VotingAdminService {
         checkVotingType(VotingType.PROPORTIONAL, proportionalVoting.getVotingType());
         final int openPositions = proportionalVoting.getOpenPositions();
         final Integer countTotalPartyVotes = candidateVotingResultRepository.countTotalPartyVotes(votingId);
-        final Set<PartyResultData> result = new HashSet<>();
-        int quotient = 0;
-        if (countTotalPartyVotes != null) {
-            quotient = (countTotalPartyVotes / (openPositions + 1)) + 1;
-            for (String partyName : proportionalVoting.getAllPartyNames()) {
-                final PartyResultData partyResultData = getPartyResultData(proportionalVoting, quotient, partyName);
-                if (partyResultData != null) {
-                    result.add(partyResultData);
-                }
-            }
-        }
-        return new ProportionalVotingResultData(sortPartyResultData(result), countTotalPartyVotes, quotient);
+        final Set<PartyResultData> result = calculateResultForEachParty(proportionalVoting, openPositions, countTotalPartyVotes);
+        return new ProportionalVotingResultData(sortPartyResultData(result), countTotalPartyVotes);
     }
 
     @Override
@@ -100,7 +89,15 @@ class DefaultVotingAdminService implements VotingAdminService {
         }
     }
 
-    private PartyResultData getPartyResultData(ProportionalVoting proportionalVoting, int quotient, String partyName) {
+    /**
+     * Jede Partei erhält so viele Sitze, als die Verhältniszahl in ihrer Parteistimmenzahl enthalten ist.
+     *
+     * @param proportionalVoting the given proportionalVoting
+     * @param quotient           given Verhältniszahl
+     * @param partyName          the given partyName to retrieve the result
+     * @return PartyResultData contains the info about the elected candidates for the given party
+     */
+    private PartyResultData calculatePartyResultData(ProportionalVoting proportionalVoting, int quotient, String partyName) {
         final Integer partyVotes = candidateVotingResultRepository.countPartyVotes(proportionalVoting.getVotingId(), partyName);
         if (partyVotes != null) {
             final int partyPositionCount = Math.round(partyVotes / quotient);
@@ -117,9 +114,9 @@ class DefaultVotingAdminService implements VotingAdminService {
      * sind Ersatzleute in der Reihenfolge der erzielten Stimmen. Beim Rücktritt eines oder einer Gewählten rückt
      * die erste Ersatzperson nach
      *
-     * @param partyPositionCount
-     * @param votingId
-     * @param candidatesByParty
+     * @param partyPositionCount calculated seats for an party
+     * @param votingId           the votingId of the voting to count the result
+     * @param candidatesByParty  all candidates of a specific party
      * @return
      */
     private Set<CandidateResultData> determineSelectedCandidatesForParty(int partyPositionCount, String votingId, HashSet<Candidate> candidatesByParty) {
@@ -145,11 +142,26 @@ class DefaultVotingAdminService implements VotingAdminService {
         return new LinkedHashSet<>(list);
     }
 
-
     private Set<PartyResultData> sortPartyResultData(Set<PartyResultData> result) {
         final List<PartyResultData> sortedResult = new ArrayList<>(result);
         Collections.sort(sortedResult);
         return new LinkedHashSet<>(sortedResult);
+    }
+
+
+    private Set<PartyResultData> calculateResultForEachParty(ProportionalVoting proportionalVoting, int openPositions, Integer countTotalPartyVotes) {
+        final Set<PartyResultData> result = new HashSet<>();
+        if (countTotalPartyVotes != null) {
+            // Bestimmung der Verhältniszahl (auch Quotient genannt). Gesamtzahl der Parteistimmen geteilt durch die um eins erhöhte Zahl der Sitze.
+            int quotient = (countTotalPartyVotes / (openPositions + 1)) + 1;
+            for (String partyName : proportionalVoting.getAllPartyNames()) {
+                final PartyResultData partyResultData = calculatePartyResultData(proportionalVoting, quotient, partyName);
+                if (partyResultData != null) {
+                    result.add(partyResultData);
+                }
+            }
+        }
+        return result;
     }
 
     private static class MapUtil {

@@ -8,12 +8,9 @@ public class ProportionalVotingResultData {
 
     private final Integer countTotalPartyVotes;
 
-    private final int quotient;
-
-    public ProportionalVotingResultData(Set<PartyResultData> partyResultDatas, Integer countTotalPartyVotes, int quotient) {
+    public ProportionalVotingResultData(Set<PartyResultData> partyResultDatas, Integer countTotalPartyVotes) {
         this.partyResultDatas = partyResultDatas;
         this.countTotalPartyVotes = countTotalPartyVotes;
-        this.quotient = quotient;
     }
 
     public Set<PartyResultData> getPartyResultDatas() {
@@ -22,9 +19,5 @@ public class ProportionalVotingResultData {
 
     public Integer getCountTotalPartyVotes() {
         return countTotalPartyVotes;
-    }
-
-    public int getQuotient() {
-        return quotient;
     }
 }
