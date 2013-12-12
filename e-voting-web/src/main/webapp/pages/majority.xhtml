@@ -62,7 +62,7 @@
                     </h:form>
                 </div>
                 <div class="span5">
-                    <h2>Kandiaten</h2>
+                    <h2>#{msg['candidates']}</h2>
                     <h:form id="possibleCandidates">
                         <p:dataGrid var="candidate"
                                     value="#{majorityVotingModel.possibleCandidates}"
@@ -76,7 +76,7 @@
                                             disabled="#{majorityVotingModel.alreadyVoted or majorityVotingModel.maxPositionsFilled or majorityVotingModel.candidateDisabled(candidate)}"
                                             styleClass="btn btn-mini btn-primary"
                                             action="#{majorityVotingController.selectCandidate(candidate)}"
-                                            value="Wählen"/>
+                                            value="#{msg['choose.candidate']}"/>
                                 </h:panelGrid>
                             </p:panel>
                         </p:dataGrid>

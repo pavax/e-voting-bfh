@@ -82,7 +82,7 @@
                     </h:form>
                 </div>
                 <div class="span5">
-                    <h2>Kandiaten</h2>
+                    <h2>#{msg['candidates']}</h2>
                     <h:form id="possibleCandidates">
                         <p:accordionPanel value="#{util:mapToList(proportionalVotingModel.partyCandidatesMap)}"
                                           var="entry"
@@ -90,7 +90,8 @@
                             <p:tab title="#{entry.key}">
 
                                 <h:panelGroup>
-                                    <p:commandButton value="Alle Wählen"
+
+                                    <p:commandButton value="#{msg['proportional.party.voteAll']}"
                                                      disabled="#{proportionalVotingModel.alreadyVoted or proportionalVotingModel.maxPositionsFilled}"
                                                      action="#{proportionalVotingController.selectAllFromParty(entry.key)}"
                                                      update=":possibleCandidates :selectedCandidates"/>

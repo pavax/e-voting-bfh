@@ -51,46 +51,65 @@ class DefaultVotingAdminService implements VotingAdminService {
     @Override
     public Set<CandidateResultData> getMajorityVotingResultData(String votingId) {
         final MajorityVoting majorityVoting = majorityVotingRepository.findOne(votingId);
+        checkVotingExists(majorityVoting);
+        checkVotingType(VotingType.MAJORITY, majorityVoting.getVotingType());
         return getMajorityResult(votingId, majorityVoting.getMajorityCandidates(), majorityVoting.getOpenPositions());
     }
+
 
     @Override
     public ProportionalVotingResultData getProportionalVotingResultData(String votingId) {
         final ProportionalVoting proportionalVoting = proportionalVotingRepository.findOne(votingId);
-        if (!proportionalVoting.getVotingType().equals(VotingType.PROPORTIONAL)) {
-            throw new IllegalStateException("Voting having voting type '" + proportionalVoting.getVotingType() + "' is not supported");
-        }
-
+        checkVotingExists(proportionalVoting);
+        checkVotingType(VotingType.PROPORTIONAL, proportionalVoting.getVotingType());
         final int openPositions = proportionalVoting.getOpenPositions();
-
         final Integer countTotalPartyVotes = candidateVotingResultRepository.countTotalPartyVotes(votingId);
         final Set<PartyResultData> result = new HashSet<>();
         int quotient = 0;
         if (countTotalPartyVotes != null) {
             quotient = (countTotalPartyVotes / (openPositions + 1)) + 1;
-            final Set<String> allPartyNames = proportionalVoting.getAllPartyNames();
-            for (String partyName : allPartyNames) {
-                final Integer partyVotes = candidateVotingResultRepository.countPartyVotes(votingId, partyName);
-                if (partyVotes != null) {
-                    final int partyPositionCount = Math.round(partyVotes / quotient);
-                    final List<Candidate> candidatesByParty = proportionalVoting.getCandidatesByParty(partyName);
-                    final Set<CandidateResultData> candidateResultDataSet = determineSelectedCandidatesForParty(partyPositionCount, votingId, new HashSet<>(candidatesByParty));
-                    result.add(new PartyResultData(partyName, candidateResultDataSet, partyVotes, partyPositionCount));
+            for (String partyName : proportionalVoting.getAllPartyNames()) {
+                final PartyResultData partyResultData = getPartyResultData(proportionalVoting, quotient, partyName);
+                if (partyResultData != null) {
+                    result.add(partyResultData);
                 }
             }
         }
-        final List<PartyResultData> sortedResult = new ArrayList<>(result);
-        Collections.sort(sortedResult);
-        return new ProportionalVotingResultData(new LinkedHashSet<>(sortedResult), countTotalPartyVotes, quotient);
+        return new ProportionalVotingResultData(sortPartyResultData(result), countTotalPartyVotes, quotient);
     }
 
     @Override
     public ReferendumResultData getReferendumResult(String referendumVotingId) {
+        final Voting referendumVoting = votingRepository.findOne(referendumVotingId);
+        checkVotingExists(referendumVoting);
+        checkVotingType(VotingType.REFERENDUM, referendumVoting.getVotingType());
         final int acceptCount = referendumVotingResultRepository.countAcceptVotes(referendumVotingId);
         final int rejectCount = referendumVotingResultRepository.countRejectVotes(referendumVotingId);
         return new ReferendumResultData(acceptCount, rejectCount);
     }
 
+    private void checkVotingType(VotingType votingType, VotingType votingType1) {
+        if (!votingType1.equals(votingType)) {
+            throw new IllegalStateException("Voting having voting type '" + votingType + "' is not supported");
+        }
+    }
+
+    private void checkVotingExists(Voting voting) {
+        if (voting == null) {
+            throw new IllegalArgumentException("Voting not found");
+        }
+    }
+
+    private PartyResultData getPartyResultData(ProportionalVoting proportionalVoting, int quotient, String partyName) {
+        final Integer partyVotes = candidateVotingResultRepository.countPartyVotes(proportionalVoting.getVotingId(), partyName);
+        if (partyVotes != null) {
+            final int partyPositionCount = Math.round(partyVotes / quotient);
+            final List<Candidate> candidatesByParty = proportionalVoting.getCandidatesByParty(partyName);
+            final Set<CandidateResultData> candidateResultDataSet = determineSelectedCandidatesForParty(partyPositionCount, proportionalVoting.getVotingId(), new HashSet<>(candidatesByParty));
+            return new PartyResultData(partyName, candidateResultDataSet, partyVotes, partyPositionCount);
+        }
+        return null;
+    }
 
     /**
      * Nachdem bekannt ist, wie viele Sitze den Parteien zukommen, gilt es, die gewählten Personen zu ernennen.
@@ -124,6 +143,13 @@ class DefaultVotingAdminService implements VotingAdminService {
         final LinkedList<CandidateResultData> list = new LinkedList<>(result);
         Collections.sort(list);
         return new LinkedHashSet<>(list);
+    }
+
+
+    private Set<PartyResultData> sortPartyResultData(Set<PartyResultData> result) {
+        final List<PartyResultData> sortedResult = new ArrayList<>(result);
+        Collections.sort(sortedResult);
+        return new LinkedHashSet<>(sortedResult);
     }
 
     private static class MapUtil {
