@@ -48,12 +48,15 @@ public class VotingListController {
      */
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
+            // fetch current majority votings
             final Map<MajorityVoting, Boolean> currentMajorityVotings = votingService.getCurrentMajorityVotings(currentUserModel.getUserId());
             votingListModel.setMajorityVotingMap(initVotingStateMap(currentMajorityVotings));
 
+            // fetch current proportional votings
             final Map<ProportionalVoting, Boolean> currentProportionalVotings = votingService.getCurrentProportionalVotings(currentUserModel.getUserId());
             votingListModel.setProportionalVotingMap(initVotingStateMap(currentProportionalVotings));
 
+            // fetch current referendum votings
             final Map<ReferendumVoting, Boolean> currentReferendumVotings = votingService.getCurrentReferendumVotings(currentUserModel.getUserId());
             votingListModel.setReferendumVotingMap(initVotingStateMap(currentReferendumVotings));
         }

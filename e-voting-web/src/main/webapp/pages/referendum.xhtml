@@ -8,7 +8,7 @@
 
     <ui:define name="metadata">
         <f:metadata>
-            <f:event type="preRenderView" listener="#{referendumVotringController.init}"/>
+            <f:event type="preRenderView" listener="#{referendumVotingController.init}"/>
         </f:metadata>
     </ui:define>
 
@@ -39,7 +39,7 @@
                         <p:commandButton disabled="#{referendumVotingModel.alreadyVoted}"
                                          styleClass="btn btn-large btn-primary"
                                          value="#{msg['vote.confirm']}"
-                                         action="#{referendumVotringController.saveReferendumVoting}">
+                                         action="#{referendumVotingController.saveReferendumVoting}">
                             <p:confirm header="#{msg['save.votes.confirmation.title']}"
                                        message="#{msg['save.votes.confirmation.text']}"/>
                         </p:commandButton>

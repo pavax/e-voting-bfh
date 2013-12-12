@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 @Component
 @Scope("request")
-public class ReferendumVotringController {
+public class ReferendumVotingController {
 
     private final ReferendumVotingModel referendumVotingModel;
 
@@ -26,7 +26,7 @@ public class ReferendumVotringController {
     private final BallotModel ballotModel;
 
     @Inject
-    public ReferendumVotringController(ReferendumVotingModel referendumVotingModel, VotingService votingService, CurrentUserModel currentUserModel, BallotModel ballotModel) {
+    public ReferendumVotingController(ReferendumVotingModel referendumVotingModel, VotingService votingService, CurrentUserModel currentUserModel, BallotModel ballotModel) {
         this.referendumVotingModel = referendumVotingModel;
         this.votingService = votingService;
         this.currentUserModel = currentUserModel;

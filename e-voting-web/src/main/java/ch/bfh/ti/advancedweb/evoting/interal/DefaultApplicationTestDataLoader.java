@@ -56,6 +56,8 @@ class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, App
         userRepository.save(new User("max", "secret", false));
         userRepository.save(new User("moritz", "secret", false));
         userRepository.save(new User("susi", "secret", false));
+        userRepository.save(new User("gabi", "secret", false));
+        userRepository.save(new User("hans", "secret", false));
         userRepository.save(new User("admin", "secret", true));
     }
 
@@ -69,6 +71,9 @@ class DefaultApplicationTestDataLoader implements ApplicationTestDataLoader, App
         setupCandidate(candidates, "SVP", 8);
         setupCandidate(candidates, "CVP", 8);
         setupCandidate(candidates, "Grünen", 8);
+        setupCandidate(candidates, "GLP", 8);
+        setupCandidate(candidates, "BDP", 8);
+        setupCandidate(candidates, "FDP", 8);
         proportionalVotingRepository.save(new ProportionalVoting("Proporzwahl Titel 1", 8, candidates));
     }
 

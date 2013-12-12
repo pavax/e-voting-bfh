@@ -4,6 +4,10 @@ import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 
 import java.util.Set;
 
+
+/**
+ * Contains the Set of selected Candidates of an User
+ */
 public class MajorityBallot {
 
     private String votingId;

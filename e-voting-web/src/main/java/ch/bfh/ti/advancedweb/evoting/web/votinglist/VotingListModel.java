@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 /**
- * Contains a Map for all running MajorityVoting, ProportionalVoting and ReferendumVoting
+ * Contains several Maps for all running MajorityVoting, ProportionalVoting and ReferendumVoting
  * having the VotingState (according to the current logged-in User) as the Maps Value
  */
 @Component

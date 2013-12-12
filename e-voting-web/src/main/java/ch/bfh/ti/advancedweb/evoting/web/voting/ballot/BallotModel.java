@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
+/**
+ * BallotModel contains all the Votes a user filled out (called a ballot) but did not send yet
+ */
 @Component
 @Scope("session")
 public class BallotModel {
@@ -16,7 +20,6 @@ public class BallotModel {
     private Set<ProportionalBallot> proportionalBallots = new LinkedHashSet<>();
 
     private Set<ReferendumBallot> referendumBallots = new LinkedHashSet<>();
-
 
     public void clearAll() {
         this.majorityBallots.clear();
@@ -98,6 +101,4 @@ public class BallotModel {
     public boolean containsAny() {
         return this.getProportionalBallots().size() != 0 || this.getMajorityBallots().size() != 0 || this.getReferendumBallots().size() != 0;
     }
-
-
 }

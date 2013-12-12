@@ -1,5 +1,8 @@
 package ch.bfh.ti.advancedweb.evoting.web.voting.ballot;
 
+/**
+ * Contains whether the User accepts or rejects a referendum
+ */
 public class ReferendumBallot {
 
     private String votingId;

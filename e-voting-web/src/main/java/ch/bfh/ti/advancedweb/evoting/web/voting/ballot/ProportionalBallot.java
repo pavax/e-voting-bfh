@@ -4,6 +4,9 @@ import ch.bfh.ti.advancedweb.evoting.domain.Candidate;
 
 import java.util.List;
 
+/**
+ * Contains the Lust of selected Candidates of an User and the selected party to give the party votes
+ */
 public class ProportionalBallot {
 
     private String votingId;
