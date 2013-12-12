@@ -41,16 +41,16 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="brand" href="/pages/index.xhtml">Advanced Web</a>
+                        <a class="brand" href="#{request.contextPath}/pages/index.xhtml">Advanced Web</a>
 
                         <div class="nav-collapse collapse">
                             <ui:insert name="nav">
                                 <ul class="nav">
                                     <li class="#{view.viewId == '/pages/index.xhtml' ? 'active' : ''}"><a
-                                            href="/pages/index.xhtml">#{msg['menu.voting.title']}</a></li>
+                                            href="#{request.contextPath}/pages/index.xhtml">#{msg['menu.voting.title']}</a></li>
                                     <h:panelGroup rendered="#{userModel.isAdmin()}">
                                         <li class="#{view.viewId == '/pages/admin/index.xhtml' ? 'active' : ''}"><a
-                                                href="/pages/admin/index.xhtml">#{msg['menu.admin.title']}</a></li>
+                                                href="#{request.contextPath}/pages/admin/index.xhtml">#{msg['menu.admin.title']}</a></li>
                                     </h:panelGroup>
                                 </ul>
                             </ui:insert>

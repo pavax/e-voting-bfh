@@ -132,9 +132,13 @@ class DefaultVotingAdminService implements VotingAdminService {
         }
         final Map<Candidate, Integer> sortedMap = MapUtil.sortByValue(map);
         for (Map.Entry<Candidate, Integer> candidateIntegerEntry : sortedMap.entrySet()) {
-            if (candidateIntegerEntry.getValue() != null) {
+            final Integer candidateVotes = candidateIntegerEntry.getValue();
+            if (candidateVotes != null) {
                 boolean elected = result.size() < positions;
-                result.add(new CandidateResultData(candidateIntegerEntry.getKey(), candidateIntegerEntry.getValue(), elected));
+                if (candidateVotes == 0) {
+                    elected = false;
+                }
+                result.add(new CandidateResultData(candidateIntegerEntry.getKey(), candidateVotes, elected));
             }
         }
         final LinkedList<CandidateResultData> list = new LinkedList<>(result);
